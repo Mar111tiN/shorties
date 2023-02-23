@@ -1,0 +1,413 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf400
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;\f2\fswiss\fcharset0 ArialMT;
+}
+{\colortbl;\red255\green255\blue255;\red255\green255\blue10;\red0\green0\blue0;\red0\green0\blue0;
+\red0\green0\blue194;\red255\green255\blue255;\red27\green29\blue31;}
+{\*\expandedcolortbl;;\cssrgb\c99942\c98555\c0;\cssrgb\c0\c0\c0;\csgray\c0\c0;
+\cssrgb\c0\c0\c80392;\cssrgb\c100000\c100000\c100000;\cssrgb\c14118\c15294\c16078;}
+\margl1440\margr1440\vieww16260\viewh18380\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Syntax
+\b0\fs20 							element \{Property1:Value;Property2: ValueUnit;\}\
+\
+\
+	id Selector		<element id="x">		#x \{style\}			should be unique\
+	class Selector		<element class="x">		.x \{style\}\
+		multiple		<element class="x y">		.x \{styleA\}  .y \{styleB\}\
+	group selectors		<elA> <elB> <elC> 		elA, elB, elC \{style\} \
+	decendant selector	<elA><..>\'85<elB> </elB>\'85</elA>	elA elB\{style\}		separated by space\
+	child selector		<elA>\cb2 <elB> </elB>\cb1 </elA>	elA>elB \{\cb2 style\cb1 \}\
+	adjacent sibling		<elA></elA>\cf3 \cb2 <elB></elB>\cf0 \cb1 	elA+elB \{\cb2 style\cb1 \}\
+	general siblings		<elA></elA>\cf3 \cb2 <elB></elB>\cf0 \cb1 <..>\'85\cf3 \cb2 <elB></elB>\cb4 	elA~elB\{style\}\
+	pseudo-classes		a:link			order as stated here\
+	many many!		a:visitied\
+				a:hover\
+				a:active\
+				p:first-child\
+				p:last-child\
+				p:nth-child(number/function of n)\
+				:first-of-type\
+				:last-of-type\
+				p:nth-of-type(number/function of n)\
+				div:focus		the one that has been clicked\
+	pseudo-elements	::after			p::after\{content:"hallo";img=url(xyz.png);\}\
+					content		: url()\
+							: "$$$"\
+							: counter(Z\'89hlvariable)\
+							: attr(id)\
+							: $$$$; stylebeschreibungen\
+				::before	\
+				::first-letter\
+				::first-line\
+				::selection		text, der ausgew\'e4hlt wurde\
+	attribute selector	el[attribute]		selects elements with a specific attribute\
+\cf0 \cb1 				el[attribute="value"]	\cf3 \cb4 selects elements with a specific attribute of a specific value\cf0 \cb1 \
+				el[attribute~="value"]	attribute value contains a string separated by hyphen or space\
+				el[attribute|="value"]	atrribute starts with a string separated by hyphen or space\
+				el[atribute^="value"]	attribute begins with a certain string (no separation required)\
+				el[attribute$="value"]		attribute ends with a certain string (no separation required)\
+				el[attribute*="value"]		attribute contains a certain string (no separation required)\
+		attribute selectors can be combined with `:` and not:\
+				el[condition1]:[condition2]:not([condition3])		both conditions 1 and 2 are fulfilled and 3 not	vendor-prefixes		oftentimes newer commands do not work on old browsers\
+				can be fixed with prefixes\
+				this task can be done also automatically by postprocessors like "autoprefixer"\
+\
+
+\b\fs26 CSS comments
+\b0\fs20 		/* asdg\'f6lksadl\'f6 */\
+\
+	link to external style sheet	<link rel="stylesheet" type="text/css" href="css/style.css">\
+	css in header			<style> element \{property:value;\} </style>\
+	links inline			<element style="property:value;">\
+\
+\
+
+\b\fs26 Colors:
+\b0\fs20 \
+	color descriptor:		140 color names {\field{\*\fldinst{HYPERLINK "https://www.w3schools.com/colors/colors_groups.asp"}}{\fldrslt https://www.w3schools.com/colors/colors_groups.asp}}\
+				rgb(x,y,z)\
+				#hexvalues\
+				hsl(x,y,z)\
+				rgba(x,y,z,transp)\
+						element \{property:color\}\
+\
+\
+
+\b\fs26 Background
+\b0\fs20 \
+	background-color\
+	shorthand:	element \{background: colorvalue link repeat-value positionValue\}		(color>image>repeat>attachment>position)\
+\
+	gradients:		background: linear-gradient(#direction,color1 [stop],color2, .. colorN)		\
+					direction:	to right / to bottom \'85\
+							to top left / to bottom right\
+							45deg					gradient as radient angle (0deg = to top)					 stop (optional):	can be in px or % or rem etc..\
+		gradients can be stacked\
+				 background: radial-gradient(color1 [stop], color2 [stop]\'85colorN [stop] )\
+\
+\
+
+\b\fs26 Border
+\b0\fs20 \
+				border-width	value / thick medium thin\
+				border-style	none / hidden / dotted / dashed / double / solid / groove / ridge / inset / outset/\
+				border-color	value / name\
+	shorthand:	\{border: widthValue styleValue colorValue\} \
+				border-radius	value						>IE8!!\
+				border-left/right/top/bottom\
+				outline:			rahmen um die Border\
+				border-image:	url(#.png) slice-value (round/stretched/repeat)\
+\
+
+\b\fs26 Margin
+\b0\fs20 				margin		value / auto / % (of containing element) / inherit (from parent element)sa\
+\
+
+\b\fs26 Padding
+\b0\fs20 	analog zu Margin (Bereich innerhalb der Border)\
+\
+
+\b\fs26 Height/Width
+\b0\fs20 \
+	steuert Content-Area innerhalb des Padding\
+	max-width reduziert Breite, wenn Browser kleiner wird\
+	optimally, combine max-width and width percentage for smooth transition during resizing:\
+				max-width:  800px\
+				width: 80%		text stays at 800 px until it gets below 80% of screen\
+\
+		!!!	box-sizing:border-box;		Die Breiten einer Box werden inkl. Margin+Border+Padding gerechnet - sehr wichtig!\
+\
+\
+
+\b\fs26 Text:
+\b0\fs20 				color								background-color muss auch definiert werden\
+				text-align		left  center  right  justify\
+				text-decoration:		overline line-through underline\
+				text-transform		uppercase  lowercase  capitalize\
+				text-indent\
+				letter-spacing\
+				line-height\
+				word-spacing\
+				text-shadow:		xskew yskew blur-radius color		add opacity by using rgba-values\
+				white-space		normal nowrap pre		how is space and line breaks handled\
+				text-overflow:		clip ellipsis visible\
+				word-wrap:		break-word;		long words can be broken and separated to next line\
+				word-break:		keep-all break-all	keep-all ist das was man kennt\
+				\
+\
+
+\b\fs26 Fonts:
+\b0\fs20 		different font formats:\
+			TTF		TrueType Fonts			most common for MacOS and Win\
+			OTF		OpenType Fonts		commonly used\
+			WOFF		Web Open Font Format		W3C recommendation\
+			WOFF 2.0					better compression than WOFF 1.0\
+			SVG Fonts					special format (fully stylable via CSS3)\
+			EOT		Embedded OpenType		special type of OTF\
+			define your own font via @font-face rule:\
+				@font-face \{font-family: ###;src:url(\'85.);font-weight:bold;font-style:italic;\}						a\{font-family:###;\}		special parameters are used under precondition for these parameters\
+			\cf5 \cb6 \expnd0\expndtw0\kerning0
+best coverage of fonts:\
+\pard\pardeftab720\sl380\partightenfactor0
+\cf3 \cb4 				@font-face \{	font-family: 'MyWebFont';\
+ 						 src: url('webfont.eot'); /* IE9 Compat Modes */\
+ 						 src: url('webfont.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */\
+     						  url('webfont.woff2') format('woff2'), /* Super Modern Browsers */\
+       						url('webfont.woff') format('woff'), /* Pretty Modern Browsers */\
+       						url('webfont.ttf')  format('truetype'), /* Safari, Android, iOS */\
+       						url('webfont.svg#svgFontName') format('svg'); /* Legacy iOS */\}\
+			you have to provide system fonts in server folder || webfonts can be converted to different types of fonts by standard converters\
+\pard\pardeftab720\sl380\partightenfactor0
+\cf0 \cb1 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 			\
+			>800 fonts available @ google fonts		<link href='https://fonts.googleapis.com/css?family=Sofia' rel='stylesheet'>\
+						or:	
+\f1\fs32 \cf3 \cb4 \expnd0\expndtw0\kerning0
+@
+\f0\fs20 import url(//fonts.googleapis.com/css?family=Open+Sans);\cf0 \cb1 \kerning1\expnd0\expndtw0 \
+\
+\
+			Font-Familien:	serif		Times New Roman\
+					sans-serif	Arial Verdana\
+					Monospace	Courier New Lucida Console\
+				font-family:"FontName1","FontName2",genericFontName\
+			\
+				font-style:		normal, italic,oblique\
+				font-size:		default=16px=1em  		best use em!\
+			declare font-size for body as 100% !\
+				font-weight		normal bold\
+				font-variant		normal small caps\
+			Shorthand: font\
+				\
+
+\b\fs26 Icons
+\b0\fs20 			Font awesome		meta:	\cf3 \cb4 \expnd0\expndtw0\kerning0
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">\cf0 \kerning1\expnd0\expndtw0 \
+\cb1 						html:	<i class="fa fa-cloud"></i>\
+				\
+			Bootstrap Icons		meta:	\cf3 \cb4 \expnd0\expndtw0\kerning0
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">\kerning1\expnd0\expndtw0 						html:	<i class="glyphicon glyphicon-cloud"></i>\cf0 \cb1 \
+			Google Icons		meta:	\cf3 \cb4 \expnd0\expndtw0\kerning0
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">\
+						html:	<i class="material-icons">cloud</i>\cf0 \cb1 \kerning1\expnd0\expndtw0 \
+			\
+
+\b\fs26 Links
+\b0\fs20 			styled as fonts + 	link states:	a:link		normal state	style states in this direction\
+								a:visited	\'97\
+								a:hover		mouse is over link								a:active		link is clicked	\
+						a\{text-decoration:none;\}\
+							\
+
+\b\fs26 Lists
+\b0\fs20 			unordered list\
+			<ul></ul>		list-style-type: 		circle square none\
+			ordered lists\
+			<ol></ol>		list-style-type:		upper-roman lower-alpha none\
+						list-style-image:		url('xyz.gif');\
+						list-style-position	outside (default)  inside				shorthand		list-style: type \'97> position \'97> image\
+\
+
+\b\fs26 Table
+\b0\fs20 			th td tr			:hover			works as in links\
+						border-collapse:		collapse	inner and outer borders overlap\
+						vertical-align:		top middle bottom\
+						:nth-child(even)		f\'fcr striped look\
+						:nth-child(odd)\
+						:last-child		bei benutzung von border-bottom\
+						caption 	\{caption-side:	top  bottom \}\
+						empty-cells		show hide		\
+
+\b\fs26 Shadow
+\b0\fs20 					text-shadow:		x-offset y-offset blur-radius color\
+						box-shadow:		x-offset y-offset spread blur-radius color (inset)\
+									\
+
+\b\fs26 Display
+\b0\fs20 		display:			block			starts on new line, uses maximum width\
+						inline			continues in line and takes up minimum space\
+						none			as if it does not exists\
+						inline-block		like inline elements but with height and width\
+						flex			allows better positioning of child-elements | is applied to parent container\
+\
+
+\b\fs26 Flex Containers		\
+			
+\b0\fs20 display:flex; must be set for container\
+			flex-direction:		column / row 		stacking order of containing elements\
+						column-reverse\
+			flex-wrap:		wrap (/nowrap)		multiple rows or columns are (/not) created by overflow\
+	short-hand	flex-flow:	=	flex-direction flex-wrap\
+			justify-content:		flex-start\
+						flex-end\
+						center\
+						space-around		evenly distributed space between elements\
+						space-evenly		similar spaces between borders and all elements\
+			flex-grow		number			sets growing compared to other elements\
+			flex-shrink		number\
+			flex-basis:		value | auto		defines default size of an element	short-hand	flex		=	flex-grow (flex-shrink flex-basis)		default: 0 1 auto\
+			align-items:		center			vertical alignment\
+						flex-start / flex-end\
+						baseline		baseline as text\
+			align-content:		space-between		aligns the rows of the container (analogue to align-items)\
+ 	\ul control of child-elements:\
+\
+
+\b\fs26 \ulnone Grid Layout\
+	
+\b0\fs20 control of the parent container:\
+			display: grid					defines container for grid layout (1st level grid)\
+				inline-grid				inline-level grid\
+				subgrid					defines a grid within a grid (confining dimensions are taken from surrounding grid)\
+			grid-template-columns: value1 value2 value3..	defines columns of grid with space-separated list of values\
+				values: px/ auto/ % / fr			%-values are relative to total size / fr is a fraction of total free space of non-flexible items\
+			grid-template-rows				analogous to columns \
+			\
+			grid-template-areas				if items have been declared with meaning using grid-area, the areas can be assigned to the grid layout\
+		e.g.	grid-template-areas: \
+				"header header header"			.item-a \{ grid-area: header; \} etc. \
+				"main . sidebar"				. means empty grid cells\
+				"footer footer footer";\
+			grid-template:					shorthand for -columns, -rows and -areas\
+				none;					all have initial values\
+				subgrid;					-columns and rows: subgrid -areas: initial value\
+				more complex annotations possibles\
+							\
+			grid-column-gap / grid-row-gap			size of inner edges between cells\
+			justify items					aligns all content inside grid item along row axis\
+				start / end / center / stretch		stretch (100% of item width) is default\
+			justify-self					to define individual grid items\
+			align-items					aligns all content along column axis\
+				start / end / center / stretch		stretch (100% of item height) is default\
+			align-self					to define individual grid items\
+			justify-content					if all grid items have absolute size, y-difference to container will be filled\
+				start / end / center / stretch\
+				space-evenly				even space between and at end of items\
+				space-around				even space between items and half that size at the far ends\
+				space-between				even space between items and no space at far ends\
+			align-content					same for column axis\
+\
+
+\b\fs26 	
+\b0\fs20 control of the grid items:\
+		grid items are the DOM-children of the container defined with display:grid\
+		items can overlap - z-index determines visibility\
+			grid-column-start / -end				location of item within grid\
+				`number`/ span`number`/ auto		span`number`defines how many lines the item will span across\
+			grid-row-start / -end				same as above\
+			grid-area: name					names an item to be referenced by grid-template-areas\
+			align-self					to define individual grid items\
+			justify-self					to define individual grid items\
+\
+
+\b\fs26 Position
+\b0\fs20 		first set the position property\
+\
+			position:		static (default)		is not affected by top bottom left right\
+						relative			adjusted away from normal position, does not affect other elements\
+						fixed:			positioned relative to viewport\
+						absolute		positioned relative to nearest positioned ancestor element or body\
+						sticky			remains relative until box is scrolled to margin of viewport, then fixed	\
+			then use left: top: \'85.	value\
+			!!! for position:absolute set body\{margin:0;padding:0;\}!!!\
+			visibility of overlapping elements can be specified by z-index:	heigher value is displayed\
+\
+
+\b\fs26 CSS overflow
+\b0\fs20 	only works in block elements if height is specified\
+			overflow:		visible			rendered into adjacent elements			overflow-x:		hidden			content is clipped\
+			overflow-y:		scroll			scroll-bar is added and space for bars is reserved -   adds two scroll bars (stupid)\
+						auto			scroll bar if necessary\
+
+\b\fs26 Float/Clear
+\b0\fs20 		float:			left			next element is placed directly behind\
+		floated elements are not contained in its container!! \'97> set container to overflow:auto ("clearfix")\
+			clear:			left right both		element with clear will not allow floating elements on specified side and move down\
+			better clearfix:		.clearfix::after\{content:"";clear:both;display:table;\}\
+			!!! for using float set body\{margin:0;padding:0;\}!!!\
+\
+\
+
+\b\fs26 Align
+\b0\fs20  		horizontal align:\
+			margin:auto;					centers a block element in its container\
+			img\{display:block;margin:auto;\}	f		or centering of images\
+		vertical align:\
+			VarianteA	padding:x 0;\
+			VarianteB ???	container\{height:x;line-height:x;\} element\{line-height:1.5;display:inline-block;vertical-align:middle;\}\
+			VarianteC	container\{height:x;position:relative;\} element\{margin:0;position:absolute;top:50%;left:50%;\
+			-ms-transform:translate(-50%,-50%);transform:translate(-50%;-50%)\}\
+\
+\
+
+\b\fs26 Transformations:
+\b0\fs20 	\
+			transform:		translate(x,y);		moves element\
+						scale(x,y);		size is scaled\
+						skew(xdeg,ydeg);	rectangle to rhombus (or skewX , skewY)\
+				shorthand	matrix(scaleX,skewY,skewX,scaleY,translateX,translateY);\
+						rotateX(xdeg);		also rotateY, rotateZ\
+			transform-origin:	x% y%;			\
+			backface-visibility:	visible | hidden\
+			perspective:		px-value;		how far away from plane of webpage\
+\
+
+\b\fs26 Transitions:
+\b0\fs20 	transition:		parameter durationOFtransition, parameter2 dOt; \'85\
+			transition-timing-function:	ease (default) | linear | cubic-bezier(n,n,n,n);\
+			transition-delay:		time-value;	\
+			transition:		transform time-value:	transform has to be declared first\
+\
+\
+
+\b\fs26 Animations:
+\b0\fs20 		first @keyframes have to be declared:\
+			@keyframes anima_name \{from \{param1:value1;param2:value1;\} to \{param1:value2;param2:value2;\}\}\
+							or\
+			@keyframes anima_name \{0% \{param:value1;\} 50% \{param:value2;\} 100% \{param:value3;\}\}\
+\
+			secondly:	call animation with CSS:\
+			element 		\{animation-name:	anima_name;\
+						animation-duration:	time-value;\
+						animation-delay:	time-value;\
+						animation-iteration-count:	number/infinite;\
+						animation-direction:	reverse/alternate;\
+						animation-timing-function:	see transitions\
+						animation-fill-mode:	none/forwards/backwards; element will retain styling from last keyframe      \}\
+			short-hand:		animation: name duration timing delay iteration direction fillmode;\
+
+\b\fs26 Images:	
+\b0\fs20 				filter:		blur(#px);\
+								grayscale(%value);\
+								brightness(%);\
+								contrast	(%);\
+								sepia(%);\
+								saturate(number);\
+								hue-rotate(#deg);\
+								invert(%);	\
+						object-fit:	fill (default)	object is stretched into place\
+								cover;		keeps objects aspect ratio, overhang is clipped\
+								contain;		keeps objects aspect ratio, free space is possible\
+								scale-down	content is sized \
+			images in <a> tags: 	use border:0;	for IE9 cause it wants to put borders\
+								\
+\
+
+\b\fs26 Responsive Design:
+\b0\fs20 	\
+			media queries:		@media (max-width:600px) \{CSS-style like column width adjustment\}\
+\
+\
+
+\b\fs26 CSS and JavaScript:
+\b0\fs20 	\
+	a big helper to style JS generated pages :\
+		in Chrome console 
+\f2 \cf7 \cb6 \expnd0\expndtw0\kerning0
+copy(document.body.innerHTML) \'97> JS-generated HTML to clipboard
+\f0 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+		paste to a mask.html and test CSS values there\
+\
+}

@@ -1,0 +1,265 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2512
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11905\paperh16837\margl1440\margr1440\vieww9400\viewh15580\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs36 \cf0 Tibbles
+\f1\b0\fs26 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 uses tibble as standard data.tables\
+\
+library(tibble)\
+	tibbles do not change strings to factors\
+\
+inspect the data:\
+\
+	summary(my_tibble)\
+	str(my_tibble)\
+	tibble %>% View()				View(data) opens new window for the data\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 create
+\f1\b0 \
+\
+	as.tibble(conv.dataframe)			convert base R dataframe into a tibble\
+	tibble(col1=v1, colf2=v2, col3=v3)	create tibble from vectors\
+\
+	tribble(						quick df creation in code with tribbles\
+		~col1, ~col2, ~col3,\
+		1,2,3,\
+		4,5,6,	\
+		\'85)\
+	\
+	df %>% select(col1, col2)			returns tibble with these columns\
+		select( -col1)				returns all columns except col1\
+		select(col2, everything())		returns col1 and then all other columns\
+		 	( contains(string) )		returns all cols with that string\
+			 starts_with(string), ends_with(string)		\
+			 matches(regexp)\
+			any_of(stringvector)		all \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 READR:\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\b0\fs24 \cf0 part of the tidyverse\
+contains several import and export functions to use for data transfer into and out of the tidyverse
+\f0\b\fs26 \
+
+\f1\b0\fs24 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 read in data as tibble
+\f1\b0 	\
+	read_csv(						load in comma-separated files\
+		path,						path to the file\
+		skip = n,					start parsing after n cols\
+		comment = "#", 				all lines with # are treated as comment\
+		col_names = string.vector		pass string vector in order to name your headers\
+		col_names = F,				do not treat first row as header\
+		na = "."					convert "." in your file to NA values\
+	\
+	)		\
+	read_tsv()						load in tab-separated files\
+	readr::read_delim(				load in files with any separator\
+		delim = '\\t'					separator\
+		col_types = cols(			manually define the data type of the columns\
+			col1 = col_double(),\
+			col2 = col_logical(),\
+			col3 = col_date(),\
+		[	.default = col_character() ] 	col_character always works as a fall back\
+		),\
+		guess_max = n				how many colums to use for guessing the data type\
+	)		\
+		\
+\
+write to file:\
+	write_csv(tibble, path)			writes \
+\
+	write_excel_csv()				writes special header for excel to use during import\
+\
+	write_rds(tibble, path)			writes tables to custom compressed rds format\
+	\'97> read_rds(path)				reads in the data without losing data type information\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs36 \cf0 tidyr:\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs26 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\b0\fs24 \cf0 part of the tidyverse\
+contains functions to tidy data:\
+tidy data has the following characteristics:\
+	every column is one measurement\
+	every row is one set of observations
+\f0\b\fs26 \
+
+\f1\b0\fs24 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 pivot your data:
+\f1\b0 	\
+%>%	\
+	pivot_longer(					derive one column from different cols containing values in the col_name\
+		c(col1, col2..),				the columns to consider for the transformation\
+		names_to = col1,			col1 is the name of the new column \
+		values_to = col2			where do the values from the condensed col go \
+	)\
+\
+	pivot_wider(\
+		names_from = col containing the variable name, every unique value becomes one column\
+		values_from = col containing the corresponding values for the variables\
+		\
+	)\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs36 \cf0 stringr
+\f1\b0\fs24 \
+analogue to pandas str functions \
+functions are called str_* and work with regexp and on vectors of strings\
+	\\ for grouping has to be escaped by \\\\\
+\
+	str_detect(string_vector, pattern)		returns boolean vector with checks for containing the pattern\
+	str_subset(string_vector, pattern)		returns the elements in the vector where check is true\
+									analogue to string_vector[str_detect(string_vector, pattern)\
+	str_count(string_vector, pattern)			how many matches are in the string vector\
+\
+
+\f0\b\fs36 dplyr
+\f1\b0\fs24 \
+\
+is used for data filtering\
+\
+operator helpers:\
+	col %in% vector					the vector can be a sequence:\
+									seq(from = start, to = end, by= step)\
+									start:end	\
+\
+	numerical:\
+						\
+\
+		row_number()					returns the index\
+		min_rank()					returns the ordered rank of the value\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 \ul \ulc0 filter
+\f1\b0 \ulnone \
+	operators:\
+	\
+	all standard operators are there \
+	in order to circumvent float errors, there exists the near() function:\
+		near( 1/ 11 * 11, 1) returns TRUE\
+	logical:\
+		& | !\
+	filter(df, conditional expression)			\
+	filter(between(variable, low, high)		helper for filtering (uses inclusive between)\
+\
+
+\f0\b \ul select\ulnone \
+
+\f1\b0 sub-selects the columns that you are interested in\
+	select(df, col1, col2)					only selects col1 and col2\
+	select(df, col1:col2)					selects col1 to col2\
+	select(df, -col1)						drops col1\
+ 	select(df, -(col1:col2))				drops col1 to col2\
+selection also works with the string helper functions:\
+	starts_with("string")\
+	ends_with("string")\
+	contains("string")\
+	matches("regex")\
+	one_of(string_vector)				select all columns that are in string vector\
+	num_range("string", range)		matches "stringStart" to "stringEnd"\
+\
+	select(df, ends_with('string')			selects only the columns that end with the "string"\
+with rename you can select all columns but rename certain columns\
+\
+you can move certain columns to the front while keeping all the others with everything():\
+	select(df, selected_col, everything)		only selected_col is moved to the front\
+	\
+
+\f0\b \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs26 \cf0 \ul mutate
+\f1\b0\fs24 \ulnone \
+used to create new columns \
+	mutate(data, new.col = f(col))			create a new column from other columns\
+\
+reorder categorical variables: \
+	mutate(data, col = reorder(col, var.for.ordering, FUN = median)		reorders the categorical (or character variable, col according to median of var.for.ordering\
+\
+create methods:\
+	if_else(condition, result.if.TRUE, result.if.FALSE, value.if.missing)\
+	case_when(						vectorized case switch allowing conditions on any variable\
+		condition1 ~ result1,				conditions are evaluated from top to bottom\
+		condition2 ~result2,\
+		is.na(variable) ~ result.for.missing	NA does not get special treatment\
+		TRUE ~ default.result			conditions can be spliced in from a list of patterns with !!!\
+	)\
+	\
+	R ternary analogue\
+	cumsum(x)\
+	cummean(x)\
+	lead()								like shift in pandas\
+	lag()\
+	\
+mutate_if(data, condition, expression)		mutates columns if condition is met\
+mutate_if(data, condition, list(new.name = agg.fun1, new.name2 = agg.fun2) \
+	the agg.fun can be a lambda function ~agg.fun(., args)	if you have to add arguments like na.rm = T\
+	the . is used as the wildcard for the column the function is applied to\
+\
+mutate(df, condition, new.col = ~mean(col1, na.rm = T)	\
+(transmute is used if you only want to keep the newly created columns)\
+\
+mutate_all(df, func, args)					transforms all columns with function using arguments\
+\
+helpers for mutate\
+	row_number()						returns the unique row\
+\
+\
+\
+
+\f0\b\fs26 \ul summarize
+\f1\b0\fs24 \ulnone \
+is used to get aggregate functions of all values in one column\
+is best used in combination with group_by, which splits all your data into subsets (are then used as rows of the returned tibble)\
+\
+groups <- group_by(df, col1, col2, col3)\
+summarize(groups, agg.col = agg.fun(col, na.rm = TRUE))\
+summarize condenses the inner level of the groupby and reduces the groupby level by one\
+\
+\
+summarise_all(groups, agg.fun(., na.rm = T)	aggregate all columns using the aggregation function\
+\
+aggregation functions:\
+	n()								simple count of the rows in the columns\
+	sum()\
+	n_distinct()						counts the unique values in col\
+	mean()\
+	min()\
+	max()\
+	quantile(col, 0.25)					value of col that is greater than 25% of values and less than 75% of data points\
+	first()\
+	last()\
+	nth(col, 2)\
+
+\f0\b\fs26 \ul piping
+\f1\b0\fs24 \ulnone \
+\
+piping is used to stack functions on top of each other \
+g(f(df)) becomes f(df) %>% g()\
+	or \
+f(df) %>% g(.)							optionally, you can call the return value of the previous function\
+}

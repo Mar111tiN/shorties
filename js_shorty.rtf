@@ -1,0 +1,1947 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2578
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Verdana;\f2\fswiss\fcharset0 Helvetica-Bold;
+\f3\fmodern\fcharset0 Courier;\f4\fmodern\fcharset0 Courier-Bold;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red214\green255\blue213;\red254\green253\blue213;
+\red0\green0\blue0;\red255\green255\blue51;\red255\green255\blue10;\red127\green127\blue127;\red0\green0\blue0;
+\red12\green99\blue153;\red255\green255\blue255;\red148\green108\blue71;\red135\green135\blue135;\red15\green112\blue1;
+\red106\green128\blue31;\red83\green83\blue83;\red169\green14\blue26;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c86667\c100000\c86667;\cssrgb\c99682\c99006\c86634;
+\csgray\c0\c0;\cssrgb\c99946\c98636\c25320;\cssrgb\c99942\c98555\c0;\cssrgb\c57046\c57047\c57046;\csgray\c0;
+\cssrgb\c0\c46667\c66667;\csgray\c100000;\cssrgb\c65098\c49804\c34902;\cssrgb\c60000\c60000\c60000;\cssrgb\c0\c50196\c0;
+\cssrgb\c49020\c56471\c16078;\cssrgb\c40000\c40000\c40000;\cssrgb\c72941\c12941\c12941;}
+\margl1440\margr1440\vieww19660\viewh18520\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs26 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardirnatural\partightenfactor0
+
+\f1\fs32 \cf2 \cb3 \expnd0\expndtw0\kerning0
+ECMAScript = JavaScript\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl380\partightenfactor0
+\cf2 \
+
+\f2\b\fs26 \cf0 \cb1 \kerning1\expnd0\expndtw0 What is ECMA?
+\f0\b0\fs20 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 	object-based and function-oriented language not based on Java
+\f2\b\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl380\partightenfactor0
+\cf0 \
+\
+\
+Syntax
+\f0\b0\fs20 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 	declare/assign variables			var x,y;				var is a JS keyword (signify actions to be performed)\
+						var x = value;			= is an assignment operator\
+	expressions are treated as values	5 * 10\
+						"John" + " " + "Doe"\
+	identifiers are names for \
+			functions		concate()\
+			variables		x, y, lastName\
+			methods		.length\
+			labels		\
+			keywords		var, const\'85\
+	identifiers are \
+			case-sensitive		best convention: start with small caps and then camel case\
+			can only contain	strings, "_" and "$"\
+\
+	methods/properties are\
+			elementar functions performed on variables, values and return a value\
+			denoted as		element.method(parameter)\
+			\
+	functions	is a block of code needed repeatedly to perform certain code\
+				declare:	function fncName (param1, param2,\'85.,paramN) \{actions\}\
+			values declared in functions act locally in function\
+			functions can return values to the caller	\
+				keyword:	return\
+			\
+	objects		are collections of properties and methods\
+				declare:		var myObject = \{property1:value1, property2:value2\'85,function myFunction() \{actions\} \}\
+			call for properties:	myObject.property1\
+			call for method:		myObject.myFunction()\
+			keyword new declares objects\
+						var x = new "string"\
+\
+
+\f2\b\fs26 JS comments
+\f0\b0\fs20 			\
+		one-liners			//\
+		comment-block			/*	\'85\'85\'85\'85		*/				\
+
+\f2\b\fs26 \
+Variables\
+
+\f0\b0\fs20 	depending on scope, use let, var or const:\
+		var varName = value		var has function scope\
+						var declarations are hoisted to the top of a function\
+						var assignment are performed true to command line\
+		let varName = value		let has block scope = is valid within a \{\} block\
+						let is not hoisted\
+		const CONST_NAME		use for values that are user-defined and remain unchanged\
+	if variables have no assigned value, their value is undefined
+\f2\b\fs26 \
+\
+JS Strings\
+
+\f0\b0\fs20 	strings are chains of letters and are immutable \'97> can only be changed by copying into new string\
+	"" is a string of length 0\
+	strings can use "string" / 'string' / 'string\'91\
+	using \'b4backtick\'b4, it is possible to insert operations into strings:\
+		let name = "stranger"\
+		\'b4Hello $\{name)\'b4  ==  "Hello" + name == "Hello stranger"\
+	\
+		\\n				is a line break in a string\
+		\\r				is a Enter in a string\
+		\\t				Tab key\
+		\\uNNNN			Unicode symbol\
+		\\u\{NNNNNN\}			for longer Unicode characters use \{\}\
+		\\\\				actual backlash sign\
+	properties:	\
+		element.length			returns length of string\
+\
+\
+	string methods:	\
+		.indexOf(substr[,startpos])	first position of string		-1 if string is not found\
+	for loops, beware that \cb4 if (string.indexOf(substr))\cb5  is false at first position because 0 evaluates to false\
+	you can circumvent that by using bitwise NOT operator ~ because for numbers  ~x == -(x+1) and only ~(-1) == 0 (false)! use test: \cb1 \
+		if (~string.indexOf(substring))	yeah!\
+    or better:	.includes(substring)		boolean for containing substring (even better for above)\
+		lastIndexOf(string)		last position of string		optional parameter for starting position of search\
+		.search(string)			like indexOf() but no second parameter but allows regular expressions\
+		.slice(startpos[,endpos])		extracts part of a string excluding endpos (negative parameters are counted from end)\
+	((	.substring(startpos[,endpos])	like .slice but start can be greater than end; no negatives ))\
+		.substr(startpos,length)		like slice but with length\
+		.replace(outString,inString)	returns new replaced string\
+		.trim()				removes spaces from beginning and end of string\
+		toUpperCase()			\'97\
+		toLowerCase()			\'97\
+		.concat()			like + operator but only takes strings (hint = "string")\
+		.charAt(pos)  or string[pos]	character at position `pos`	if none is found returns "" for charAt(pos) or undefined for string[pos]\
+		.codePointAt(pos)		returns the unicode of character at positions\
+		.fromCodePoint(unicode)	returns the character corresponding to unicode\
+	loop over string characters:\
+		for (let char of `string`) \{...function(char)\'85;\}\
+\
+	converting strings to arrays:	\
+		split(`split sign`[, maxArrayLength])	creates array of strings split at certain character (or single string array), opt. second parameter for maxi. array length\
+	can also be done with spread operator:\
+		stringArray = [\'85string];\
+	or Array.from(string)			\
+
+\f2\b\fs26 			\
+JS numbers\
+
+\f0\b0\fs20 	numbers are stored as 64 bit values\
+	arithmetic operations with strings or objects will return NaN (not a number)\
+		NaN				result of wrong number conversions\
+		Infinity				is a value for numbers outside the range\
+	division by 0 returns Infinity\
+	0x before value is interpreted as hexadecimal\
+	0b before value is interpreted as binary\
+	0o before value is interpreted as octal\
+	do not write numbers with a leading 0 !\
+	JS has predefined methods and properties for numbers:\
+		.toString(base)			converts number to base system (2: binary, 10: default, 16: hexadecimal, 36: numbers+letters) \
+					..and then converts number (or array or object) to string\
+	calling number methods directly on number primitives we need to add two \cb4 \'b4.\'b4\cb1  or JS will interpret as comma\
+		12345..toString()\
+		toExponential(decimals)		returns scientific notation\
+		toFixed(decimals)		returns string with specific number of decimals\
+		toPrecision(length)		returns string of given length\
+		valueOf()			returns a number; can convert primitive objects to numbers; is not needed\
+		Number()			returns a number for strings, booleans and numbers\
+		Number (new Date("2018-02-23")); returns internal time number\
+		parseInt(string/number[,base])	returns the integer of first number in a string/number, stops at first no-number string\
+		    	parseInt(100.234)	100\
+			parseInt("   100.678px")	100\
+			parseInt("   a1000.sfa")	NaN	first character is a parsing error for int\
+			parseInt("   ff", 16)	255 	ff is interpreted as hex because of \cb4 ,16\cb1 \
+		parseFloat(string/number[,base])returns decimal number in a string/number, stops at first no-number string\
+			parseFloat(100.234)	100\
+			parseFloat(100.234)	100.234\
+			parseFloat("   100.234px")	100.234\
+		isInterger()			test whether number is integer\
+		isNaN(number)			checks for number entity (\'b4null\'b4is considered a number here)\
+	\'a1\'a1\'a1	(NaN === NaN) is false !!!	therefore we need isNaN\
+		Number.isFinite(number)	converts to number and checks for infinity or NaN (like isNaN)\
+		Number.isInteger(num)		checks for integer or NaN\
+		Object.is(a,b)			compares two objects / primitives a and b and can compare NaN and finds difference between 0 and -0\
+	"" or "    " is converted to 0 \'97>	isFinite("") is true\
+		\
+
+\f2\b\fs26 \
+JS math\
+
+\f0\b0\fs20 	Math is a JS object containing many methods:\
+		Math.round(number);			rounds to nearest integer value\
+		Math.ceil(number)			rounds up\
+		Math.floor(number)			rounds down\
+	for defined rounding use:\
+		Math.round(number * 10 ** n)/10**n);	returns number with n decimals\
+	or	number.toFixed(n)			returns number with n decimals as a string!\
+		+number.toFixed(n)			number conversion of toFixed result\
+		Math.pow(a, b);				a to the power of b\
+		Math.exp(x)				e^x\
+		Math.sqrt()\
+		Math.abs()				absolute number\
+\
+		Math.sin() Math.cos() Math.tan()		Co/sinus of radians\
+		Math.min (val1, val2..)			minimal number in list							\
+		Math.max(1,2,3,4,8,1000)		maximal number in list\
+		Math.random()				returns random number 0 \uc0\u8804  Math.random() < 1\
+		Math.floor(Math.random() * x)		returns random number 0 \uc0\u8804  y < x-1\
+		Math.trunc(1000.89)  ->  1000		returns Int without fraction	\
+				\
+	Math has properties as constants:\
+		Math.PI					returns \uc0\u960 \
+		Math.E					euler\
+		Math.LN2	Math.LN10		Math.LOG2E	Math.LOG10E\
+		Math.SQRT2 \
+	Math can be extended:\
+		\cb4 Math.methodNew = function()\{\'85.return result;\};\cb5 \
+		Math.propNew = \'b4value\'b4;\cb1 \
+\
+
+\f2\b\fs26 JS operations/assignments/comparisons\
+
+\f0\b0\fs20 	! assignments always return the assigned value\
+		a + b				binary + ; concatenates strings. If both operants are number, it is a mathematical +\
+		+a				unary + ; converts a into number  (+true = 1); equal to Number(a)\
+		=				assign value; can be used sequentially and returns a value\
+		a = b = c = 1+2			a, b, c == 3\
+		a = (b = a + b)			a, b = 6; \
+		+= / -=				add/substract value from x\
+		++ / \'97				x = x+1 / x-1  can be used as prefix (returns the changed value) or postfix (returns old value)\
+		%				modulus\
+		,				evaluates but returns only the last value:\
+		name = (a=1,b=2,c=3)		name == 3 (and all assignments are performed)\
+		\'b4variable\'b4 = a || b || c		assigns the first value with (boolean == true) or if all false the last\
+		\'b4variable\'b4 = a && b && c		assign the first value with (boolean == false); if all are true then the last\
+	logical operators			they all work in a non-boolean context as returning the value of the first value that makes the entire expression true	\
+		&&				logical AND\
+		a && b && c			short circuit expression returning the first value that is false\
+		||				logical OR\
+		!				logical NOT\
+		a || b || c..			expression returns first value that evaluates to True			\
+	ternary operator\
+		? :				var x = (condition) ? valueIfYes:valueIfFalse\
+	nullish operators\
+		?? 				same as || but instead of True returns first value that does not evaluate to null\
+		??=				assigns right value to left only if left is not null (good for default values)\
+	comparisons	
+\f2\b\fs26 		\
+
+\f0\b0\fs20 		Boolean(condition)		returns true or false depending on condition)\
+		!! (condition)			also returns boolean\
+		==				equal to (after type conversion to number)\
+		null == undefined		returns true (special case)\
+		null == 0			returns false because of special case\
+		===				equal to and same type (no number conversion)\
+		!=				not equal\
+		<= / >=				obvious\
+		<  >				can be used for strings and compares alphabetically string by string\
+\
+
+\f2\b\fs26 \
+JS conditions				\
+
+\f0\b0\fs20 	uses conditions to execute blocks	\
+		if (condition1) \{action1\
+		\} else if (condition2) \{\
+		    action2;\
+		    \}else \{\
+		    action3;\
+		    \}\
+	for more conditions use switch.	\
+		switch (variable/expression) \{	\
+		    case value1: action1; break;	\
+		    case value2: action2; break;\
+	you can assign different cases same action: \
+		    case value1: \
+		    case value2: action12;\
+		    case valueN: actionN; break;\
+		    default: actionD;			use default if none of the conditions are true\
+		\}\
+	if cases have no break, then the subsequent cases are executed without checks!!\
+	the switch checks identity using `===`\
+\
+ternary operator ? can be used as a shorthand for if:\
+		(condition) ? action_if_true : action_if_false		if more actions are performed, use brackets and comma between actions:\
+		(cond) ? (action1, action2, action3) : (action4, action5, action6)\
+			\
+	ternaries can also be nested like that:\
+		(condition1) ? action1 : (condition2) ? action2 : action3	(if chaining ternaries leads to 2 : at the end, take the last clause and put it with ! at the beginning\
+	\
+	you can use || and && as if-chain instead of conditional assignment operator \
+		a || b || c || \{action\}		action is only performed if all before are false (and performed, if also actions)\
+		\{action1\} || \{action2\} || \{action3\}	actions are performed serially until one returns true\
+	\
+		a && b && c && \{action\}		action is only performed if all before are true (and performed if also actions)\
+		\{action1\} && \{action2\} && \{action3\} actions are performed until one returns false\
+\
+							\
+
+\f2\b\fs26 \
+JS loops can \
+
+\f0\b0\fs20 		var i = 0;\
+		for (i = 0;i < n; i++)\{action\};		variable can be declared before\
+\
+		for (;i<n;)\{action; i++;\}			statements can be omitted in loop declaration\
+		var x;	\
+		for (x in objectName)\{action\};		loops through all properties of an object\
+	\
+		while (condition) \{action\};		perform loop as long as condition holds true\
+		do \{action\} while (condition;		like while but loop performs at least once\
+		break;					can break out of any loop \
+	giving a label to a loop allows breaking out of nested loops immediately\
+		loop_name : for (;condition;) \{\
+			for (;condition;) \{\
+				for (;condition;) \{\
+					action;\
+					break loop_name;\
+		\}\}\}\
+	also with labels for nested loops you can define what to break and what to continue:\
+		first: for (let i = 0; i < 3; i++) \{\
+  		    second: for (let j = 0; j < 3; j++) \{\
+   		        if (i === 1) continue first;\
+    		        if (j === 1) break second;\
+  		    \}\
+		\}\
+
+\f2\b\fs26 									\
+JS functions \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\fs20 \cf0 functions are objects containing script ("action objects")\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 declaration:
+\f0\b0 		\
+	as a function declaration			\
+		function myFunc (param1,param2,..,paramN) \{action\}		declaration is hoisted and has block scope\
+\
+	or as function expression:		\
+		let myFunc = function (param1,param2,..,paramN) \{action\}	is not hoisted and has block scope\
+	scope can be extended by declaring the variable myFunc outside the block scope\
+	\
+	if an argument is not set during function call, it becomes \'b4undefined\'b4\
+	for those cases you can pass default values like that:\
+		function myFunc (param1, param2, param3 = \'b4value\'b4) \{\'b4script\'b4\}\
+	is much shorter than checking if (param3) \{param3 = \'b4value\'b4; \}  or param3 = param3 || \'b4value\'b4;\
+	a function with an empty return or no return implicitly returns undefined\
+\
+	anonymous function:		\
+		function() \{action\}			is invoked instantly\
+\
+
+\f2\b arrow function
+\f0\b0 \
+	arrow function expression is a short  function expression returning values:\
+		let myFunc = (param1,param2,param3) => do something/return something (in one action);\
+	=	let myFunc = function(param1,param2,param3) \{\
+			do something;\
+			let result = expression(param1,param2,param3));\
+			return result;\
+			\}\
+	having one parameter, you can omit the parens:\
+		let myFunc = a => alert(a);\
+	arrow functions work also without parameters but here parens are required:\
+		let myFunc = () => do something/return something;\
+	can also be used with complex actions using curly braces, but here a return is obligatory\
+		let myFunc = (a,b) => \{\
+			do something;\
+			do something;\
+			return (something;\
+			\}\
+	arrow functions can be chained to create curried functions:\
+		let myFunc = a => b => \{action with a & b;; return result;)		is the same as\
+		myFunc(a) = return function(b) \{action with a & b;; return result;);\
+\
+	arrow functions do not have their own this (this becomes the enclosing object) and no arguments (arguments become any enclosing functions arguments)\
+	\
+
+\f2\b function arguments
+\f0\b0 \
+	all arguments given to a function are stored in the private object \'b4arguments\'b4 as an array\
+		arguments.length			number of arguments\
+		arguments[i]				value of i-th argument\
+\
+	arguments does not own the array methods splice etc. \
+	can be circumvented via call() or apply():\
+		[].splice.call(arguments,1);		[] creates an array instance to use the call on - better is:\
+		Array.prototype.slice.call(arguments);\
+\
+	arguments can be turned into array:	\
+		var argu = Array.prototype.splice.call(arguments,1);\
+				\
+		return / return \'b4value\'b4			transfers value to called function and terminates function\
+							if return is empty or no return, function returns as undefined\
+	modern JS has `rest` operator to store excessive arguments:\
+		function (a, b, \'85args) \{			\'85 has to be at the end of argument list and creates an array with arguments\
+			for (let arg of args) \{action;\}	\'85 becomes rest operator during function declarations (see spread operator)\
+		\}\
+\
+	if calling a function with all elements from an array (or any iterable), we can use the spread operator\
+		array = [a,b,c,d,e,f,g];\
+		myFunc(\'85array) == myFunc(a,b,c,d,e,f,g)	arrays are "spread" into individual arguments\
+	spread operator can be combined with other spreads or standard arguments\
+	spread does not work on array-likes (old function arguments, element lists of queryAll())\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \cb6 	you can get arguments as an object:\
+		\cb1 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 basic function in browser environment:
+\f0\b0 \
+		prompt(question[,default value])		returns user input\
+		confirm(question			user can choose between  OK and Cancel. function returns boolean of answer\
+		alert(message)				outputs message and returns undefined (because no return was invoked\
+\
+\
+\
+
+\f2\b function as objects
+\f0\b0 \
+	functions are objects and as such contain properties:\
+		myFunc()\{	\}\
+		myFunc.name				returns the name of the function\
+		myFunc.length				returns number of directly called arguments (excluding rest operator)\
+	functions can receive further properties in their code block:\
+		myFunc() \{\
+			myFunc.value = 9;\
+		\} \
+	functions can have additonal functions as "function methods" that are attached to the main function\
+\
+
+\f2\b function declaration with new:\
+	
+\f0\b0 using new function one can directly create a function with a body passed as a string:\
+		let scriptBody = "return a + b";\
+		let myFunc = new Function("a", "b", scriptBody);		works like:\
+		let myFunc = function(a, b) \{				script body is always the last argument\
+		    return a + b;						!! the lexical environment is global and only global variables can be used\
+		\}\
+\
+
+\f2\b Call and Apply:
+\f0\b0 \
+	with call and apply we can set the context of the function or borrow methods from other objects by creating our own context:\
+		let paramArray = [param1, param2, param3,\'85,paramN];\
+		func.call(context, \'85paramArray)			.call sets the object context (everything that comes as `this`) and takes arguments (or spread iterables)				func.apply(context, paramArray)				.apply does the same but takes array/array-like as argument\
+	call with spread operator is more universal\
+\
+
+\f2\b function timing:
+\f0\b0 \
+	setTimeout allows function to perform after a defined time:\
+		function myFunc(a,b) \{actions;;\}\
+		setTimeout(myFunc, time_in_ms, a, b);			function myFunc starts after x ms using parameters a and b\
+		let timerId = setTimeout(\'85);				setTimeout returns a `timer identifier` that can be used for:\
+		clearTimeout(timerId);\
+	if you setTimeout to 0, the function is executed right after the following command\
+		setTimeout(alert("first",0);\
+	that can be used to subdivide heavy jobs into parts\
+		alert("next");						// "next" // "first"\
+	setInterval invokes function repeatedly after set time:\
+		let timerId = setInterval(myFunc, loop_time_in_ms, a, b);	same syntax as setTimeout\
+		clearInterval(timerId);					stops the run\
+	setInterval can be substituted by a recursive setTimeout like this:\
+		let timerId = setTimeout(function recTime() \{\
+		    actions;;\
+		    timerId = setTimeout(setTimeout, 1000);		\
+		    \}, 1000);   \
+	recursive setTimeout allows guaranteed timeout between function calls whereas in setInterval part of the interval is consumed by the function execution\
+		\
+		\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b\fs26 \cf0 JS objects \
+
+\f0\b0\fs20 	objects are collections of property:value pairs also called associative arrays\
+	values of properties can also be functions called methods\
+	all objects have ultimate prototype Object\
+	all objects (including Object) are subobjects of window object\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 declaration
+\f0\b0 \
+	can be declared as new object of the Object prototype:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf2 \cb5 		var objectName = new Object();		creates new empty object \{\}\
+		objectName.property1 = value1;		\
+		objectName.property2 = value2;\
+		objectName.function1 = function()\{\};\cf0 \
+\
+	or can be declared as literal ("shorthand"):\
+		var objectName = \{\
+			prop1:value1,\
+			prop2:value2,\
+			\'85,	\
+			propN:valueN, \
+			func1: function()\{action;\},	trailing comma is not required but makes things easier \
+			func2() \{action\'85;\},		shorthand method declaration (necessary for `super`calls -->)\
+			\};\
+		\
+		objectName.prop1			is value1\
+		objectName[prop1]			is also value1\
+	properties can also be integer strings like "34": value called integer property\
+		\
+	\kerning1\expnd-1\expndtw-3
+the [] can also take expressions or variables computing to a property name:\
+		let \'b4variable\'b4= prop1\
+		objectName[\'b4variable\'b4] === objectName.prop1\
+	this can also used for declaring object literals:\
+		let \'b4variable\'b4= prop1;\
+		let objectName = \{\
+			[\'b4variable\'b4]: value1,\
+		\}\cb1 \
+	if creating properties from variables, you can use a shorthand declaration\
+		let prop1 = value1, prop2 = value2		variables have been declared\
+		let newObject = \{\
+			prop1,				equals to prop1 : value1,\
+			prop2,				equals to prop2 : value2,\
+		\}\
+\
+	you can cycle through values, keys and key:value pairs via Object methods:\
+		Object.keys(myObject)			returns array containing all keys\
+		Object.values(myObject)			returns array containing all values\
+		Object.entries(myObject)			returns array containing all key:value pairs\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \kerning1\expnd0\expndtw0 \
+\
+object properties:\
+	for nested objects, you can access inner properties by key chaining:\
+	obj = \{ a : \{ \
+		     b : \{\
+		           c: \{ \
+			   d: 4\
+			  \}\
+		           \}\
+		     \}\
+	         \}\
+	 a.b.c.d \'97> 4\
+	 a.b.c \'97> \{d:4\}\
+	use nullish .? chaining operator to break chain if one key is not available\
+	a?.e?.b?.c?.d?.g?.d			returns undefined without raising error\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 object methods: 
+\f0\b0 functions as properties in objects are called methods\
+	declare methods directly in literal (see above) or by calling:\
+		myObject.myFunc = function() \{\'85..\};		creates method in myObject\
+		let myObject = \{ myFunc : function() \{\'85\};	declaration in literal\
+		let myObject = \{myFunc() \{\'85.\};\}			shorthand method declaration, mostly used!\
+\
+
+\f2\b this in methods	
+\f0\b0 	\
+	if methods refer to properties of the object (almost always), the \'b4this\'b4keyword refers to the object itself\
+	\'b4this\'b4 in unbound functions (called without an object) is undefined\
+	\'b4this\'b4 is evaluated at call-time and can change according to the context\
+	the \'b4.\'b4operator (or [] operator as well) returns a triple value of type Reference type\
+		myObject.myFunc 			returns: (myObject,myFunc,boolean for use strict)\
+	after calling the reference value with (), any \'b4this\'b4s are turned into myObject\
+	after transfer to other variables reference value is reduced to the function object and loses context to myObject (this can become undefined)\
+	arrow functions have no this and take \'b4this\'b4from next outer function that is not an arrow function\
+\
+
+\f2\b important methods of \'b4Object\'b4:
+\f0\b0 \
+		myObject.getOwnPropertyNames()	creates array with property names\
+		"prop1" 
+\f2\b in
+\f0\b0  newObject			in operator returns boolean for existence of property in object\
+		variable 
+\f2\b in
+\f0\b0  newObject			without quotes it refers to variable containing the property name\
+		
+\f2\b for
+\f0\b0  key 
+\f2\b in
+\f0\b0  newObject \{			loops through all properties of newObject\
+			executes actions with all properties represented by variable key;;;\
+		\}\
+	integer properties are executed orderly in for-in loops\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \cb5 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 copying objects	
+\f0\b0 \
+	copying objects only creates new references\
+		let newObject = oldObject			both are references to exactly the same object\
+	actual copying of objects only works by iterating property assignments of oldObject onto newObject \{\}\
+	that only works if properties do not contain objects as values (that requires deep cloning \{lodash: _.cloneDeep(object\}\
+	objects can also be copied via Object.assign:\
+		Object.assign(newObject, oldObject)	arguments can also be many oldObjects all joined into newObject\
+	newObject can already contain properties prior to assign (identical properties are overwritten by assign)\
+		let newObject = Object.assign(\{\},oldObject)	assign copies into empty object and returns it\
+	you can merge objects using spread operator on objects:\
+		let object1 = \{ a:1, b:2, c:3 \};\
+		let object2 = \{ c:4, d:4, e:5\};\
+		let merged = \{\'85object1, \'85object2\} === \{a:1, b:2, c:4, d:4, e:5\}\
+\
+
+\f2\b object constructors:
+\f0\b0 		\
+	constructor functions are functions called with new to create objects, they can be reused to create many members of object classes	\
+		function MyObject(\'b4value1\'b4,\'85,\'b4valueN\'b4) \{	convention: constructor functions have capital first letter\
+			this.prop1 = \'b4value1\'b4;\
+				\'85.\
+			this.propN = \'b4valueN\'b4;			if you assign actual values, they will be default properties of this object class\
+			this.method1 = function()\{\'85\'85..\};	or this.method1()\{\'85..\};\
+		\}\
+		var objectName = new MyObject(value1,\'85,valueN);	constructors are called with \'b4new\'b4 keyword to create object\
+	constructors can also be used only once to create a complex object without giving the constructor a name\
+		complexObject = new function()\{\
+			this.property1\
+			\'85.		\
+			complex code to create more properties and methods;;\
+			\'85.\
+		\}					creator function is only called once to create complexObject\
+	\'b4new.target\'b4 used in a function returns boolean test whether function has been called with new. \
+	can be used to redirect regular constructor call to call with new:\
+		function createObject(prop\'85.) \{\
+			if (!new.target) \{\
+		\cb1 		return new createObject(prop\'85);  \}\
+			\'85\'85..	\}	\
+	if constructors have a return with an object value, the creator function creates that object instead of \'b4this\'b4, else return is ignored\
+\
+		MyObject.prototype			refers to object constructor and allows changes to object class by changing the constructor\
+	like	MyObject.prototype.myMethod = function() \{action;\};\
+\
+\
+		\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b\fs26 \cf0 JS arrays \
+
+\f0\b0\fs20 	arrays are special objects containing lists of values that can be accessed via indexes\
+	arrays are also objects and thus copied by reference\
+		var arrayName = [];				creates empty array\
+		var arrayName = [item0,item1,\'85,itemN];\
+	\
+	access array elements by index number	name = arrayName[0];\
+		arrayName[1] = #value				changes item1 in arrayName\
+						\
+	array elements can be anything including objects\
+	array properties:		\
+		arrayName.length			returns number of array elements\
+	arrays can be truncated by reducing the array.length:\
+		\cb4 array.length = 3	\cb1 			all array items above array[2] are irreversibly removed \
+	or better (for older browsers):	\
+		function isArray(the x)\{return x.constructor.toString().indexOf("Array") > -1;\}\
+	or 	arrayName instanceof Array;\
+\
+	you can loop through array values by index for loop or by\
+		for (let index of array) \{action;\}\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 array methods:
+\f0\b0 	       \
+		 arrayName.sort()\
+	modify methods:\
+		.push(itemN1[,itemN2])			adds new element(s) to end of array and returns new array length (!!)\
+		.pop()					removes element from end of array and returns that element\
+		.shift()					removes (and returns) first element and shifts following elements\
+		.unshift(itemN1[,itemN2])		adds (and returns) new element(s) to beginning and shifts other elements\
+		(( arrayName[N+1]  = itemN1		also adds new element to array ))\
+		.splice(position,number of elements to be removed, added itemN, itemN+1\'85)	changes array accordingly and returns array of spliced out elements\
+		.concat(array2,array3,[3,4])		returns new concatenated array \
+		.slice(number,\{endnumber\})		returns new subarray starting at item of given number (just like slice for strings)\
+	search methods:\
+		.indexOf(item, startpos)			finds position of item (-1 if not there)\
+		.includes(item,startpos)			tests whether item is there (can handle NaN as item)	\
+		.find(function(item[,index,index,array])	returns first item on which test function returns true (best used with arrow functions)\
+		if you want to predefine function, you can declare function (with its own parameters) that returns a function using item etc. as arguments\
+		array.find( item => item ==index*2)	returns first item at which the item-value itself is twice its index\
+		.findIndex(testfunction)			like find but returns position instead of the item\
+		.some(testfunction)			boolean whether at least one array member fulfills test function\
+		.every(testfunction)			returns true if all array members are true for test function\
+		\
+	transform array:	\
+		.filter(testfunction)			like find but returns array of all items that fulfill test function (returns boolean value) / any returned value from testfunction will be converted to boolean\
+		.map(function(item[,index,array] \{	performs function on all items and returns results into new array\
+			return value\})			returned value is pushed into returned array				\
+		.sort()					sorts array alphabetically (and returns it) \'96 sorting as string is default\
+		.sort(comparison function)		orders according to given function\
+	comparison function requires two parameters and if returns positive value, sort will reverse order  \
+	hence:	.sort(function(a,b)\{return a-b;\}		will order numerically\
+		.reduce(\
+		    function(accumulator,next[,index,array],initial)	will condense array to one value using a function that processes array[n-1] and array[n] to one value:\
+							if optional parameter initial is not passed, accumulator will start as array[0] and next will be array[1]\
+							returned value from one iteration becomes value of accumulator in next round ( always return accumulator!!)\
+		.reduce(\
+		    (sum,current) => sum + current)	sums all values and starts with 0\
+	reduce can be used to both filter and map arrays if you substitute the prev parameter with a reducing array\
+		.filter(testfunction) ==			\
+		.reduce((redArray, item) => \{ if (testfunction) redArray.push(item); return redArray; \}, []);\
+		.map(function(item)) =\
+		.reduce((redArray,item) => \{redArray.push(function(item)); return redArray\},[]);\
+\
+		.forEach(function(item[,index,array])	loops function through all array items and returns undefined\
+	all methods that call functions (except sort) can have an optional second parameter thisArg, that sets the context for object functions as argument\
+\
+		.reverse()				reverses order of array\
+		.toString();				creates comma-separated string\
+		.join("separator")			creates string with choice of separator\
+		split(`split sign`[, maxarray])		creates array of strings split at certain character (or single string array), \
+							opt. second parameter for maximum array length\
+	arrays can be combined with `spread`operator (see functions)\
+		let array1 = [1, 2, 3],\
+		    array2 = [5, 6, 7];\
+		let merged = [\'85array1, 4, \'85array2];	\
+\
+\
+	highest or lowest values in array can be assessed via arrayName[0] and arrayName[arrayName.lenght-1] after numerical sorting \
+		maximum value alternative:	function arrayMax(arr) \{return Math.max.apply(null,arr);\}\
+		\
+		Array.isArray(myArray)			returns whether myArray is an array (typeof returns object)\
+		Array.from(obj[,mapFunc, thisArg])	creates an array from an iterable or an array-like value to perform array functions on it\
+							an optional mapping function allows processing of values prior to converting to array\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b\fs26 \cf0 JS Map and Set \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\fs20 \cf0 map
+\f0\b0  is like an object but the
+\f2\b  keys can be of any type (objects, arrays, number, boolean, etc.) and are unique
+\f0\b0 \
+	mostly used to store values for objects\
+	new entries for existing keys overwrite old values\
+		new Map()				creates new map\
+	can have any iterable with [key:value] pairs as argument (like array) and converts it into a map:\
+		new Map([\
+			[a,b],\
+			[c,d],\
+			[e,f]		\
+		    ]);					\
+	objects need to be prepared for entry into map by the Object.entries(myObject) method:\
+		new Map(Object.entries(myObject));	creates format [[key,value],[key,value],[key,value]\'85]\
+		map.set(key,value)			stores a new data pair and returns the map so set() can be chained like: map.set(a,b).set(c,d).set(e,f)\
+		map.get(key)				returns value by key (undefined if not there)\
+		map.has(key)				key existence test\
+		map.delete(key)				removes value of that key\
+		map.clear()				removes keys from map\
+		map.size				returns element count\
+		map.keys()				returns an iterable for keys and remembers the order of creation \
+		map.values()				returns iterable for values and remembers the order of creation\
+		map.entries()				returns an iterable for [key,value] pairs and remembers the order of creation\
+\
+
+\f2\b set
+\f0\b0  is a collection of unique values (like with reoccurring users)\
+	if entered key already exists, it will be overwritten with new value \'97> does not allow duplicates\
+		new Set([a,b,c])				takes iterable as argument\
+		new Set(array/iterable)		\
+		set.add(value)				adds a value to set and returns set\
+		set.delete(value)			deletes value and returns boolean whether value existed\
+		set.has(value)				test whether value is there\
+		set.clear()				removes everything\
+		set.size					element count	\
+		set.forEach((value, sameValue, set) => \{action\})	value in forEach function has to be a double argument!\
+		set.keys() / set.values() / set.entries()	also exist but are not needed\
+	remove duplicates from arrays using set:\
+		let singulars = [\'85new Set(array)];	create transient Set to store unique values and spread into new array\
+\
+	weakMap: keys must be objects	and objects can be deleted from memory if they are not referenced anymore (difference to Map and Set)\
+	weakMap can be used if additional information for an object is only needed as long as the object lives\
+		has no iterable function, no size, no forEach and no keys(), values() or entries()\
+	same goes for weakSet - also only takes objects\
+		\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b\fs26 \cf0 \cb5 JS Date\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\fs20 \cf0 special data type of type object
+\fs26 \
+\
+
+\fs20 declaration:
+\f0\b0 \
+		new Date()				without arguments its the current time\
+		new Date(number)			time equal to milliseconds passed since 1.1.1970 UTC+0  (called timestamp)\
+		new Date(string)			string is parsed with Date.parse to date object\
+		new Date(year, month[, date, hours, min, sec, ms])	year must be 4digit, month (0=jan \'9711= dec)\
+	default for day is 1 and for time values 0\
+		.setFullYear(year[,month, date])		assigns value to date object\
+		setHours(hours[,min, sec, ms])\
+		setMinutes, setSeconds\'85.\
+	the above can also be used absolutely with setUTCHours() and the like. or for absolute:\
+		setTIme(ms)				set time in ms timestamp format\
+	out-of-range values are calculated to correct values:\
+		.setDate(2013,2,35)			will be 5.3.2013\
+		myDate.setDate(date.getDate() + 2)		will add 2 days to date\
+	\
+	\
+
+\f2\b methods:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 	for local time use:\
+		.getFullYear()				year in four digits\
+		.getMonth()				number (1 - 11)\
+		.getDate()				day of month in numbers\
+		.getHours() .getMinutes(), .getSeconds(), .getMilliseconds()\
+		.getDay()				day of the week (0 = Sunday, 6 = Saturday)\
+	for global UTC+0 time use corresponding UTC methods:\
+		.getUTCFullYear()			..and so on, best used for .getUTCHours()\
+		.getTime()				is absolute in ms from 1.1.1970 UTC+0\
+		.getTimezoneOffset() == getHours() - .getUTCHours()\
+		+date					date converted to timestamp number\
+	dates can be substracted using their timestamp  cxxy<ycv\
+\
+\
+		D_..,\'df\'df00ppoollkkiiuuuuuuuuuuuuuu\'97ate.now()				gives current time without creating date object\
+		Date.parse(string)			reads strings into date adhering to structure YYYY-MM-DDTHH:mm:ss.mssZ like\
+		let newDate = Date.parse(2018-03-23T12:23:11:123+03:00); 	Z is optional time zone in format +/-HH:mm\
+	\cb1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b\fs26 \cf0 \
+Data conversions\
+
+\f0\b0\fs20  		typeof  /  typeof()		returns the type of a variable or \}value\
+						is good, because it returns "function for functions, although they are objects\
+\
+\
+\
+	
+\f2\b value		typeof		String(value)	Number()	Boolean\
+
+\f0\b0 				\
+	123		"number"	"123"		123		true\
+	"123"		"string"		"123"		123		true		\
+	"   123    "	"string"		"   123    "	123		true\
+	"hello"		"string"		"hello"		NaN		true\
+	""		"string"		""		NaN		false\
+	0		"number"	"0"		0		false\
+	1		"number"	"1"		1		true\
+	true		"boolean"	"true"		1		true\
+	false		"boolean"	"false"		0		false\
+	null		"object" (error!!)	"null"		0		false\
+	undefined			"undefined"	NaN		false\
+	NaN				"NaN"		NaN		false\
+	alert		"function"	"alert"		NaN		true\
+	[a,w,b]				"a,w,b"		NaN		true\
+	\{\}		"object"						true\
+\
+
+\f2\b\fs26 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \cb7 CLIENTSIDE\cb1 \
+\
+JS HTML DOM\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 	is a programming interface between JS and HTML as the host environment\
+	all HTML elements are objects with properties and methods\
+	DOM nodes are regular JS objects inheriting from top-level DOM-object EventTarget (to be used by events)\
+	the prototype chain looks like this:\
+					HTMLDocument\'97>	Document\'97>	Node\'97>	EventTarget\'97>	Object\
+		HTML`tag`Element \'97>	HTMLElement\'97>	Element\'97>	Node\'97>	EventTarget\'97>	Object\
+					SVGElement\'97>	Element\'97>	Node\'97>	EventTarget\'97>	Object\
+					XMLElement\'97>	Element\'97>	Node\'97>	EventTarget\'97>	Object\
+								Attribue\'97>	Node\'97>	EventTarget\'97>	Object	\
+							      	Text\'97>		Node\'97>	EventTarget\'97>	Object\
+								Comment\'97>	Node\'97>	EventTarget\'97>	Object	\
+\
+	objects:	\
+		window					is the top level object (shared by JS, DOM and BOM	\
+		document				is the entire webpage (as declared in your editor) \
+\
+	all element calls return `null`if they do not exist\
+\
+methods/properties for finding elements/nodes:\
+		document.getElementById("id")		returns the element as an object (can only be called from document)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf8 	if id is unique (not used as a variable in JS) we can just write the id-name:\
+		<div id="myId"> </div>\
+	<script> myId.innerHTML = "text"\cf0 \
+		getElement
+\f2\b \ul s
+\f0\b0 \ulnone By\'85			returns live-updated quasi-array of elements and can be called from any element:\
+		document.getElementById(myId).getElementsBy\'85	returns elements nested in myId-element\
+		element\'85TagName("name")		.getElementsByTagName('a')	parameter * selects all tags\
+		element\'85ClassName("")		seldom used\
+		document\'85.Name("")			selected by name-attribute (can only be called from document)\
+		getSelection()				returns text selected by user\
+		element.querySelector(CSS)		returns\ul  first\ulnone  element defined by CSS-selectors (including pseudoclasses) in calling element\
+		element.querySelectorAll(CSS)		find elements as CSS selectors - returns array of elements (not updated!)\
+			:checked 			CSS pseudo class to find checked radio buttons / checkboxes\
+			[data-type='data']		any attribute in that label\
+			input[type = ""]			CSS selector for input fields\
+		.matches('CSS selector')		returns true or false if selector exists\
+		.closest('CSS selector')			goes up the ancestor chain and returns first element matching the css\
+contextual node call (all nodes including text nodes and comment nodes are listed)  READONLY\
+		.firstChild				first element inside an element\
+		.lastChild\
+		.childNodes[i]				.childNodes is iterable Array-like list acessible via for of loops or Array.f.call(this,arg) or create an array via Array.from(..)\
+		.nodeValue				the value inside the element\
+		.nodeName				returns the name of the node (HTML element name or #comment or #text..) in UPPERCASE\
+		.tagName				returns only HTML element names in UPPERCASE\
+		.nodeType				returns node type of calling element (coded as number: 1=Element, 2=Attribute, 3=Text, comment=8, document=9)\
+		.nextSibling				can also be text or attribute\
+		.previousSibling				 \'97\
+		.parentNode				returns `document` for html (document.documentElement)\
+		.hasChildNodes()			test whether element is nested	\
+\
+contextual element call (text nodes and comment nodes are omitted):\
+		.firstElementChild			first element inside an element (can be a text node)\
+		.lastElementChild\
+		.children[i]				.children is iterable Array-like list acessible via for of loops or Array.f.call(this,arg) or create an array via Array.from(..)\
+		.innerText\
+		.innerHTML				is (or changes) the content of an element (between the <>) (<script> are not run when introduced via innerHTML\
+		.outerHTML				is content of element plus its tags (when changing outerHTML, the old element is still accessible via variable)\
+		.data					like innerHTML but for text and comment nodes (good for changing li text (li.firstChild.data = \'85)\
+		.textContent				returns \ul all \ulnone text within a node without any <tags> (when changing, any HTML elements will be treated as string\
+		.nextElementSibling\
+		.previousElementSibling	\
+		.parentElement				returns `null` for html (document.documentElement)\
+\
+node calls by element name:\
+		document.forms.formname		calls (<form name = "formname">\
+		documents.el1.el2			calls <elem1 name = " el1 ">\
+								\ul <elem2 name " "el2">\
+								..\
+								</elem2>\
+							        </elem1>					\ulnone 				\
+\
+node calls by type/index:\
+		document.documentElement		returns html element\
+		document.body				returns body (is null when called from the head because body does not exist yet)\
+		document.forms				calls list of form elements	\
+		document.forms[i].elements[i]		to address subelements of form elements\
+		document.forms[i].elements[i].options[i]	analoguous with options for <select>	\
+		.form / head / title\
+		.images					returns all <img>\
+		.checked				boolean result, whether an element [radio,checkbox,buttons] is checked\
+		.selected				boolean result, whether an <option> is checked\
+		.selectedIndex				for <select> elements - returns the array number of the selected subelement (<option>)\
+		.images[i].src				url for an image\
+		.anchors				returns all <a>\
+		.baseURI				returns webadresse\
+	table DOM\
+		.caption					\'97\
+		.tHead					\'97\
+		.tFoot					\'97\
+		.tBodies				\'97 list of table bodies (usually just tBodies[0] )\
+		.rows					list of tr\
+		.cells					list of td or th in a given tr	\
+		.tBodies[0].rows[3].cells[2]		3rd cell in 4th row in table body \
+		.sectionRowIndex			returns the tr number of a table element inside the enclosing table section (head or body)\
+		.rowIndex				returns the tr number of a tr inside the entire table\
+		.cellIndex				number of the cell of a td inside a tr		\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 element attributes
+\f0\b0 \
+	during HTML parsing, element attributes are stored as properties in the respective DOM objects\
+	standard element attributes can be accessed directly as element properties via:\
+		element.type						only used for input elements (type = "\'85" does not create a property for other elements!)\
+		element.id == "test"\
+		element.value\
+	all attribute values are string values\
+\
+	change styles via JS:\
+		<div style = 'color:red; display: block'>\
+		div.getAttribute('style') == 'color:red; display: block'	style attribute is a string\
+		div.style == \{'color':'red', 'display':'block'\}			style property is an object with properties\
+		div.style.color == 'red'					is the specific style as string\
+		.style.backgroundColor	= 'red';				style = "background-color:red"	\'97all hyphens become camelCase (border-left \'97> borderLeft\'85.)\
+	- reset styles by assigning empty string '' to it (performs better than delete element.style.property\
+		.style.cssText = 'color: red; width: 100px'			assign the full HTML attribute string via cssText\
+	- style shorthands:\
+		element.hidden = true;					like style.display = "none";\
+		element.hidden = !element.hidden			toggles visibility	\
+		element.style						object containing style attributes as properties\
+	- element.style.color only returns attributes applied via JS - CSS cascade is ignored: \
+	-  in order to query the computed style (CSS cascade) for an element use:\
+		getComputedStyle(element[,pseudo])			returns style object with stylings as properties\
+		getComputedStyle(element:hover).backgroundColor	returns background-color of element:hover\
+	-  only use exact styles (not padding but paddingLeft etc.)\
+	\
+		.className				contains the entire class string - changing className removes all preexisting classes\
+		.classList				returns iterable list of classes (allows changing several classes)\
+		.classList.add(`class`)			new class is added to class list\
+		.classList.remove(`name`)		\'97\
+		.classList.toggle('name`)		if class exists, remove (+ return false), if does not exist, add class (+ return true)\
+		.classList.contains(`name`)		boolean check\
+	non-standard attributes (with string property values) can be accessed via (attributes are always strings in these methods):\
+		element.hasAttribute(name)		boolean test	(e.g. body.hasAttribute('class') )\
+		element.getAttribute(name)		value of attribute is returned\
+		element.setAttribute(name, value)	assigned values are converted to strings	\
+		element.removeAttribute(name)\
+		element.attributes			returns iterable list of objects of Attr class accessible like this:\
+		element.attributes[0].name						\
+		element.attributes[0].value\
+	save non-standard attributes for programmer use are data-`anything` that are accessible as properties of dataset object:\
+		<div data-welcome = 'Hello'>\
+		div.dataset.welcome == 'Hello'\
+	all attribute changes are updated in attribute property:\
+		element.setAttribute(`name`, `value`);\
+		element.name == `value`;\
+	property changes are almost always updated in attribute. Exceptions:\
+		input.value = `new text`;\
+		input.getAttribute(`value`) == `old text`;	property stores `new text` but attribute is still `old text`\
+	attribute properties can be non-string (one-word attributes like checked, hidden etc.):\
+		<input id="form" checked>\
+		input.getAttribute('checked') == ''\
+		input.checked == true;			boolean value for checked property\
+	you find attributes using CSS selector  element[`attr`] or element[`attr`= `value`]\
+		.#attribute (id/ src/ img / href)		is the value of a certain attribute of an element (several elements are returned as array)\
+\
+\
+
+\f2\b create elements
+\f0\b0 \
+	first, create elements via createElement. Set attributes and event handlers and then put it in the DOM via append..\
+		document.createElement(element)\
+		document.createTextNode(`string`)			to add text\
+		appendChild(element)					add element below the caller object as last child\
+		parentNode.removeChild(element)			remove that element (needs a parent)\
+		insideBefore(new_el, target)				inserts before target element (same level)\
+		parentElement.replaceChild(element, with element)	replace element\
+		write(text)						write into output\
+	node actions (no verbose HTML is possible) several nodes can be (separated by comma) inserted:	\
+		node.append(\'85nodes/strings)				adds nodes or strings into node at beginning\
+		node.prepend(\'85nodes/strings)				adds nodes or strings into node at end\
+		node.before(\'85nodes/strings)				adds nodes or strings before node\
+		node.after(\'85nodes/strings)				adds nodes or strings after node\
+		node.remove()						gone\
+		node.replaceWith(\'85nodes/strings)			replaces node remains as virtual node and can be re-entered\
+	insert calls can be done with creations:\
+		node.append(document.createElement('p')		first element is created and then inserted\
+		node.cloneNode(true)					deep clone with all descendants and attributes\
+		node.cloneNode(false)					flat clone without child elements\
+	node actions adding HTML content			\
+		elem.insertAdjacentHTML(where, `HTML`)		where is a parameter specified as such:	\
+		    'beforebegin'						before elem\
+		    'afterbegin'						into elem as first branch\
+		    'beforeend'						into elem as last branch\
+		    'afterend'						after elem\
+	all insertions of elements that are already part of the DOM remove them from their original locations (= swapping is automated)\
+	easily remove content of element by elem.innerHTML = ''	\
+		create <option> tag via: new Option(text,value[,defaultSelected, selected)			\
+\
+
+\f2\b form-elements:
+\f0\b0 \
+		document.forms				calls list of form elements, can be called as an array or with form name like this:\
+		document.forms.fname			<form name = 'fname'>\
+		..forms[0].elements			calls list of (possibly nested elements) in form, can be called as array or with element-name:\
+		..forms[0].elements.elname		<form>\
+								
+\f2\b \ul <input name = 'elname'>
+\f0\b0 \ulnone \
+							</form>\
+		..forms[0].elements.elname can be shortened to forms[0].elname		BUT changing the element name creates complications\
+	if there are elements with same name, calling by name becomes a list:\
+		..forms[0].elements.elname[1]  		<form>\
+								<input name = 'elname'>\
+								
+\f2\b \ul <input name = 'elname'>
+\f0\b0 \ulnone \
+							</form>\
+	elements can be input / textarea / fieldset or any nested element of a form\
+		document.forms[i].elements[i]		to address subelements of form elements\
+	from element you can reference back to its containing form:\
+		..forms[0].element[0].form == forms[0]	element[0] references back to its containing form\
+		document.forms[i].elements[i].options[i]	analogous with options for <select>	\
+		input/textarea/select.value		returns value of these elements (do not use innerHTML)\
+		select = document.querySelector('select')	select has various important options (can all be changed)\
+		select.options				collection of <option> elements in a <select>\
+		select.value				value of selected option\
+		select.selectedIndex			number of selected option\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf9 \cb5 		if <select multiple>, more than one option can be selected \'97> values have to be queried via array functions:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\partightenfactor0
+\expnd0\expndtw0\kerning0
+ 		 	let selected = Array.from(select.options).filter(option => option.selected).map(option => option.value);\
+\
+	\cf0 \cb1 \kerning1\expnd0\expndtw0 	elem.focus()			sets focus on element		\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 		elem.blur()			removes focus from element\
+	by standard only interactive html-elements can receive focus \'97> using attribute tabindex makes all elements accessible to focus:\
+		<div tabindex='1'>		is the first element to receive focus\
+			tabindex='0'		is the last element to receive focus\
+			tabindex='-1'		never gets focus by tab-key\
+			\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 popups and windows:\
+	
+\f0\b0 popup can be opened with window.open but many browsers reject it\
+		window.open(url, name, params)\
+		    name			is the name window.name that can be referenced for later window calls\
+		    params:			set of different parameters defining the properties of the potential popup (must be prop:value,prop:value (without spaces)\
+			left/op			position on screen\
+			width/height		\cf9 \cb5 \expnd0\expndtw0\kerning0
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\partightenfactor0
+			menubar (yes/no)	show/hide browser menu on new window\
+			toolbar (yes/no)	\
+			location (yes/no)	whether url of window is shown or hidden\
+			status			show status bar\
+			resizable\
+			scrollbar	\
+	declare window with:\
+		let newWindow = window.open(url, name[, params]);\
+		newWindow.document.body\'85.	accesses document in popup if it is the same domain as original page\
+	popup window can access original page with:\
+		window.opener\
+	iframes can be accessed as (if coming from same domain as main window):\
+		iframe.contentWindow		window in iframe\
+		iframe.contentDocument	document in iframe (is only available after iframe has fully loaded!)\
+	\
+	alternatively use the collection window.frames:\
+		window.frames[0] or window.frames.iframeName	the name given at window.open(url, name)\
+	iframes can be secured by sandbox attribute + properties to treat the iframe as securely as possible:\
+		<iframe sandbox\'85\'85.>		only using sandbox prevents all options, alternatively options can be allowed as properties of sandbox attribute:\
+		<iframe sandbox='allow\'85' ..>\
+			allow-same-origin	does not treat iframe as coming from foreign origin\
+			allow-top-navigation	allow parent.location\
+			allow-forms		\
+			allow-scripts\
+			allow-popups\
+			\'85and more\'85	\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 \cb1 \kerning1\expnd0\expndtw0 other properties of element:
+\f0\b0 \
+	document\
+		document.readyState			returns loading status of page\
+		document.referrer			returns URI of linking document\cf9 \cb5 \expnd0\expndtw0\kerning0
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\partightenfactor0
+		\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \cb1 \
+
+\f2\b\fs26 JS BOM\
+
+\f0\b0\fs20 	main element:		\
+		window				the browser window (shared with JS and DOM)\
+		screen				the computer screen\
+	element,offsetParent			nearest ancestor with declared position / or body\
+	\
+element size:\
+	\ul for element + padding + border:\ulnone \
+	element	.offsetLeft			distance of left border from left window edge\
+		.offsetTop			distance of top border from top window edge\
+		.offsetWidth			element width (+2padding + 2border)\
+		.offsetHeight			element height (+2padding + 2border)\
+	hidden elements have offsetWidth and offsetHeight 0 \'97> can be used to check for hidden elements\
+		.clientTop			border height\
+		.clientLeft			border width\
+	\ul for element + padding:\ulnone \
+		.clientWidth			width (including scroll bars)\
+		.clientHeight			height (including scroll bars)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \ul \ulc0 	scroll location:\ulnone \
+  		.scrollTop			how far element is scrolled (relative to top edge of content)\
+		.scrollLeft			how far element is scrolled (relative to top edge of content)\
+	.scrollTop and .scrollLeft can be modified to adjust scrolling\
+		element.scrollIntoView(true = top)	to scroll-align element to browser edge (false = bottom)\
+		.scrollWidth			total width (including content that is scrolled out of view)\
+		.scrollHeight			total height (including content that is scrolled out of view)	\
+		window.pageYOffset		read-only current document scroll from top\
+		window.pageXOffset		read-only current document scroll from left\
+		window.scrollBy(x,y)		page is scrolled relative to current position\
+		window.scrollTo(pagex,pagey)	scrolls to specific height/width relative to document top-left corner\
+		innerHeight\
+		innerWidth\
+		\
+\
+coordinates:	\
+	element.ClientRec()		returns object with locational properties:	relative to window (topleft)\
+		.getBoundingClientRec().top		y for element top-edge\
+					.left		x for element left-edge\
+					.bottom		y for element bottom corner from top edge\
+					.right		x for element right corner from left edge\
+					.width/height	not supported by all browsers\
+		document.elementFromPoint(x, y) 	returns most nested element at these coordinates\
+	to simply position elements on the screen, you can use position:fixed with left/top/right/bottom\
+	to position element relative to elements (scrollable), use position:absolute\
+	document coordinates of element are window coordinates + pageOffset:\
+		docTop = element.getBoundingClientRect().top + pageYOffset;\
+		docLeft = element.getBoundingClientRect().left + pageXOffset;\
+	simple function to get document coordinates:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\partightenfactor0
+\cf2 \cb5 \expnd0\expndtw0\kerning0
+		function getCoords(elem) \{			getCoords(elem).top calls document-wide positionswitch\
+ 		    let box = elem.getBoundingClientRect();	\
+  		    return \{\
+    		        top: box.top + pageYOffset,\
+   		        left: box.left + pageXOffset\
+  		    \};\
+		\}\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \cb1 \kerning1\expnd0\expndtw0 \
+\
+important sizes:\
+	size of window:\
+		document.documentElement.clientHeight	is the height of the visible browser window\
+	total (scrollable) height of document is different in different browsers so here is a work-in-all solution:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\partightenfactor0
+\cf10 \cb11 \expnd0\expndtw0\kerning0
+	let\cf2  scrollHeight \cf12 =\cf2  Math\cf13 .\cf2 max\cf13 (\cf2 \
+  	document\cf13 .\cf2 body\cf13 .\cf2 scrollHeight\cf13 ,\cf2  document\cf13 .\cf2 documentElement\cf13 .\cf2 scrollHeight\cf13 ,\cf2 \
+  	document\cf13 .\cf2 body\cf13 .\cf2 offsetHeight\cf13 ,\cf2  document\cf13 .\cf2 documentElement\cf13 .\cf2 offsetHeight\cf13 ,\cf2 \
+  	document\cf13 .\cf2 body\cf13 .\cf2 clientHeight\cf13 ,\cf2  document\cf13 .\cf2 documentElement\cf13 .\cf2 clientHeight\
+\cf13 	);
+\fs28 \cf2 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\fs20 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+\
+	Methods:		\
+		window.open()			open new window\
+		window.close()\
+		window.moveTo()\
+		window.resizeTo()\
+		document.elementFromPoint(x,y);	returns most nested DOM element at these coordinates\
+		location.href			URL of the current window\
+		navigator			information about browser and OS					\
+\
+			\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b\fs26 \cf0 JS events\
+	
+\f0\b0\fs20 events are registered by the main system and propagated to the triggering event to define event.target\
+	from there they bubble up to the window object through all parent elements (unless event.stopPropagation() == true)\
+	\
+\
+	event listener add events to elements:\
+\
+
+\f2\b event handlers:\
+	
+\f0\b0 events can be caught on every level of bubbling by placing an event handler either via element.on`event`or by placing an event listener:\
+		element.onclick = func;			only one event handler can be assigned via property\
+		element.addEventListener('click', func);	events without "on", 	function not called, just passed as callback\
+		element.removeEventListener('click',func);	explicitly called functions cannot be removed \
+	!! if you pass parameters to event listeners, use anonymous function:\
+		element.addEventListener("click",function()\{myFunction(param);\});\
+
+\f2\b event handler objects
+\f0\b0 \
+	you can pass objects as event handlers - in this case the objects .handleEvent(event) method is called:\
+		let handler = \{				can be inherited by other handlers via let newHandler = Object.create(handler);\
+		    this.handle(event) \{\
+		        switch(event.type)\{\
+			case 'click': onClick(event);	\
+			case 'mousedown': onMouseDown(event);\
+		\} \
+	\
+	event handler can also process events like this:\
+		let handler = \{				can be inherited by other handlers via let newHandler = Object.create(handler);\
+		    this.handle(event) \{\
+			let method = 'on' + event.type[0].toUpperCase() + event.type.slice(1);\
+			this[method](event);		call subhandlers for individual events\
+		\
+
+\f2\b \
+	
+\f0\b0 the shorthand object.onevent works adding omitting the "on" to the event\
+	you have to assign the function name (or declaration) without calling it\
+		element.onclick = myFunc;	if myFunc returns false, default event handing is prevented (same as preventDefault() )\
+\
+
+\f2\b prevent default events:
+\f0\b0 \
+
+\f2\b\fs26 		
+\f0\b0\fs20 preventDefault			cancels the standard action of an element (a, submit) if cancelable (and returns true)\
+	alternatively, if the event handler returns false, default is also prevented
+\f2\b\fs26 \
+		
+\f0\b0\fs20 event.defaultPrevented		becomes true when preventDefault was used on event\
+	use event.defaultPrevented for checking on events further up on the bubble chain, whether event has already been triggered by subevent handler
+\f2\b\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 event delegation:\
+	
+\f0\b0 best practice is to catch the event for many elements on the containing element (could be document)\
+		1) add event listener to container	\
+		2) get target			target = event.target / event.target.closest(`desired parent element`)\
+		3) react accordingly		if (!target) return\
+						perform action on target\
+	you can assign individual actions to elements by using attribute data-`xxx` with the help of a handler object:\
+		\
+		<div data-action = "handler1"> </div>\
+		<div data-action = "handler2"> </div>\
+		<div data-action = "handler3"> </div>\
+	document.addEventListener(onclick, handler);\
+		let function ActionHandler(elemId) \{\
+		    this._elem = elem;\
+		    elem.onclick = this.onClick.bind(this);	direct call of element via id and eventHandler attachment (bind for keeping the method object as context)\
+		    this.handler1() \{action1\}		declaration of object subhandlers\
+		    this.handler2() \{action2\}\
+		    this.handler3() \{action3\}\
+		    this.onClick(event) \{\
+		        let action = target.dataset.action;	read applicable subhandler from data attribute\
+		        if (action) \{\
+		        	this[action]();\
+		        \}\
+		    \};\
+
+\f2\b 	
+\f0\b0 	\}\
+\
+\
+		let handler = new ActionHandler('id')
+\f2\b \
+	\
+event object:
+\f0\b0 \
+	triggered events are passed as `event objects` to the event handler as argument:\
+		.addEventListener("click",func);\
+		func(e) \{\
+			script that can use properties of the triggering event stored in object e\
+			\};\
+	all event objects have global properties/methods:\
+		.type			returns the first parameter used in addEventListener\
+		.currentTarget		returns the element of the handler (=this)\
+		.target			returns the element where the event happened\
+		.cancelable		boolean whether event can be canceled via preventDefault\
+		.eventPhase		whether the event has been triggered during \
+						capturing = 0\
+						target phase = 1\
+						bubbling = 2\
+	you can create custom events:\
+		let myEvent = new Event(event_type[,\{options\}]);\
+						event_type can be standard event or custom `string`\
+					options:\{bubbles:true;		default false:\
+						cancelable:true;  	allows preventDefault()	default false;\
+	events can be triggered by JS using dispatch:\
+		element.dispatch(myEvent);	\
+		event.isTrusted			boolean check whether event is triggered by user (true) or JS (false)\
+	specific Events can by generated using \
+		UIEvent				\
+		FocusEvent\
+		MouseEvent			has all the properties from normal mouse events including clientX and clientY\
+		WheelEvent	\
+		KeyboardEvent\
+		CustomEvent			custom properties can be given with the property detail with an object value\
+		new CustomEvent('clap', detail: \{option1:value1, option2:value2\}\});\
+	so an artificial click can be generated like this:\
+		let myClick = new MouseEvent('click', \{\
+			bubbles: true,\
+			clientX = 100;\
+			clientY = 100;\
+		\}\
+		\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 \ul form events:
+\f0\b0 \ulnone \
+		focus				when user enters the input field	\'97> do not bubble\
+		focusin				bubbles, can only by applied via addEventHandler\
+		elem.focus()			sets focus on element		\
+\
+		blur				when input field is left \'97> ready for processing data	\'97> do not bubble\
+		focusout			bubbles, can only by applied via addEventHandler\
+		elem.blur()			removes focus from element\
+		change				after user has changed values (after blur event or after clicking radio button etc.)\
+		input				triggers when input changes (key is pressed etc.)\
+		cut / copy / paste		event data is stored in event.clipboardData (.getData('text/plain'))\
+		submit				triggered by submit button or Enter key on input field\
+						in both cases, a click event is triggered on <imput type='submit'>\
+		form.submit()			submits form via JS and submit event is not triggered\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 browser events:	
+\f0\b0 	\
+	
+\f2\b \ul keyboard
+\f0\b0 \ulnone \
+		keydown\
+		  event.ctrlKey .shiftKey .altKey	boolean whether these buttons were pressed\
+		  event.key			value of pressed key (language dependent)\
+		  event.code			returns the keyboard code of the pressed button (always uppercase) \
+			press z \'97> event.code == KeyZ\
+			press 1 \'97> event.code == Digit1\
+						event.code is independent of language settings\
+		event.repeat			if true, a key can fire repeatedly\
+		\
+		keypress			! many non-value keys (like arrow or shift) do not trigger keypress \'97> use keydown\
+		keyup\
+\
+	
+\f2\b \ul mouse: 
+\f0\b0 \ulnone \
+		click				mousedown --> mouseup \'97> click\
+		mousedown			\
+		mouseup\
+		mouseover			has property .relatedTarget  (=start element)\
+						mouseover\
+		mouseout			has property .relatedTarget  (=destination element)\
+						mouseout also triggers if we enter a nested element from the parent\
+		mouseenter			if entering element from outside (not from inner element)\
+						does not bubble\
+		mouseleave			does not trigger when entering nested elements\
+						does not bubble\
+		mousemove\
+		dblclick				doubleclick\
+						in order to suppress text selection use CSS \{user-select:none;\} or better onmousedown = "return false"\
+		contextmenu			fires when contextmenu is triggered by right click	\
+		wheel\
+			.deltaY			scroll amount in px\
+	property of all mouse events returning the mouse button:\
+		event.which (or .button = which - 1))		\
+			1			left mouse button\
+			2			middle mouse button\
+			3			right mouse button\
+		event.shiftKey			boolean whether modifier has been pressed\
+		event.altKey\
+		event.ctrlKey\
+		event.metaKey 	(command for Mac)	check for (event.crtlKey || event.metaKey) to accomodate both Win and Mac Users	\
+		.clientX, clientY			returns x, y-position of clicked mouse relative to display	\
+		.pageX, pageY			returns document-relative positions	\
+			.region			returns id of clicked element\
+\
+\
+						can be prevented by ("contextmenu", function () \{return false;\}) or .oncontextmenu = "return false"\
+	
+\f2\b \ul touch:	
+\f0\b0 \ulnone 				same properties as mouse +\
+		touchstart\
+			.touches		array-like list of touches in case of multitouch\
+			.targettouches		list of touches that started on the element\
+		touchend			\
+		touchmove	\
+\
+	
+\f2\b \ul scroll:	
+\f0\b0 \ulnone 				can be used with pageYOffset and pageXOffset
+\f2\b \ul \
+					
+\f0\b0 \ulnone \
+		\
+\
+
+\f2\b custom events:
+\f0\b0 \
+
+\f2\b\fs26 	
+\f0\b0\fs20 built-in Event object can be used to define new events\
+\
+\
+
+\f2\b special events:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b\fs26 \cf0 	
+\f0\b0\fs20 main events to control initiation:\
+		document.addEventListener("DOMContentLoaded",func\}\
+		window.addEventListener("load",func\}	after all resources have been loaded\
+		onload / onunload			when user enters/ leaves page\
+	\
+		transitionend			triggeres when element finishes its CSS transition animation\
+\
+\
+
+\f2\b drag'n'drop via HTML5:
+\f0\b0 				\
+	elements need draggable = "true" attribute (\
+		in Safari add element.setattribute("style"," -khtml-user-drag: element");\
+	input and textarea are default drop zones, others have to be declared\
+	event properties are transferred to dataTransfer object\
+	\
+\
+		dragstart			\
+		drag\
+		dragend\
+		dragenter			when element is dragged over target element\
+		dragleave\
+		(dragover)			same as drag\
+		drop				if element is dropped on drop target\
+		dropabort			element is not dropped on target\
+		droptarget			boolean for droppable targets\
+\
+
+\f2\b drag'n'drop selfmade:
+\f0\b0 \
+	define and select element via class (or draggable = 'true' attribute\
+	define elements for drop by class (or droptarget = 'true')\
+	define container in which drag should work and append element to it (remove from nested DOM context:\
+		element.onmousedown = function(e) \{\
+		    element.style.position = 'absolute';\
+		    element.classList.add('dragged');\
+		    element.style.zIndex = 1000;\
+		    container.append(element);			raise dragged elem from DOM context\
+		    element.ondragstart = function() \{			prevent default dragging behavior\
+		        return false;\
+		    \};\
+		    let shiftX = event.clientX - element.getBoundingClientRect().left;	store initial mouse positions on element;\
+		    let shiftY = event.clientY - element.getBoundingClientRect().top;		\
+	declare move function:\
+		     function moveTo(x,y) \{\
+		         element.style.left = x - shiftX + 'px';\
+		         element.style.top = y - shiftY + 'px';\
+		     \}\
+		     moveTo(event.pageX, event.pageY);		initial setting of the element under mouse\
+		    let currentDZ = null;				init for flying over object\
+		    function onMouseMove(event) \{		keep element under mouse while moving\
+		        moveTo(event.pageX, event.pageY)\
+	transiently remove element and check whats underneath:\
+		        element.hidden = true;			\
+		        let hoverOver = document.elementFromPoint(event.clientX, event.clientY);\
+		        ball.hidden = false;\
+	check hoverOver for chance to drop:\
+		        if (!hoverOver) return;				if we moved out of the container, hoverOver is null\
+		        let dropZone = hoverOver.closest('.droppable');	look for droppable element\
+		        if (currentDZ != dropZone) \{			true when dropzone changes        \
+		        	if (currentDZ) \{					dropZone is not the stored currentDZ anymore\
+			    leaveDZ(currentDZ);				function to e.g. remove decoration \
+			\}\
+			currentDZ = dropZone				update currentDZ\
+			if (currentDZ) \{\
+			    enterDZ(currentDZ)				function to e.g. decorate dropzone\
+		    \}\
+		\
+		    container.addEventListener('mousemove', onMouseMove);	listen to mousemove on container and not on the element lest you could lose the element\
+\
+		    element.onmouseup = function() \{\
+		        container.removeEventListener('mousemove', onMouseMove);\
+		        dropElement(element,currentDZ);			stuff that should happen after the drop	\
+		        element.onmouseup = null;\
+		        element.classList.add('dragged');			remove drag style\
+		    \};\
+	\};	\
+\
+				\
+
+\f2\b\fs26 JS animations\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 	created by gradual changes in an elements positional styles\
+	animated object (position:absolute) has to be in a container (position:relative)\
+	method:		\
+		setInterval(function, time)		calls function repeatedly at given intervals\
+		clearInterval(function)			stops calling the function\
+\
+	most important tool for animation is animate object:\
+		element.animate ( [\{			array of keyframes\
+			CSS-style: "valueStart",		first keyframe for start style\
+			CSS-style: "valueStart"	\
+			\}, \{\
+			CSS-style: "valueEnd",		second keyframe for end style\
+			CSS-style: "valueEnd"	\
+			\}], \{\
+			duration: msec,			settings for animation\
+			iteraton: number,\
+			fill: "forwards"\
+			\});\
+	Safari does not support it \'97>polyfill substitution:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \cb5 		
+\f3\fs21\fsmilli10800 \cf2 \expnd0\expndtw0\kerning0
+<
+\f4\b \cf14 script
+\f3\b0 \cf2  \cf15 src\cf16 =\cf17 "https://cdn.jsdelivr.net/web-animations/latest/web-animations.min.js"\cf2 ></
+\f4\b \cf14 script
+\f3\b0 \cf2 >\
+\
+
+\f0\fs20 	event ontransitionend can be used to wait for animation to end\
+\cf0 \kerning1\expnd0\expndtw0 	for JS animations, the style of an element should be changed at appr. 50 frames per second\
+		general example:\
+		let start = Date.now();\
+		let timer = setInterval(function() \{\
+		    let timePassed = Date.now() - start;\
+		    if (timePassed > 2000) \{\
+		        clearInterval(timer);\
+		        return;\
+		    \}\
+		    draw(timePassed)			function controlling the animation as f(t)\
+		\}, 20);					20 ms = 50 frames per second\
+\
+
+\f2\b rAF
+\f0\b0 \
+	you must bundle different animations into a single redraw (much better for performance), \
+	use requestAnimationFrame(callback), to receive actual frame times\
+		let requestId = requestAnimationFrame(callback)		callback is called by browser when next frame is possible \'97> smooth animation\
+	rAF has to be called by user (in contrast to automatic call via setInterval() ) - best done in for-loop or recursively using while check:\
+\
+for-loop:\
+	for (let style-unit = start; style-unit < end; style-unit++) \{\
+	    rAF_ID = requestAnimationFrame( () => element <\'97 style-unit );	update element style in animation frame\
+	\}\
+\
+recursive:\
+	var style-unit = start;\
+	var rAF-ID;\
+	var rAFCallback = function() \{\
+	    element <\'97style-unit++:\
+	    while (style-unit < end) \{\
+		rAF_ID = requestAnimationFrame( rAFCallback );\
+	    \}\
+	    cancelAnimationFrame(rAF_ID);\
+	\}\
+	rAF_ID = requestAnimationFrame( rAFCallback );\
+!!! this does ensure smooth animation without frameloss but does not ensure completion of animation at set time \'97> for that use timestamp:\
+\
+
+\f2\b timestamp:
+\f0\b0 \
+	is a parameter passed to the callback telling about time passed since start of animation\
+	timestamp can be computed into percentage of completion and used as such in the animation	\
+	    progress = (startTime - timestamp) / duration\
+	    safeProgress = Math.min(progress, 1);			use safeProgress to ensure that last frame does not go outside of desired frame		\
+	var startTime;\
+	var duration = 1000;\
+	var distance = 60;						determines frames per second\
+	var rAFCallback = function(timestamp) \{				timestamp is passed as parameter to callback\
+	    startTime = startTime || timestamp;				set startTime from first timestamp\
+	    var timePassed = timestamp - startTime;\
+	    var safeProgress = Math.min( (timePassed / duration).Fixed(2) ,1);\
+	    var style = styleAnimation(progress)				styleAnimation has to be set individually and can affect several elements\
+	    if ( safeProgress < 1) \{\
+		requestAnimationFrame( rAFCallback);\
+	    \}\
+	\}\
+	requestAnimationFrame( rAFCallback)\
+	    \
+	    \
+	\
+	\cb1 \
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b\fs26 \cf0 JS AJAX\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 	receives data (text, xml, JSON) from server dynamically\
+	the data request has to be performed by browser via XMLHttpRequest object\
+		var requestObject = new XMLHttpRequest();			webpage and file must be on same server\
+		\
+	AJAX properties\
+		onreadystatechange		defines function to be active when readystate changes\
+		readyState			status of request\
+						0: not initialized\
+						1: connection established\
+						2: request received by server\
+						3: processing\
+						4: response is ready\
+		responseText			returns response data as string\
+		responseXML			returns response as XML\
+		status				status number:\
+						200: "OK"\
+						403: "Forbidden"\
+						404: "Not Found"\
+	\
+	AJAX methods:\
+		abort()				cancels current request\
+		getResponseHeader("test")	returns specific header info\
+		open(				specifies the request\
+			method, 		GET or POST (POST robust secure and large data)\
+			url, 			file location or location of server programm (add information to url after ?)\
+			async, 			true for asynchronous (always best) ; false for synchronous\
+			user, 			optional user name\
+			psw)		optional password\
+		send()				send request to server via GET\
+\
+	use onreadystate to define data processing:\
+		let requestObject = new XMLHttpRequest();\
+		requestObject.onreadystatechange = function() \{\
+			if (this.readyState ==4 && this.status == 200) \{\
+				let data = this.responseText;	or any other data processing\
+		or		let data = JSON.parse(this.responseText);\
+			\}\
+		\}\
+		requestObject.open("GET", url, true);\
+		requestObject.send();\
+\
+	for many AJAX requests, use a callback function:\
+	\
+		function ajaxRequest(url, dataProcessing) \{\
+			var requestObject = new XMLHttpRequest();\
+			requestObject.onreadystate = function() \{\
+				if (this.readyState ==4 && this.status == 200) \{\
+					dataProcessing(this);\
+				\}\
+			\}\
+			requestObject.open("GET", url, true);\
+			requestObject.send();\
+		\}\
+		function ajaxAction1(requestObject) \{\
+			data processing for AJAX request 1;\
+		\}\
+		function ajaxAction2(requestObject) \{\
+			data processing for AJAX request 2;\
+		\}\
+	then execute different requests:\
+		ajaxRequest(url1,ajaxAction1);\
+		ajaxRequest(url2,ajaxAction2);\
+		\
+	if you want to send data via post, add a requestHeader to specify type of data:\
+		setRequestHeader("Content-type", "application/x-www-form-urlencoded");	\
+		send(string)			send request to server via POST\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 Fetch API:
+\f0\b0 	\
+	shorthand:\
+		options = \{\
+			method: 'GET/POST',\
+			body: 'request body			request body often JSON.stringify(requestObject) to transfer objects with POST\
+			\}\
+		fetch(url, options, sentDataJSON)		fetch returns a promise that is resolved with the response object, when header of response is received \
+								response object contains many properties (.ok / .status / \
+								fetch is rejected if there are network errors (so if no headers are coming back (status 404 is still a resolve)\
+   			.then(\
+			    if (!response.ok) \}\{			in the then test whether response is ok and if not throw error \'97> rejected promise\
+				throw Error('Errortype)\
+			response => response.json())		response.text() or response.json() are promises that only resolve, when full data has been received\
+								response.ok is boolean for whether response is coming back as desired\
+    			.then(data => action) \
+			.catch(error => alert(error)\'85)	\
+\
+
+\f2\b 3rdParty Libraries
+\f0\b0 \
+	because fetch is not supported by explorer, 3rd Party libraries can help\
+	
+\f2\b with jQuery:
+\f0\b0 \
+		$.ajax(\{\
+			method: 'GET',\
+			url: 'url'					optional: many things including \{dataType: JSON\}\
+		\})\
+		.done(function(data) \{				$.ajax tries to figure out data type and automatically parse the data to JSON if applicable\
+			action on data\}				.done is like .then\
+		)						\
+		.fail(callback)					.fail is like .catchj\
+	if you know it is JSON you are requesting use:\
+		$.getJSON(url, ..options)\
+\
+	
+\f2\b with AXIOS: 
+\f0\b0 works with node.js:\
+		axios.get(url)					\
+			.then( (res) => \{\}			res.data is already the data object\
+			.catch((e) => \{\}				e.response / e.request specify where the error is coming from (from the fetch or from the response)\
+		\
+							
+\f2\b\fs26 \
+JS JSON\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 	is used to change objects, arrays into string that can be send between server and browser\
+	JSON is faster and smaller than XML\
+	object methods and symbols are not converted\
+	also properties storing undefined are not converted\
+	example of JSON object:\
+		\{"objName":\{					requires double quotes, is enclosed by \{\}\
+			"param1":"value1",\
+			"param2":"value2",\
+			 "param3":"value3"\}			no trailing comma allowed\
+		\}\
+	\
+	example of JSON array:		\
+		\{"arrayName":["value1", "value2", "value3"]\}			\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b \cf0 JSON methods:	
+\f0\b0 		\
+		JSON.stringify(object[, replacer, space])			converts objects to JSON objects		\
+	replacer is mapping function or array of properties to encode:\
+		let object = \{key1:value1, key2:value2, key3:value3\};	here, replacer is an array\
+		let json = JSON.stringify(object, [key1,key3]\}		only key 1 and key 3 are converted to JSON (nested keys have to be mentioned as well)\
+	replacer function is called by stringify method for every key:value pair and has to return value undefined for the keys that should be omitted\
+		let json = JSON.stringify(object, function replacer(key, value) \{\
+			return (key == 'do_not_want') ? undefined : value;\'a0\}	\
+	space is how many spaces are used for formatting, is only used for nice output, default is 0\
+\
+	many objects have built-in toJSON conversion rules (like date becomes string after stringify\
+	you can create custom toJSON for any JSON conversion of objects as an object method:\
+		toJSON() \{return \'85\'85\}					should return what will be the result of JSON.stringify\
+	in order to convert JSON back to object, use JSON.parse\
+		JSON.parse(json[,revivier])			converts JSON string to JS object; reviver is option function to transform values\
+	reviver can transform strings into date types:\
+		JSON.parse(json, function (key, value) \{\
+			return (key == "date") ? new Date(value) : value;\
+\
+	you can receive JSON data from server via AJAX request (see above)\
+\
+	\
+\
+\
+\
+
+\f2\b\fs26 Promise\
+	
+\f0\b0\fs20 if there is a process that needs to finish for other components to work, a promise is a global object to be shared between dependencies\
+
+\f2\b\fs26 	
+\f0\b0\fs20 declaration:\
+		let promise = new Promise(function(resolve, reject) \{ 		executor - the process that takes time\
+			resolve(result);						executor calls resolve (depending on fulfillment \
+			reject(error)						in case of errors, executor should call reject and pass the error to the promise object\
+		\});\
+	the executor is called immediately after creating the promise\
+	promise object has .state and result properties\
+		promise.state == `pending`   --> then becomes `fulfilled`or `rejected`
+\f2\b\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 	when executor finishes process, it calls resolve(value) that sets state = 'fulfilled' and result = value\
+					or it calls reject(error) that sets state = *rejected* and result = error\
+	resolve and reject are internal functions - the executor just determines the parameters passed to it\
+	one promise can only call once either resolve of reject (later calls are ignored)\
+	\
+	.then registers consuming functions that should be called after completion of executor (can be many)\
+		promise.then(						\
+		    function(result) \{ handles successful result\},		first callback is called after success with the value passed to first callback in promise - if only one argument then success\
+		    function(error) \{handles error\}				second callback is called after reject with the value passed to second callback in promise\
+		)\
+	upon fulfillment of the promise, then() is called immediately (after next line of code like setTimeout(\'85, 0)	is taken from Event Queu\
+	promise.catch(f) == promise.then(null,f)				catch only executes promise rejections\
+\
+promise chaining:\
+	promise.then(..) is itself a new promise and can be chained behind other promises\
+	.then( \
+		function(result) \{ handle the result from the last promise --> return value will be the result of the subsequent promise\},\
+		function(error) \{handles the errors and stops subsequent then calls \'a0\}\
+	the return value of a then() immediately becomes the result of the next promise UNLESS the then() returns itself a new promise\
+	in that case, the promise will be resolved first before passing its result to the next then() call\
+		\
+error handling:\
+	if the reject function is not explicitly declared (in a promise or a then-handler), any error in the executor will be called as reject(error)\
+		the error is passed along the then-chain to the next catch (or second then argument) to be processed\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b\fs26 \cf0 Error handling
+\f0\b0\fs20 \
+\
+create new custom error:\
+	function newError() \{\
+		error = Error.apply(this,arguments);\
+		return error;\
+	\}\
+	newError.prototype = Object.create(Error.prototype, \{constructor: newError\})\
+		\
+\
+unhandled errors can be caught by windows event  unhandledrejection:\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl340\partightenfactor0
+\cf2 \cb5 \expnd0\expndtw0\kerning0
+	window.addEventListener('unhandledrejection', function(event) \{			\
+ 		 alert(event.promise); // [object Promise] - the promise that generated the error	this works if the rejection occurred inside a promise\
+ 		 alert(event.reason); \
+	\});\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf2 \kerning1\expnd0\expndtw0 \
+	\cf0 \cb1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5081\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f2\b\fs26 \cf0 Testing with Jasmine
+\f0\b0\fs20 \
+	import Jasmine test via script tag.\
+	put your tests into a spec file. containing of a Jasmine HTML, CSS and JS files to make proper output\
+	the core:\
+		describe \'97> it \'97> expect:\
+		let object = (function or object or stuff)\
+	describe('someUnit', function() \{							here you describe what unit (function, module, etc.) you are testing\
+		let var;	\
+		beforeEach(function() \{							beforeEach runs a callback before every it (variables have to be declared before\
+			var = value							because of scope)\
+			var++;								beforeEach can have counter functionality\
+		)\};\
+		afterEach(function() \{							afterEach runs after each it \'97> often used to reset values (also called teardown)\
+			\'85\'85\'85\
+		)\}						\
+		describe('someSubunit, function() \{					describe can also be nested					\
+			it('oneFeatureOfUnit'', function() \{				here you describe, what functionality is tested\
+				expect(expression).matcher(value);			here come the expected outcomes as an object that can be tested with matchers:						expect(expression).toBe(value);	/not.toBe();		check for === (identy)\
+				expect(expression).toBe(value);	/not.toEqual();		check for == (same value) (also toEqual(jasmine.objectContaining(\{key:value\} etc\
+				expect(expression).toBeCloseTo(value, range);		check for approximation\
+				expect(expression).toBeDefined();			boolean check\
+				expect(expression).toBeFalsey() / toBeTruthy();\
+				expect(expression).toContain();				check for array inclusion\
+				expect(expression).toBeGreaterThan() / toBeLessThan();\
+				expect(expression).jasmine.any(Function/Array/Object)	check whether a variable is a certain kind of object\
+			\});\
+			it('anotherFeature', \'85\'85.\
+			xit('anotherFeature'\'85\'85						possibiilty to mark pending test (with xit) \'96 test will not be performed\
+			it('anotherFeature);						possibiilty to mark pending test (without callback)\
+			it('anotherFeature, function()\{\'85\'85\'85; pending(); \});		possibiilty to mark pending test (with pending();)\
+		\});\
+\
+jasmine spies are used to mock objects that can be checked for interaction with unit \'96 only exists in this describe block of the beforeEach\
+		function funcName() \{							function that can be spied on with jasmine spies\
+			asdfasd;\
+		\}\
+		describe('spyTest', function() \{\
+			beforeEach(function() \{						spies are declared in the beforeEach()\
+			addSpy = spyOn(object, 'functionName');			spyOn() is used when tested method/function is attached to an object\
+		(	addSpy = spyOn(object, 'funcName').and.callThrough();	   )	.and.callThrough() allows test of return values with result variable\
+			result = addSpy();						object is the same object that the tested function (can be window for global functions)\
+			jasmine.createSpy();						to mock object that is not attached to object ( \'97> need to read more)\
+			\});\
+			it('functionHasBeenCalled', () => expect(addSpy).toHaveBeenCalled();\
+			it('functionWasCalledWithSpecificArguments', () => expect(addSpy).toHaveBeenCalledWith(..arguments);\
+			it('functionWasCalledAtAll', () => expect(addSpy.calls.any()).toBe(true);\
+			it('functionWasCalledCertainTime', () => expect(addSpy.calls.count()).toBe(number);\
+			it('testOfReturnValue', () => expect(result).toEqual(testValue);\
+		\});\
+\
+jasmine clocks are defined in a beforeEach and have to be stopped in an afterEach():\
+		describe('clockFunctionalityOfJasmine', () => \{\
+			beforeEach( () => \{\
+				testFunction = jasmine.createSpy('sampleFunction');\
+				jasmine.clock().install();\
+			afterEach(  () => jasmine.clock().uninstall();\
+			it('someTimeTest', () => \{\
+				someTimingFunctionWithCallback(testFunction);		for example setTimeout( () => testFunction(),1000)\
+				jasmine.clock().tick(999);				let 999 ms pass\
+				expect(testFunction).  ..someMatcher/Spy		here you can test whether something has happened to function after certain time	\
+		)\}	\
+\
+jasmine Promise testing works by providing a callback to the function in `it` and resolving it with done():\
+		describe('asynchronousFuncTest', function() \{\
+			it('returnData', (done) => dataTestFunction.			done is provided as a callback to the it test function\
+				then(bla).\
+				then((data) => expect(data).toBe\'85\'85;\
+				done();							test is done with done();\
+}

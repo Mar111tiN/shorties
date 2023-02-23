@@ -1,0 +1,136 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww14860\viewh16380\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 CONDA package manager:\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs26 \cf0 Install conda
+\f1\b0\fs24 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs20 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs20 \cf0 Install\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\b0 \cf0 \
+download:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 all download options can be found as executable scripts at https://repo.anaconda.com/miniconda/\
+download your version depending on your system:\
+	\
+	MacOSX-arm64.sh for AppleM1\
+	MacOSX-x86_64.sh for AppleIntel\
+	Linux-x86_64.sh for Cluster\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 $ wget https://repo.continuum.io/miniconda/<downloaded_miniconda.sh>\
+unpack:\
+bash <downloaded_miniconda.sh> -b -f -p $HOME/my_path\
+\
+	$ conda --version						get version of conda installed\
+	$ conda update conda					update to latest version\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Uninstall
+\f1\b0\fs24 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs20 \cf0 channels:\
+	$ rm -rf ~/mypath						removes all miniconda files\
+	$ rm -rf ~/.conda						removes your conda configs (if you want)\
+AR\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Setup conda
+\f1\b0\fs24 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs20 \cf0 channels:\
+	$ conda config --add channels your_channel\
+\
+~/.condarc								a central config file storing all behavioral info\
+	channels: 							\
+		- name	\
+miniconda/envs/name_of_env/.condarc			config file only applicable for that env\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 conda environments\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs20 \cf0 create
+\fs26 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\b0\fs20 \cf0 	$ conda info --envs						see list of envs\
+	$ conda create -n <env_name>python=2.7 package1 package2=1.03			 envs are stored under miniconda/envs/<env_name>\
+then activate your environment:\
+	$ conda activate \
+	$ conda activate name_of_env				start the environment and load in all dependencies\
+(<env_name>) $ conda deactivate				deactivate environment and switch back to base\
+	$ conda env remove -n <env_name>			remove environment\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 export/import
+\f1\b0 \
+	$ conda env export  | 					export environment to env.yml file\
+		awk 'NR>1&&$0!~/^prefix/' |			remove prefix and first line before exporting\
+	[	sed -re \'92s/(.*=.+)=.+/\\1/\'91  ] > env.yml		optionally remove fixed version IDs for crossplatform compatibility\
+\
+now you can create the environment from the yml-file	\
+	$ conda env create -f my_env.yml			create env from .yml file\
+	$ conda list --explicit > env_file				save exact dependency list to file\
+	$ conda create -n exact_copy -f env_file		create identical conda env\
+	$ conda install -n my_env -f env_file			copy all missing dependencies from env_file to my_env\
+\
+	$ conda create --name new_env --clone old_env	clone environment (for branching)\
+\
+\
+
+\f0\b env variables for CONDA Environment:
+\f1\b0 \
+	$ cd $\{CONDA_PREFIX\}/etc/conda			move to this conda_env subfolder\
+	create 2 files:\
+		./activate.d/env_vars.sh				here, export the environment variables\
+		./deactivate.d/env_vars.sh			here `unset` the variable\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Install packages\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs20 \cf0 via conda channels:
+\f1\b0 \
+	$ conda install <package>\
+	$ conda install <package>=3.13.0			install package in given version\
+	$ conda install -c <channel> <package>		install package from given channel\
+	$ conda update <package>				update that package\
+	$ conda list							list all dependencies with full detail\
+	$ conda list -e 	[ > requirements.txt ]		lists dependencies as simple strings\
+	$ conda remove -n name_of_env package_name	remove package from environment\
+
+\f0\b via pip:\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\b0 \cf0 	$ pip install <package>\
+\
+for installing a Intel64-version on AppleM1:\
+	CONDA_SUBDIR=osx-64 conda create -n ....	create new environment from osx-64 libraries for use with Rosetta\
+	conda activate <env>\
+	conda env config vars set CONDA_SUBDIR=osx-64	set the runtime environment variable to osx-64\
+\
+\
+Base environment:\
+conda install python=3.10 pandas jupyter jupyterlab openpyxl xlrd matplotlib seaborn scipy jupyter_contrib_nbextensions}

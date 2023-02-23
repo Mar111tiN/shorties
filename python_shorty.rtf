@@ -1,0 +1,1086 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\csgray\c0\c0;}
+\paperw12240\paperh15840\margl1440\margr1440\vieww20540\viewh27380\viewkind0
+\deftab720
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl380\partightenfactor0
+
+\f0\b\fs26 \cf0 What is Python?
+\f1\b0\fs20 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 	easy to learn programming language\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Python notebooks\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl380\partightenfactor0
+\cf0 	
+\f1\b0\fs20 helper to run python code in the browser (Anaconda platform)\
+	\
+utilities:\
+	press tab on a datatype to see all possible methods\
+	press shift+tab (or help(object.method) to see documentation about the use of the function\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\tqr\tx9339\pardeftab720\ri-1283\sl380\partightenfactor0
+
+\f0\b\fs26 \cf0 Environment\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\partightenfactor0
+\cf0 	
+\f1\b0\fs20 $ python				starts python (see >>>)\
+	$ python module.py			executes module.py as a python script and runs all commands at indentation level 0\
+\
+new environments have a clean slate except for the library you provided (along with its dependencies)\
+create new environment using conda:\
+	$ conda create \'97name `ENV_NAME` `base_package or base_library`		base_package like biopython\
+		options:		\'97name			name of your environment (will be the folder you name it)\
+				python=\'85		version of python you want to use (python=3.4)\
+				-p PATH		path to folder you want to use for installing the environment\
+							default is conda subfolder\
+				-m			folder is created if you do not have it yet\
+				`package`=\'85		provide specific version of package\
+	$ conda env list					lists all available environments\
+\
+
+\f0\b activate package:
+\f1\b0 \
+	$ source activate `name` (or . activate \'85) 	env is activated and shown in parens\
+	$ source deactivate (or . deactivate \'85)		fall back to default version\
+\
+update packages:	\
+	once environment is activated, new packages can be incorporated into that environment using:\
+	$ conda install package_name			this package will be permanently added to your env\
+\
+
+\f0\b remove environments
+\f1\b0 \
+	conda-env remove -n env_name	\
+\
+
+\f0\b modes:
+\f1\b0 \
+	python3 -0					starts python with global __debug__ variable set to false		\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl380\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 modules/packages
+\f1\b0\fs20 \
+	scripts can be reused by other scripts as modules\
+		modules are module.py that are called( reused) via\
+			import module\
+		__name__				module name accessible as __name__\
+		'__main__'				name of the global script\
+	modules can also be run independently (__name__ == '__main__')   condition can be tested\
+		functions from modules are accessible via module.func\
+		executable code in a module is executed once upon import\
+		global variables from modules can be accessed as module.var\
+\
+	functions from imported modules are called via:\
+		module.my_function()			the module is treated like an object\
+	import module as newName			module is accessible as newName\
+	from module import func1, func2			direct import of modules functions into the callers symbol table (name space)\
+	from module import *				imports all functions from a module (except functions with single underscore)\
+	from module import func1 as newFunc		using module's func1 as newFunc\
+	\
+	upon import, python first looks for module in built-in modules, then in list of directories given by sys.path\
+	sys.path uses directory of input script and PYTHONPATH\
+	sys.path is a list of paths for packages that can be modified directly by appending own paths:\
+		import sys\
+		sys.path.append(ownpath)\
+	\
+		dir(module)				lists all names defined in the module\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 build-in modules:
+\f1\b0 \
+	can be listed via:\
+		import builtins\
+		dir(builtins)				it' a lot!!\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl380\partightenfactor0
+
+\f0\b\fs26 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\fs20 \cf0 get packages:
+\f1\b0 \
+	external module bundles (called packages) can be downloaded via PyPi (like npm for JS)	\
+		$ pip install `package`			install package via PyPi\
+		\
+	packages are stored under various paths depending on your python installation\
+\
+
+\f0\b create packages:
+\f1\b0 \
+	create packages by putting several modules into one folder\
+	\'97> in order for Python to recognize folders as packages you have to place __init__.py file into package folder (can be empty)\
+	__init__.py can contain list of modules/packages to be imported when called with import * :\
+		__all__ = ['module1', 'module2',\'85..,'moduleN']\
+	modules from packages are imported as:\
+		from packageFolder import module	works if package folder is in same directory as mainscript\
+	for subfolders (also need __init__.py) use:\
+		 from packageFolder.subPackage import\'85.\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Scripting
+\f1\b0\fs20 \
+\
+shebang:			\
+	start your python scripts with #!/usr/bin/python3\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 command line arguments
+\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0\fs20 \cf0 you need sys or getopt module to parse command line arguments:\
+	$ test.py arg1 arg2 arg3\
+\
+	import sys\
+		arg_list = sys.argv			arg_list now contains argument list from command line arg_list[0] is program name (test.py)\
+		\
+for CLI like arguments and a management of argument requirements use getopt in combination with sys.argv:\
+$ test.py -opt1 -opt2 --long_opt1\
+\
+getopt.getopt(argument_list, string_of_option_letters, [list_of_long_options])	options that are required have to be followed by :\
+										long_options that are required have to be followed by =\
+										if only long_options are accepted, provide "" as option\
+	getopt.getopt returns tuple pair with list of option:value pairs and longoption list\
+\
+	import getopt\
+	argv = sys.argv[1:]							sys.argv gets argument list (except argv[0] = program_name)\
+	opts, args = getopt.getopt(argv, "hi:o", ["var1=", "var2="])			getopt parses argument list (argv for parameters)\
+										-h is optional\
+										-i and -o are required\
+										-var1 and var2 are required\
+\
+running script:\
+	add this line to end of file to run main() in case the script is run directly\
+	if __name__ == "__main__":\
+		main(args)					\
+										
+\f0\b\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\tqr\tx9339\pardeftab720\ri-1283\sl380\partightenfactor0
+\cf0 Standard functions\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl380\partightenfactor0
+\cf0 	
+\f1\b0\fs20 print()					writes expressions to the command line\
+	print(expression, end='string')		writes a string at the end of the expression\
+
+\f0\b\fs26 \
+Syntax
+\f1\b0\fs20 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \
+	expressions are treated as values	5 * 10\
+						"John" + " " + "Doe"\
+\
+	blocks of code are grouped via indention - the end of the block is marked by an empty line\
+	expressions going over several lines are joined by \\ at the end of the line \
+\
+	identifiers are names for \
+			functions		concate()\
+			variables		x, y, lastName\
+			methods		.length\
+			labels		\
+			keywords		var\
+	identifiers are \
+			case-sensitive		best convention: start with small caps and then camel case\
+			can only contain	strings, "_" and "$"\
+\
+	methods/properties are\
+			elementar functions performed on variables, values and return a value \
+\
+			denoted as		element.method(parameter)\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0  Comments
+\f1\b0\fs20 			\
+		one-liners			#\
+
+\f0\b\fs26 \
+Variables\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0\fs20 \cf0 	variables are declared and assigned in one step:\
+		var1 = value\
+		var1, var2 = value1, value2	group assignment\
+		var1, var2 = value		all have same value\
+		_ 				is the last printed expression\
+		del var1				deletes variable\
+global variables:\
+		global var			can be assigned in function but is accessible by all\
+hoisting of assigned variables is not performed\
+\
+	you can check local and global variables by running methods locals() or globals() from context\
+		print(locals())\
+		
+\f0\b\fs26 \
+\
+Strings\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0 \cf0 text is handled by str object\
+	
+\fs20 various file formats can be transferred to string using str() constructor\
+		str(1000) = '1000'
+\f0\b\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0\fs20 \cf0 	strings are chains of letters and are immutable \'97> can only be changed by copying into new string\
+	"" is a string of length 0\
+	strings can use "string" / 'string' \
+	escape string quotation with \\' or \\"\
+	if you want \\ to be treated as character, use r before the string:	\
+		r'Hallo/u'  -> Hallo/u\
+	multiline strings can be printed using triple quotes:\
+		'''Hello\\\
+		some Text\\				without \\ at the line end, a line break is incorporated\
+		more Text''''\
+		r'C:\\path'	\
+		\\n					is a line break in a string\
+		\\r					is a Enter in a string\
+		\\t					Tab key\
+		\\uNNNN				Unicode symbol\
+		\\u\{NNNNNN\}				for longer Unicode characters use \{\}\
+		\\\\					actual backlash sign\
+properties:	\
+		strings can be indexed:\
+		string[a]					returns the a-th character of string (if negative it was counted from right) \
+		\
+string methods:	(methods with prefix r start at the end of the string)\
+		string[a:b]				slices string including string[a] and excluding [b]\
+	\
+		str.lower() /.upper() / .swapcase()	returns lower case / upper case  / case-swapped copy of str\
+		str.title()					title case\
+		len(string)				length of string\
+		.zfill(width)				str is left-filled with zeros up to total width\
+		.join(string_list				joins strings with given connector\
+	r	str.split(sep[,maxsplit = n])		returns list of words in str separated by sep, optional maxsplit gives number of maximal splits\
+							if sep is not defined, str. is split at whitespaces and trailing whitespaces are removed\
+		str.splitlines				splits string at linebreaks (\\n, \\r, \\r\\n, \\v\'85.)\
+	r	str.partition(sep)				splits string at 'sep' and returns tuple containg the part before sep, sep, and part after sep\
+		str.replace(old, new[,count])		replaces old with new (count times)\
+	r	str.strip([chars])				remove trailing characters in char list\
+		'connector'.join([string_a,string_b,string_c])	returns: string_a'connector'string_b'connector'string_c\
+		str.capitalize()				first letter uppercase and rest lowercased\
+		str.count(sub[,start, end])		counts non-overlapping occurrences of sub in str\
+	r	str.find(sub[,start, end])			returns index of first sub in str (otherwise -1)\
+\
+	checks:\
+		sub in string				boolean check for existence\
+		str.endswith(suffix or tuple of suffixes[,start, end])	boolean check for occurrence of suffix at the end of str\
+		str.startswith(suffix or tuple of prefixes[,start, end])	boolean check for occurrence of prefix at the start of str\
+		str.isalpha()				returns True if at least one char and all are letter\
+		str.isdecimal()				returns True if at least one char and all are decimal chars\
+		str.isdigit()				returns True if at least one char and all are digits (Numeric_Type=Digit or Numeric_Type=Decimal)\
+		str.isnumeric()				returns True if at least one char and all are numeric (\
+		str.isalnum()				= isalpha or isdecimal or isdigit\
+		str.isidentifier()				returns True if string is valid Python identifier (set variable for data item or keyword)\
+		str.iskeyword()				returns True if string is valid Python keyword (and, def, for, if, lambda\'85.)\
+		str.islower() / isupper()\
+		str.isspace()				== \\s\
+\
+		\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 string formatting:
+\f1\b0 \
+format strings:\
+	.format() method is called on the string:\
+		'string \{pos/key\} string'.format(*args, **kwargs)		arguments are inserted in replacement fields containing position or keyword\
+		'string \{1\} string \{0\} string \{value3\} string'.format(value1, value2, value3=1000)	\
+		= 'string value2 string value1 string 1000\
+		string\{x:width.precisionf\}.format\{x=value)			width is used like this: 'string\{:3\}' for reserving 3 whitespaces ; 'string\{:3d\} for indentation \
+									, precision is decimal number followed by f\
+\
+		str(data)						converts data to a readable string if possible\
+		reps(string) 						outputs string with extra string quotes\
+		str(data).rjust(3) / reps(data).rjust(3)			output is right-adjusted and indented 3 characters\
+			ljust()\
+			center()				\
+\
+formatted string literal: f-string\
+	allows python expressions in the string\
+	you can use the same formatting mini-language used for f-strings\
+		f'string \{expression_returning_a_value!conversion:formatting\}'	f'string allows direct use of variables in strings	\
+		f'use curly braces \{\{ and \}\}'				\{\{ and \}\} escape replacement field identification\
+		rules for expressions in replacement fields:\
+			lambda expression have to be placed within ( )\
+		conversion:	!s	== str(output)\
+				!r	== rep(output)			\
+				!a	==ascii(output)\
+		format:		:width.precision				width and precision can also occur as replacement fields:\
+				:\{width_var\}.\{precision_var\}\
+\
+\
+	printf style formatting:	old depreciated version of string literals\
+		'string %s string %s' % (value1, value2)			substitutions are declared as tuples after the % \
+	or	'string %(keyword)s string %(keyword)s ' % \{'keyword':value, 'keyword': value\}	substitutions as dict-like declaration\
+	letter after % or %(..) sets the output type to:\
+		%s		string\
+		%x		octal\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Bytes / Bytearray\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\fs20 \cf0 bytes
+\f1\b0  is like str (immutable) but store byte representations in the range 0 - 256\
+	my_byte = bytes((0,2,5,244))		declared as tuples of bytes\
+
+\f0\b bytearray
+\f1\b0  is the mutable counterpart of byte\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 	
+\f1\b0\fs20 my_bytearray = bytearray((32, 123, 222,0))
+\f0\b\fs26 \
+\
+Numeric types\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0\fs20 \cf0 	numbers can be of type:\
+		 int				Integer\
+		float				floating point number  - division always returns floats\
+		Decimal\
+		Fraction\
+		\
+\
+	arithmetic operations with strings or objects will return NaN  (not a number)\
+		NaN				result of wrong number conversions\
+		Infinity				is a value for numbers outside the range\
+	division by 0 returns Infinity\
+	0x before value is interpreted as hexadecimal\
+		hex(number)				converts number to hex-number\
+	0b before value is interpreted as binary\
+		bin(number)				converts number to  binary number\
+	0o before value is interpreted as octal\
+	do not write numbers with a leading 0 !\
+\
+\
+	methods:\
+		min() / max()			returns minimum or maximum of iterable / arguments\
+		abs(number)			positive of number\
+		round(number, precision)	returns rounded float of number with given precision\
+	\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Tuples\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0\fs20 \cf0 set of IMMUTABLE values separated by commas (usually tuples are set in brackets)\
+		my_tuple = 1, 'a', \{'a':2, 'b':4\}, [1,2,'a']\
+		my_tuple == (1, 'a', \{'a':2, 'b':4\}, [1,2,'a'])\
+		tuple[1]				2nd value in the tuple (call by index)\
+		a, b = (1,2)			tuple deconstruction\
+		\
+	methods:\
+		sum(tuple)			returns the sum\
+		tuple.index(value)		returns index of value\
+			
+\f0\b\fs26 \
+Sets 
+\f1\b0\fs20 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 	set
+\f1\b0  is a collection of unique values (like with reoccurring users)\
+declaration: \
+	set(\'85..)\
+	\{\'85..,\}					to create an empty set, use set()\
+	\{f(x) for x in iterable\}			set comprehension\
+	noDoubletts = \{*list\}			removes doublettes from list+\
+	myset.add(value)\
+	myset.discard(value)\
+	myset.clear()				deletes all values\
+	my_new_set = myset.copy()		exact copy of set\
+\
+	\
+set operations:\
+	a = set(\'85\'85.)\
+	b = set(\'85\'85)	\
+	a - b					letters in a but not in b \
+	a | b					letters in a or b or both (set union)
+\f0\b\fs26 \
+	
+\f1\b0\fs20 a & b					elements in both a and b (set cut)\
+	a ^ b					letters in a or b but not in both (set disjunction)\
+\
+\
+set methods\
+	my_set.difference(my_new_set)		returns set of values that are in my_set but not in my_new_set\
+	my_set.difference_update(my_new_set)	deletes inplace the values that are not unique in my_set (= my_set - my_set.difference(my_new_set)\
+	my_set.isdisjoint(s3)			True if sets do not share elements\
+	my_set.symmetric_difference(my_new_set)	returns elements that are either in my_set or in my_new_set\
+\
+
+\f0\b frozenset
+\f1\b0 \
+immutable set datatype that can be used as dict key (why?)\
+	vowels = frozenset(\{'a', 'e', 'i', 'o', 'u'\})		\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Lists \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0\fs20 \cf0 	\
+	lists are data structures of type sequence\
+	lists contain comma-separated values that can be accessed via indexes | values do not have to be of same type\
+	slicing works analogous to strings\
+	\
+	access array elements by index number	name = arrayName[0];\
+		list[1] = #value				changes item1 in list\
+	\
+	range creates lists:\
+		range(start, stop, step)			stop is excluded; step is the step size (can be negative)						\
+	list elements can be anything including objects\
+len\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 list properties:
+\f1\b0 \
+		len					returns length of list\
+		a in list					boolean check wether something is contained in list\
+
+\f0\b list methods:
+\f1\b0 	     \
+		list[a:b]					slice\
+		+ 					concatenates lists\
+		list[a:b] = [value1, value2\'85.valueN]	partly replacement\
+		list[a:b] = []				remove list part\
+		list[:] = []				delete the whole list\
+  		list.append(value)			add value to end of lists\
+		list.extend(iterable)			add items from iterable to list\
+		list.insert(i, x)				insert item x before index i\
+		list.remove(x)				removes first occurrence of x in list (if none \'97> error!)\
+		list.pop(i)				removes and returns item with index i (without index, last item is removed)\
+		del list[a:b]				delete elements a to (not including) b\
+		list.clear()				like delete list[:]\
+		list.index(x[[a:b]])			returns index of element x (optionally within slice range [a:])\
+		list.count(x)				returns number of occurrences of x in list\
+		list.sort(key=None, reverse=False)	sorts list in place according to keyword\
+			key defines what feature of the element will be used for sorting\
+			key=None			the actual list-elements values will be used for sorting\
+			key= keyfunction		keyfunction must take a single argument and return a comparable key \'97> LAMBA function!!!	\
+			key=lambda x: x[key]		sort according to key value in dictionary or index in list/n-tuple\
+					\
+	\
+		sorted(list, key= , reverse=True)		returns new sorted list analogous to sort() \
+		list.reverse()				reverses list but returns nothing\
+		list.copy()				returns shallow copy of list (like list[:])\
+\
+	use collections.deque for efficient queue behaviour\
+		from collections import deque\
+		queue = deque([\'85..])\
+		queue.popleft()\
+\
+
+\f0\b map/filter/reduce:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0 \cf0 	are like map, filter, reduce from JS:\
+	var = 	map(callback, iterable)			returns an iterable that can be used e.g. in for-loop or turned into list, callback can be a lambda function\
+	eg	double = map(lambda x: x * 2, range(10))	double contains map-iterable\
+		for i in double:				double can be used in for loop instead of range()\
+			\'85.\
+		double_list = list(double)		double can be converted into list using list()
+\f0\b \
+
+\f1\b0 		var = filter(lambda x: x%2==0, range(10))	clear!\
+		\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 List comprehensions:
+\f1\b0 	\
+	list comprehension can often subsittute for list(map(\'85)) etc:\
+		double = [x*2 for x in range(10)]\
+		syntax for list comprehensions:\
+			[(x,y,z..) for x in listx for y in listy for z in listz \'85 if condition if condition]	list is formed of (x,y,z..)-tupels if conditions are met\
+		the first expression is the map element of the list comprehension\
+		the for expressions are treated as nested for loops\
+		expressions can be one or more-dimensional (tuples)\
+			[(x*y, x**2, y**2) for x in listX for y in listY]\
+		if statements constitute the filter element of the list comprehension \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 Collections
+\f1\b0\fs20 \
+	collections is an important module providing data structures for advanced programming:\
+		import collections\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 from collections import deque:\
+	
+\f1\b0 \cf2 \cb3 \expnd0\expndtw0\kerning0
+list-like container with fast appends and pops on either end (deque == 'double-ended queue')
+\f0\b\fs26 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+		
+\f1\b0\fs20 class deque(iterable[, maxlen])\
+\
+	methods:\
+		append() / appendleft()\
+		pop() / popleft				remove one elment from end / beginning and returning that element ( IndexError if len == 0)\
+		clear					remove all elements\
+		count(x)				count number of elements that are equal to x\
+		remove(v)				remove first occurrence of v ( ValueError if not found)\
+		extend(iterable)	/extendleft		extend deque with values from iterable\
+		reverse()				in place reversal\
+	
+\f0\b\fs26 \
+Dictionary\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0\fs20 \cf0 	dictionaries  are collections of property:value pairs also called associative arrays\
+declaration:\
+	a = \{\}						empty dictionary\
+	a = \{'key':value, 'key':value,\'85\}			keys are usually (but not necessarily) strings\
+	del 'key'						deletes key:value pair\
+	a['key']						returns value of key\
+	a['key']	= value					creates new key or overwrites existiing key with new value\
+	dict([('key':value), ('key':value), ('key':value)])	creates dictionary from list of key:value pairs\
+	dict(key=value, key=value, key=value)\
+	\{'key':value, 'key',value, 'key',value\}\
+	for k, v in a.items()				allows looping through key value pairs in dicts\
+\
+dict comprehension:\
+	\{x: f(x) for x in range(a,b))			returns a dict with keys x and values for the key f(x), not very common\
+	== \{a:f(a), a+1: f(a+1)\'85b-1: f(b-1)\}\
+or	\{k: f(v) for k, v in zip([list_of_keys], range_of_values\}\
+\
+methods:\
+	list(a,keys())					returns list of all keys\
+	key in a						boolean check whether key is in dictionary\
+	a.get(key, default)				analogue to a[key] in JS ( second argument is default if not key)\
+	values of properties can also be functions called methods\
+\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Operations/assignments/comparisons\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0\fs20 \cf0 		\
+		+ - * /				standard math operations\
+		//				floor division \'97> returns rounded down integer\
+		%				modulus\
+		**				power of\
+		= 				assignment to variable	
+\f0\b\fs26 \
+
+\f1\b0\fs20 	! assignments always return the assigned value\
+		a + b				binary + ; concatenates strings. If both operants are number, it is a mathematical +\
+		a * b				if one is a string it gets concatenated number times\
+		a += 1				increment\
+\
+	can be used serially:\
+		a < b < c == d			a < b and b < c and c == d\
+		=				assign value; can be used sequentially and returns a value\
+		a = b = c = 1+2			a, b, c == 3\
+		a = (b = a + b)			a, b = 6; \
+\
+	logical operators			\
+		and				logical AND\
+		or				logical OR\
+		not				logical NOT\
+	logical operators are short circuit and only perform the necessary steps to determine the outcome\
+\
+	conditional operator\
+		?				var x = (condition) ? valueIfYes:valueIfFalse\
+\
+	comparisons	
+\f0\b\fs26 		\
+
+\f1\b0\fs20 		Boolean(condition)		returns true or false depending on condition)\
+		!! (condition)			also returns boolean\
+		==				equal to (possibly after type conversion to number)\
+		is				returns True if both variables point to same object	\
+		!=				not equal\
+		null == undefined		returns true (special case)\
+		null == 0			returns false because of special case\
+		===				equal to and same type (no number conversion)\
+		<= / >=				obvious\
+		<  >				can be used for strings and compares alphabetically string by string
+\f0\b\fs26 \
+\
+Flow tools		\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\fs20 \cf0 if statement
+\fs26 		\
+		
+\f1\b0\fs20 if condition:\
+			action\
+	\{	elif condition2:			elif works like a switch  (else if)\
+			action2\
+		elif condition3:\
+			action3\
+		else action4		\}	default of switch statement in JS\
+you can emulate switch/case also using a function dictionary:\
+	func_dict = \{\
+		'condition' : action,		action can be a def or a lambda function\
+		'condition2': action2,\
+		'condition3': action3,\
+		\}\
+	now use func_dict.get(condition, action4)()	better than func_dict[condition]() because get can make use of default statement (action4)\
+\
+	or in combination:\
+	def func_dict(condition):\
+		return \{\
+			'condition' : action,		if you have to call this a lot, its best to cache the actual function dictionary in a variable and call it in your function \
+			'condition2': action2,\
+			'condition3': action3,\
+			\}.get(condition, action4)()	the function takes the condition as argument and returns the executed get on the function dictionary\
+		\
+	\
+\
+
+\f0\b for loop:
+\f1\b0 \
+		for item in iterable:\
+			action(item)\
+		for char in string[:]		loop over copy of modified iterable\
+			transform string		\
+		\
+		for i in range(n):			loop n times over action(i)\
+			action(i)	\
+\
+		for i in range(n,m,s):		loop from n to m with increment s over action(i)\
+			action(i)			\
+		for i in range(len(a)):		loop through all items of iterable a\
+			action(i)\
+		\
+\
+		range(a,b,c)			is a numeric list generator not restricted to for loops\
+\
+
+\f0\b break and continue
+\f1\b0 			work like in JS (break out of innermost loop/ jump over one loop iteration\
+\
+	for i in range(x,y):			else in combination with a for loop is executed if no exception or break occurred within loop\
+		action				otherwise nothing runs after the for-loop!!!\
+	else:\
+		action2\
+	pass					pass does nothing and is used when syntactically a statement is needed\
+\
+\
+
+\f0\b looping through data types:
+\f1\b0 \
+	for lists you can use enumerate to loop through index and value\
+		for i, v in enumerate(list):	actually enumerate returns (index, value) tuples that can be unpacked directly\
+			print(i, v)	0 value  1 value\'85.\
+\
+	for looping through more sequences simultaneously, use zip:	also returns tuples that can be unpacked\
+		for a, b in zip(list1, list2):\
+		for a in zip(list1, list2, list3):\
+			(x1,y1,z1) (x2, y2, z2)\
+\
+	for dictionaries you can use items() to loop through keys and values:\
+		for k, v in myDict.items()\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 									\
+Functions \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\fs20 \cf0 functions are objects containing script ("action objects")\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 declaration:
+\f1\b0 		\
+	def funcName(args):\
+		'''docstring'''				docstring is good for documentation and can be accessed via funcName._doc_\
+		body\
+	\'85.empty line\
+	def funcName(arg1, arg2=default-value)		like in JS, you can apply default values\
+\
+	!! variables as defaults are evaluated at function definition in the defining scope\
+\
+!!! if you do not return anything in a function, return None is implied\
+\
+\
+
+\f0\b arguments:
+\f1\b0 \
+	arguments can be passed as positional or keyword:\
+		def func(arg1=value1, arg2=value2, arg3=value3,*args,**keywords)\
+		func(value, value, value)		positional argument (processed according to order of arguments)\
+		func(value2, arg2=value1)		one positional, one keyword, one omitted \'97>default\
+	!! positional arg after keyword arg is not possible (amiguous)\
+	force keyword arguments for all parameters following an * asterix:\
+		def func(a, b, *, c='a', d='a'		c and d have to be provided as c=.. and d=.. by the caller\
+	all remaining positional arguments are stored in the 
+\f0\b tuple
+\f1\b0  name			(like arguments\
+	all remaining keyword arguments are stored in the 
+\f0\b dictionary
+\f1\b0  keywords\
+\
+	call a function with arguments from list requires list spread operator *\
+		args = [1, 2, 3]\
+		func(*args)				calls function using individual arguments of list\
+	call a function with arguments from dictionary requires dictionary spread operator **\
+		dict = [\{"arg1":"value1", "arg2":"value2"]\
+		func(**dict)				calls function using individual arguments of list\
+\
+
+\f0\b lambda functions:\
+	
+\f1\b0  are like arrow functions that are used immediately (e.g. in map or filter):\
+		lambda arg1, arg2,..argN: f(args)	f(args) is some expression of arguments that is returned\
+\
+\
+
+\f0\b Decorators
+\fs26  \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0\fs20 \cf0 to add (and quickly be able to remove) extra functionality to functions use decorators with the @ keyword:
+\f0\b \
+\
+
+\f1\b0 	define some decorator that wraps around function and returns it:\
+		def some_decorator(func):\
+			def wrapper():\
+				actions with func and its arguments\
+				maybe execution of func:\
+				func()\
+			\
+			return wrapper\
+normally (JS), you would decorate like this:	\
+	decorated_func = some_decorator(func_without_decorator)\
+\
+shorthand in Python:\
+	@some_decorator				@ with decorator before function definition wraps with decorator\
+	def func_without_decorator:\
+		\'85..\
+\
+\
+	@some_decorator\
+	def simple_func():\
+		return something\
+\
+multiple decorators:\
+	@decorator1\
+	@decorator2\
+	def func1():\
+	\'97> decorator1(decorator2(func1)()		decorators are applied bottom to top\
+\
+defer metadata to decorator:\
+	metadata from wrapped function like __doc__ is not transferred to wrapper function \
+	use functools.wrapper to do this:\
+		import functools\
+		def decorator(func)\
+			@functools.wraps(func)		this line is enough to transfer metadata to wrapper\
+			return \'85\'85\'85\
+decoration with functools\
+	import functools\
+	\
+	def my_decorator(func):\
+		@functools.wraps(func)			without functools.wraps, you have to take care of arguments yourself\
+		def wrapper():\
+			action1\
+			func()\
+			action2\
+		return wrapper\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\fs26 \cf0 Iterators/ Generators
+\f1\b0\fs20 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 iterables
+\f1\b0  are accessible via for \'97 in -loops\
+
+\f0\b iterators 
+\f1\b0 produce iterables in place using the next() method on them\
+	are implemented via __iter__() method that calls an object containing a __next() method that does the following:\
+	within a class:\
+		def __next__(self):\
+			self.index = self.index + 1 	indexing can also be reversed or whatever you want it - can be used in the loop\
+			if condition:			condition should be an expression of the index	\
+				raise StopIteration\
+			return self.data[self.index]	just an example but should return some data to be iterated over\
+	for loops turn iterables into iterators\
+ 	you can turn interables (like strings or lists) into iterators using iter() on them:\
+	s = 'Hello'\
+	s_iterator = iter(s)				iter(s) returns an iterator that can be used for next() calls\
+	next(s_iterator) == 'H'			\
+	next(s_iterator) == 'e'\
+\
+
+\f0\b generators \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0 \cf0 use yield to give staggered output for creating iterators\
+also, they are more memory efficient because there is no large list that has to be stored in memory\
+	range() is a generator function (because it has no list containing all values..)\
+	\
+	generators use `yield` instead of `return`\
+	def myGenerator(data)\
+		for index in range(0,len(data)):\
+			yield data[index]\
+\
+	can be called with for in loop direclty without defining __iter__() or __next__() (are declared automatically)\
+		for item in myGenerator:\
+			print(item)\
+you can call next() directly on the generator:\
+	def g():\
+		yield some result		\
+	next(g)					return the yielded result and moves to the next yield\
+\
+generators can also be declared via generator expression (also called generator comprehension)\
+	gen = (f(n) for n in range(a,b))			creates generator that is accessible via next()\
+\
+(this is analogous to list comprehensions:\
+	genlist = [f(n) for n in range(a,b)]\
+\
+generator expressions can be directly consumed by for loops or sum-functions or the like:\
+	for i in (x*x for x in range(a,b)):\
+		....\
+\
+	sum(x*x for x in range(a,b))			if used as single argument for function, the expression's \
+							parens can be omitted \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 OOP
+\f1\b0\fs20 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 declaration:
+\f1\b0 	\
+	Classes are declared via:\
+		class MyClass():					write as CamelCase\
+			attribute1 = value1				static attributes (class object attribute)\
+			attribute2 = value2				static attribute (class object attribute)\
+			def __init__(self, param1, param2):			object constructor to define instance attributes (state of the instance)\
+				self.param1 = param1			creating instance attribute on self\
+				self.param2 = param2			creating another instance attribute on self\
+				self.derived_param = f(self.param1,self.param2, myClass.attribute1)\
+				actions\'85				these actions are executed with every instance creation\
+			def func(self):					instance method (access to instance via self\
+									access to class variables via self.__class__\
+				myClass.attribute1 (or self.attribute1)	class object attributes have to be called with self. or the actual class name\
+				self.param1\
+\
+			@classmethod					class method decorator flag (cannot be used by instances\
+			def class_method(cls, *params):			access to class via cls-parameter\
+				actions\'85..\
+\
+			@classmethod\
+			def subclass_constructor(cls):			you can use this classmethod factory to create preset instances of my class\
+				return cls(*params)			cls calls the class itself with *params (__init__ is used from class)\
+\
+			@staticmethod					static method flag\
+			def static_method(*params)			cannot access self or cls - only used as a general method in the Class namespace\
+									can however be called on an instance (without gaining access to variables)\
+\
+	make instance:\
+		myObject = MyClass(value1, value2)			type(myObject) == __main__.MyClass\
+\
+	reference attributes:\
+		myObject.attribute1\
+		myObject.func()\
+\
+	each value is an object and has its class (referenced as object.__class__\
+\
+
+\f0\b inheritance
+\f1\b0 \
+	to inherit from a class just define a class with another class as argument:\
+		class derivedClass(baseClass):\
+			def __init__(self,*args_from_baseClass,  *additionalParams):\
+				baseClass.__init__(self):				execute the baseClass constructor \
+		or		super().__init__(self,  args_from_baseClass)	execute the baseClass constructor \
+				self.additionalParam1 = additionalParams[1]\
+				\'85.\
+			def \'85							new methods are exclusive to derivedClass and can overwrite baseClass methods\
+			\'85.\
+\
+
+\f0\b dunder methods:
+\f1\b0 	\
+	many methods on objects expect the object to have a dunder method:\
+		print() expects a __str__ method to get the string representation of that object\
+		for loops expect a __next__ method passing the iterator\
+		len() expects __len__ method to return an integer\
+		del (delete object) expects __del__ to give some feedback to the deletion\
+		for logging and other infos about classes and functions, a __repr__ method is called:\
+			def __repr__(self)				example for class\
+				return repr((self.__class__.__name__, self.other_info))	\
+	here, output is chosen as a tuple of all keys necessary for logging\
+\
+	defining these methods in your classes makes them usable by these built-in Python methods\
+	they should return some kind of value usable by the built-in method\
+		to make an object behave like a function (making it callable) use the __call__ method:\
+		class myClass:\
+			def: __init__\'85\
+			def: __call__(self, parameter):\
+				return something\
+	class variables can be accessed as myClass.variable\
+		in class methods they can be accesses as self.__class__.variable\
+	\
+
+\f0\b builtin methods:	
+\f1\b0 \
+	isinstance(object, class)				is True if object is inherited or direct instance of class\
+	issubclass(class, class)				boolean test for class inheritance (not instances)\
+	\
+	__class__.__name__				is the name of the Class (to be usable by __repr__ or __string__)\
+\
+base classes: (ABC = abstract base class)\
+	if you want several classes to share a common set of methods you can use an abstract base class that defines the required methods place holders (which every subclass has to implement individually)\
+	this base class should not be instantiable and an error should be raised if subclasses do not define required methods:\
+		from abc import ABCMeta, abstractmethod		you need this module to mark class as proper ABC\
+\
+		class Base(metaclass=ABCMeta):\
+			@abstractmethod:			@abstractmethod wrapper makes this method only callable in subclasses\
+			def foo(self):\
+				\
+	\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 I/O
+\f1\b0\fs20 \
+	to open files for read/ write operations use:		`with open` incorporates a try except block and makes sure that everything is closed afterwards \
+		with open('pathToFile', mode=[[option]]) as f:		f can be any variable, file is properly closed after performed actions\
+			[[options]]:		r		default, read file\
+						w		(over)write file\
+						rw		read and write\
+						a		append file with data\
+						rb		appended b means binary mode for non-text files\
+			data = f.read(size)			data is read from file object (size is maximum bytes to be read)\
+								reading a file moves the read cursor to the end so it cannot be read again\
+			line = f.readline()			reads one line from the file ( defined by /n)\
+	loop through lines of a file with for line in f:		file object is iterable over its lines\
+	make a list from f:\
+		dataList = list(f)\
+	or	dataList = f.readlines()\
+			f.write(data)				data is written to file according to set file mode (not possible in r-mode)\
+								data has to be converted to string (or byte) for writing to files\
+			f.write(b data)				write binary data\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\tx9380\pardeftab720\pardirnatural\partightenfactor0
+\cf0 			f.tell()					returns files current cursor position\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 			f.seek(offset, pos)			move cursor to offset relative to pos, works fully in binary mode\
+								pos: (0 = begin, 1 = current, 2 = end)\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 context manager protocol:
+\f1\b0 \
+	in order for a custom class to support with statement, two dunder methods have to be implemented:\
+		def __enter__(self):				python calls __enter__ when class is called with 'with'\
+		    eg.	self.file = open(self.name, "w")\
+			return self.file\
+		def __exit__(self, \'85.)				python calls __exit__ at the end of the with statement\
+			if self.file:\
+			    self.file.close()\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Error handling
+\f1\b0\fs20 \
+	normally, errors stop a script\
+	for error handling, use the try-except-else-finally scheme:\
+	try:\
+		put fragile code here	\
+	except TypeError: 					you can specify the kind of error	\
+		what should be done in case of TypeError		\
+	except anyKind of built-in error:				there are many! look them up in the documentation..\
+		what should be done in case of specified error\
+	except:			\
+		what should be done in case of any other error\
+	else:	\
+		what should happen without an error\
+	finally: \
+		code that should always run regardless of any errors\
+\
+in case of input validation, you optimally put it all in a while True loop to get error-free input\
+	while True:\
+		try:	\
+			userinput\
+		except:\
+			prompt user to repeat input\
+		else:\
+			break     (leave while loop)\
+		[finally]:\
+			in case you need this\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 custom error classes
+\f1\b0 \
+	define custom errors based on one of the built-in error classes (Exception, ValueError, TypeError, KeyError):\
+		class custom_error(ValueError):\
+			pass					if the name of the error class is sufficient, nothing here to add\
+	you can also build custom error base classes for your modules and derive specific error classes from them\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Linting and Unit tests
+\f1\b0\fs20 \
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 linting:
+\f1\b0 	pylint is a library that checks errors and styling abberations based on PEP8\
+	pylint can be inserted into Sublime via Sublime linter\
+	alternatively, you can use pylint from CLI:\
+		$ pylint <path to python-script>			returns a CLI output with all the errors and interesting statistic output for your script\
+\
+
+\f0\b unit testing:
+\f1\b0 \
+	unittest is a built-in test unit:\
+		import unittest\
+		import file with your function my_func you want to test\
+		\
+		class TestMyFunc(unittest.TestCase):		inherit from specific unittest Class\
+			def test_my_func(self):\
+				test_value = \'85\'85		use a test value you know the result for \
+				result = file.my_func(test_value)	get result from your function\
+				self.assertEqual(result, expectedResult)\
+			add more tests\'85\
+\
+		unittest.main()					make it executable via CLI\
+\
+
+\f0\b asserting:
+\f1\b0 \
+	you can use assert in your code as an internal check eg. to ensure that certain values fall within a preset range after calculation or such\
+		assert condition, 'Error Message'			if condition is not met, as AssertionError is raised\
+	!!! do not use brackets around assertion parameters as this will be interpreted as Truthy tuple instead of condition + message!!!	\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Copying objects:
+\f1\b0\fs20 \
+shallow copies of collections:					one-level depth: elements are still copied by reference\
+		new_list = list(old_list)\
+		new_dict = dict(old_dict)\
+		new_set = set(old_set)\
+deep copies (all elements are copies by value):			works for built-in data types and custom object (class instances etc)\
+		import copy					require built-in copy module\
+		b = copy.deepcopy(a)				all-level copy\
+copy control:\
+	copy behavior of object classes can be controlled by __copy__ and __deepcover__ methods}

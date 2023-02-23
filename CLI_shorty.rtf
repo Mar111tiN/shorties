@@ -1,0 +1,516 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw12240\paperh15840\margl1440\margr1440\vieww24700\viewh15240\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs36 \cf0 general syntax:\
+
+\fs20 \
+
+\f1\b0 	command -option1option2ioption3 argument1 argument2\'85\
+wildcards are used to represent a list of paths:\
+	*				matches any string\
+	?				matches any char\
+
+\f0\b 	
+\f1\b0 [setofchars]			matches set of characters\
+	[!setofchars]			matches all BUT set of chars\
+\
+use \\ to break lines in long commands that are not interpreted as \\n\
+Quotes:\
+	use " " to embed text with whitespaother special chars\
+		except  $ /		most expansions are still possible\
+		escape with \\$ and \\/\
+	use ' ' to not escape $ and / \
+\
+setting variables before command call only sets these variables for this command call:\
+	IFS=":" read var1 var2		allows input of value1:value2 (transiently sets field separator to :)\
+\
+\
+
+\f0\b\fs26 Expansions:\
+
+\f1\b0\fs20 \
+
+\f0\b pathname expansion:
+\f1\b0 \
+wildcards work as pathname expansion:\
+	* is first expanded into all files in current folder before evaluating the condition (??)\
+\
+
+\f0\b expression expansion:
+\f1\b0 \
+	$((expression))			expands arithmetic expression to text (only int calculation!)\
+	pre-\{A,B,C\}-suf			will be expanded to pre-A-suf  pre-B-suf pre-C-suf \
+	pre-\{1..3\}-suf			will be expanded tso pre-1-suf pre-2-suf pre-3-suf \
+\
+
+\f0\b parameter expansion:
+\f1\b0 \
+	$PARAM			will look for variable and expand it\
+	$\{PARAM\}			protects variable from expansion as in $PARAMotherstuff\
+\
+
+\f0\b command substitution:
+\f1\b0 	\
+	$(command)			expands output of bash command or commands\
+	`command`			equal to $(.....)\
+eg:	file $(ls /usr/bin/* | grep bin/zip)	list files in usr/bin that contain 'bin/zip' \'97> file view \
+\
+\
+
+\f0\b\fs26 Special Paths:\
+
+\f1\b0\fs20 \
+	/				root directory\
+	.				current directory\
+	..				parent directory\
+	~				home directory of user\
+	./ can be omitted		paths relative to current directory can be written directly\
+\
+
+\f0\b\fs26 file system:
+\fs20 \
+
+\f1\b0 	cd /path			change directory to path\
+		cd /			go back to roots folder\
+		cd ~			go back to home folder\
+		cd -			toggle between last used folders\
+					go back one level\
+	pushd path			go to a path and push the path to the stack\
+	popd path			go back to the last directory and remove left-most path on stack\
+	dirs -v				show list of paths on the stack with numbers\
+	cd ~n				go to path n on the stack (moving this path to the top of the stack)\
+	\
+\
+	
+\f0\b file
+\f1\b0  `name`			output type of file \
+\
+	
+\f0\b mkdir
+\f1\b0 	`name`			create new folder\
+		-p			create new subfolders if neccessary\
+	
+\f0\b touch
+\f1\b0  `name`			create new file or update modification time when file existed\
+	
+\f0\b cp
+\f1\b0  file1 file2			copy file1 to file2/folder2,\
+					if file/folder  does not exist, it is created\
+		-i			interactive: user is asked in case of overwriting\
+		-R			copies folder and content to path (-R ..recursive)\
+	
+\f0\b mv
+\f1\b0  file1 file2			rename file1 into file2\
+	
+\f0\b mv
+\f1\b0  file1\'85 folder		move file1 and following to folder \
+	
+\f0\b rm
+\f1\b0  files\'85			delete files\
+		-R			delete folder\
+	
+\f0\b ln
+\f1\b0  -s file link_name		create symbolic link\
+	
+\f0\b ls
+\f1\b0 \
+		-a			include hidden files\
+		-r			reverse\
+		-S			sort by file size\
+		-t			sort by modification time\
+		-lh			display list in long format (h giving k/ M/ suffixes)\
+		-d			info about directories and not files\
+		-m			stream output (comma-separated)\
+		-F			prepend output with symbol signifying / directory * executable @ symbolic link \
+		-H			symbolic links are followed\
+\
+	
+\f0\b du
+\f1\b0 				shows disk space of file/ folder\
+		-s			only top level\
+		-d n			depth level n\
+		-h			human-readable output\
+		-c			display grand total\
+	
+\f0\b locate
+\f1\b0  filename			finds files based on name in file database (updated daily)\
+		--regex 'regexp'		finds files containing regexp pattern\
+\
+	
+\f0\b find
+\f1\b0  path condition		find all files in path (and subdirectories) that fulfill conditions\
+		-L			follow symbolic links\
+		-P			never follow symlinks\
+		condition: \
+			-type d		is directory\
+			-type f		test for: is file\
+			-type d		directory\
+			-type l		symbolic link\
+			-name "\'85.."	test for: has name "\'85."	can use wildcard patterns like "*.mp3"\
+			-iname		case-insensitive name\
+		-E			use extended regexp expressions\
+		-regex 'regexp'		output exactly matches regexp (unlike grep where match is contained in line)\
+		-size +1M		size larger than 1 Mb\
+		-size -1G		size smaller than 1 Gb	(k: kilobyte, c: bytes)\
+		-cmin n			last modified n minutes ago (works with + and -)\
+		-cnewer file		last modified after file\
+		-group name		belonging to group name\
+		-perm mode		having permission set to mode\
+		-user name		files belonging to user\
+		-print0			produces null-separated output (if whitespace-separation creates problems)\
+		actions:\
+			-delete		deletes results of find\
+			-ls		lists the results\
+			-exec command '\{\}' +	performs command on list of found items\
+	or	\'85 | xargs command	pipes standard output of find into argument list for command\
+		\'85 is | xargs \'97null	\'97null option takes null-separated argument list (good if files contain spaces)\
+	find tests can be combined with operators -and / -or / -not (separate tests are grouped via \\(\'85\\):\
+	find /user/bin \\( -type f -not -cmin +20 \\) -or \\( -type -d -not -cmin +30) = (and can be omitted before -not)\
+		find in /user/bin all files newer than 20 min or folders newer than 30 minutes\
+\
+\
+
+\f0\b\fs26 FLOW\
+
+\fs20 \
+if branching\
+
+\f1\b0 	if [ expression ]; then			[ expression ] is an evaluated test, else the exit status of a  command can be used\
+		commands\
+	elif [ expression ]; then\
+		commands\
+	else \
+		commands\
+	fi
+\f0\b\fs26 \
+
+\f1\b0\fs20 \
+	if command1; then command2; fi	here a command1 is executed and if exit status = 0,  command2 is executed\
+						check exit status with variable $? (exit status of previous command)\
+\
+\
+
+\f0\b\fs26 data processing\
+
+\f1\b0\fs20 \
+output filters:\
+	head				displays the first 10 items of something\
+		-n			sets subsequent numerical to specify lines\
+		-b			sets subsequent numerical to specify bytes\
+		num			only that many lines/bytes are displayed\
+	tail				displays last 10 items of something\
+\
+sort\
+	sort				sort input (alphanumerical is default) per line\
+	sort file1 file2 > file1+2		sort lines from file1 and 2 into file1+2\
+		can be used in pipe or accept several input files and sorts lines to standard output\
+		-n			numerical\
+		-r			reverse order\
+		-b			ignore leading blanks\
+		-f 			ignore case\
+		-m			treat arguments as sorted files that are only concatenated without sorting\
+		-k field1[, field2]		sort by key (  ) ( field are tab or space-separated entries per line\
+	every field is called by range of number separated by comma and sort options are directly appended to field:\
+	eg 	-k 3,4nr			sort by string field3_to_field4 using ascending numerical sorting\
+	secondary keys can be added (one number means from field to end of line)\
+	eg	-k 3,3nbr -k 5b		sort field 3 (3,3=from 3 to 3) numerically (n) ascending (r) without space (b) \
+	you can specify the character of the field by dot\
+	eg	-k 3.7nbr		sort by third field starting at 7th character    \
+		-t char			define field separator\
+		-o `file`			output to file\
+	\
+	uniq				deletes adjacent duplicate lines (so it only works efficiently on sorted lines _ sort file | uniq\
+		-c		man fin	list of duplicate lines with preceding number of occurrences\
+		-d			only shows repeated lines\
+		-f n			ignore the n leading fields (separated exclusively by whitespace\
+		-s n			ignore the n leading characters in each line\
+		-i			ignore case\
+		-u			only output unique llines\
+	cut 				extract line sections to standard output\
+		-c char_list		extract based on comma-separated numerical character ranges\
+		:: cut -c 7-10		extract character 7 to 10 of every line\
+		-f field_list		extract based on comma-separated numerical field ranges\
+			-d `delimiter`	set field delimiter for -f\
+		\'97complement		negative extraction (everything BUT what is specified in c or f\
+	paste	file1 file2		line-wise pasting of text\
+	(to change tabs to spaces in tab-delimited text files use expand file)\
+	paste file1 file2			paste columns of file2 after columns of file1sa\
+join -1 n	 -2 k	file1 file2		combine data from different files based on common field(s) nth field in file1 and kth field in flle2\
+					only works if both files have been sorted on the field	\
+grep\
+	grep `string` /pathtofile		searches string within files/ grep also works with regExps#					processes data line by line and shows all lines that meet the condition\'97> great NGS data\
+		-i --ignore case		ignore case\
+		-v --invert-match	inverted match\
+		-E			use extended regexp ( or use egrep)\
+		-c --count		print number of matches per line\
+		-l --files-with-match	print name of files containing the match\
+		-L			print files NOT containing the match\
+		-n --line-number		prints matching lines with leading line number\
+		-h --no-filename		suppress file names in result\
+		\'97color			highlights the searched-for string within the line\
+		\'97invert-match		shows all lines that do not fulfill condition\
+	regexp should be put into '...' to prevent CLI to interpret as expansions or such\
+\
+	tr charSet1 [charSet2]		translate or delete characters\
+					without options charSet1 is translated to charSet2\
+		-d			delete characters from charSet1\
+		-s [charset]		remove duplications of charactersor charsets from charSet1\
+\
+	fmt				format standard input\
+		-c			indent only first two lines of text\
+		-w n			wraps text to n characters\
+		-u			uniform spacing (1 space between words and two spaces between sentences)\
+		-p char			wraps only lines that contain char\
+	pr				splits input into different pages in prep for lpr (printing)	\
+\
+show stuff:\
+	echo string			output string to standard output\
+	echo string>%2			output to error message\
+		-n			without a line break\
+	pwd				show current directory\
+	ls path				list the files/folders in that directory\
+		-l			long list\
+		-i			also list the inode (unique file identifier -> helps finding hard links)\
+		-a			also hidden files\
+		-R	 		lists also in subfolders\
+		-t			sorted in time order of creation\
+	type `command`		outputs the type of command (built-in, alias, executable, shell function)\
+	which 'command'		outputs location of command\
+\
+	cat /pathtofile			read file (if no file is provided standard input is used (STOP input with Ctrl-D)\
+		-t			show non-printing characters\
+		-n			prepend line number\
+		-s			squeeze multiple empty lines \
+\
+	wc				count words, newlines and bytes\
+		-l			only newline counts\
+		-w			only word counts\
+		-c			characters\
+	\
+	cat /pathtofile1 > pathtofile2	write content from file1 to file2\
+	printf "formatstring", string	formatstring follows\
+		formatstring:		string containing literal text and %format commands	\
+					%format commands apply to every argument string in that order\
+		%s			format the string itself\
+		%d			format numbers\
+		%f			format floating point numbers\
+		%o			format integers as octals\
+	in detail: %[flag][width].[precision][file-specifier]\
+		flag:	#		altenate form\
+			0		filled with leading zeros\
+			-		left-aligned\
+			`\'b4		leading space for positive numbers\
+			+		add plus sign\
+		width			number specifying minimal field width\
+		precision		if file-specifier is f it is the number of digits of precision (after .)\
+					precision for a string results in its truncationmake\
+	help 'command'			get documentation for command\
+	man `program`			shows manual for program \
+	ln `target` link_name		create link to target\
+		-s			creates symbolic link (without -s option a hard link is created)\
+		-v			verbose\
+		-i			interactive, shows prompt if target \
+	printenv				show environment variable\
+	uname				show system info\
+		-a			all\
+		-p			processor\
+		-o			operating system\
+		-m			hardware\
+
+\f0\b sed 
+\f1\b0 stream editor\
+	sed '[adress]instruction' file		performs instruction (as script or command) on each line of the flle 					instructions begin with a single letter\
+	adress: 	n			line number\
+		n,k			from line n to line k\
+		n~k			starting with n and then every k lines\
+		adress,+n		line defined by address and n following lines\
+		$			last line\
+		/regexp/		lines matching a regexp\
+		adress!			every line except this adress\
+\
+	instruction:\
+		p			print the result to stdout\
+		s /regexp/replacement/	substitutes regex with replacement - / is an arbitrary delimiter\
+		y/set1/set2		transliteration from set1 to set2\
+		\
+
+\f0\b\fs26 Job control\
+
+\f1\b0\fs20 \
+	ps / jobs			list of all running programs (with job_ID for kill()\
+		default			all processes launched from current terminal\
+		-x			list all processes (incl. launched during boot)\
+		-a			processes of all users (except group leaders)\
+		-u			detailed information\
+		-f			less information\
+		-e = -ax			every currently running process\
+		-auxww			all running programs\
+	kill processID			quits process (or send signal to process)\
+		-15 / -SIGTERM		default = terminates program\
+		-9 / -SIGKILL		kills process immediately\
+		-2 / -SIGINT		interrupt process (like Ctrl-Z from terminal)\
+	killall app			quits app (same options as kill)\
+	killall -STOP app		stops app\
+	bg				resume program in background\
+	curl /pathtofile		get source code from file (can be used for webpage)\
+\
+\
+	lpr 				print input\
+\
+
+\f0\b general flags:
+\f1\b0 \
+	-r				run command recursively (that means including subfolders of given path\
+	-i				interactive: user is asked before deleting and such\
+	-t				\
+
+\f0\b options:
+\f1\b0 \
+	- - help				often shows documentation for command\
+\
+\
+
+\f0\b\fs26 I/O
+\f1\b0\fs20 \
+standart output is the the return destination of most programs and commands\
+\
+use > to redirect output to appending command:\
+	ls -l > test.txt			redirects output of ls to txt.file\
+	ls > `other command`		result is redirected to other command\
+\
+	1>&2				redirect standard output (stdout = 1) to error output (stderr = 2)\
+	1>/dev/null 2>&1		silences all output (from right to left: first stderr is redirected to stdout, than stdout to nullfhead\
+\
+use >> to append output to file you write to (or other input)\
+\
+< to specify standard input to commands (default is the keyboard):\
+	sort < test.txt\
+	\
+   	command <<<	strings		command receives here script as standard input \
+eg.	read var1 var2 var3 <<< value-list\
+\
+
+\f0\b Piping Commands
+\f1\b0 \
+using the | operator you can make the stdout of the left command the stdin of the right command:\
+	ls -al /path | grep `string`	finds all files/folders with string in file name\
+	something | less		sends output via pipe to output program less /view by page (space..next page / b..back q..quit)	read cannot be used in pipes	pipes create subshells so global $REPLY is not written (is in subshell environment)\
+tee	use tee to branch of intermediate data from a pipeline into both a file and stdout\
+	command | tee file.txt | command2 | ...	\
+\
+
+\f0\b\fs26 Permissions
+\f1\b0\fs20 \
+can be seen with the ls -l option:\
+	drwxr-r-xrr			first letter: - = file / d = directory\
+					2-4: permissions of file owner (r=read, w=write, x=execute)\
+					5-7: permissions of file group\
+					8-10: permission of all \
+permission in directories:\
+	r 				content can be listed (if x is set)#\
+	w				files in directory can be changed/created\
+	x				directory can e entered\
+	chmod	perm file		change permission of file or folder\
+					can be used with octal shorthand:\
+		rwx			7\
+		rw-			6\
+		r-x			5\
+		r--			4\
+		---			0\
+	chmod 700 file			rwx------\
+		766			rwxrw-rw-\
+		755			rwxr-xr-x\
+	chown new_owner file		change file ownership (must be superuser)\
+	chgrp new_group file		change group ownership of file (in sudo)\
+					you must be owner of file to change group\
+	sudo command			call terminal as superuser (admin)\
+	sudo su				enter superuser mode\
+		exit			leave superuser mode\
+	id -u				prints numeric number of user ( 0 for superuser)\
+\
+\
+
+\f0\b\fs26 Apps
+\fs20 	
+\f1\b0 \
+\
+
+\f0\b less
+\f1\b0  is a general purpose text reader\
+zless can be used for gzipped files\
+	b			scroll back\
+	space			scroll down\
+	G			go to end\
+	1G			go to start\
+	/char			search forward for character\
+	n			repeat search\
+	h			help\
+	q			quit\
+in less use /regexp to highlight strings that match pattern\
+\
+	nano				text editor\
+		\
+\
+
+\f0\b\fs26 Compiling from source\
+
+\f1\b0\fs20 download source file \
+	usually as compressed tar (tarball) containing the source tree\
+unpack source with tar:\
+	tar xf <file_name>	\
+	first option is mode:
+\f0\b\fs26 \
+
+\f1\b0\fs20 		x		extract file\
+		c		create archive\
+		r		append pathnames to end of archive\
+		t		list content of archive\
+		v		verbose (used with t) is like ls -l option\
+	second options:\
+		c		change directory after opening (in x mode)\
+		f file		read from (x mode) or write to specified file (f - ) means to standard output\
+	*.c files are modules written in C\
+	*.h files are header files that read the requirements in *.c modules\
+\
+build the program:\
+	./configure		run configure to analyze the built environment \'97> should proceed without error message\
+	.			\'97> creates Makefile needed for the compilation by make\
+	make			runs with Makefile and creates an executable\
+install program:	\
+	sudo make install	installs the file in the installation target (usually usr/local/bin \'97 needs sudo rights)\
+\
+
+\f0\b\fs26 web access
+\f1\b0\fs20 \
+for simple internet pages or APIs use curl:\
+	curl path_to_internet_page [> file]	save internet page to file\
+		-a				append to target file during upload\
+		-C <offset>			begin download at given offset\
+		-o <file>			write output to file (instead of standard output)\
+		-O				write output to local file named like the remote file\
+		--create-dirs			create directories specified in -o option\
+		-d <data>			data is send as POST request to HTTP server\
+		-G				makes data specified with -d option be sent with GET request\
+		-D <file>			writes received headers to file\
+		-F <name=content, name2=content2>	sends data as POST request using the specified data\
+						if content is a file name use name=@file_name (files is attached to request)\
+		-I				only fetch headers\
+		-L				redirect to new source in case target has moved\
+		-w				write transfer information to stdout\
+		-v				verbose- gives lots of info during transfer\
+	you can use \{a,b\} or [1-5] etc as path expansions to connect to several targets\
+	for output file -o option you can then use #1, #2 etc to name the files using the current strings (#1 for the first path expansion declaration etc.)\
+\
+for ftp access use the rsync command:\
+	rsync [options] "path_to_ftp_server:file" or "path_to_ftp_server_daemon::file" source (or .)\
+		-a				archive mode (all symlinks, permissions, ownership etc are preserved\
+		-v				higher verbosity (?)\
+		-z				copy and gzip files\
+		-r				recursive\
+		-u				update function (only add newer versions)	\
+		-n				show what would happen\
+		-P				show progress }

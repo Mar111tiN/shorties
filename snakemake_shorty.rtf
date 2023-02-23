@@ -1,0 +1,160 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Snakemake
+\f1\b0\fs20 \
+is a bash script that creates rules for input and output and runs scripts in order to create that output from that input\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 configfile: "<name>.yaml"			
+\f1\b0 load a config file \
+\
+--> in config.yaml:					define variables in a dict-like fashion (YAML syntax)\
+	samples:\
+		A: data/...\
+		B: data/...				\
+		C: data/...\
+\
+--> in Snakefile:\
+	rule my_rule:\
+		input:\
+			my_data="expand("sorted_reads/\{sample\}, sample=config["sample"])\
+							config["sample"] returns the list of keys in config.sample\
+\
+\
+is based on rules that define specific jobs:\
+
+\f0\b rule all:
+\f1\b0 \
+	input:						the input of rule all is the target of the whole analysis\
+							there is no output | input just pulls the whole computation\
+\
+
+\f0\b rule my_rule:
+\f1\b0 \
+	input:\
+		'file_name',				any input that is the output of another rule, make this rule execute\
+		'file_name',				a list or tuple of strings will be contatenated with whitespace to \{input\}\
+							any python callback (or lambda) function could be used here that returns a list of paths\
+							in callbacks you can also return dicts with the key as a name for a named input\
+							 --> you need to use unpack(callback) to use that function\
+	output:\
+		name1='path_to_output_file'	naming input and output like that allows easy access t\
+							o individual i/o files (eg. output.name1)\
+		name2='path_to_output_file'	i/o paths are relative to the working directory (cwd option)\
+		name3=temp('path_to_output')	files marked with temp() will be deleted after every consuming job has been performed\
+		name4=protected(''path_to_output)	marks file as write-protected after the run\
+		touch('mytask.done')		if a command does need to run independent of file dependencies, you can output touch(flagfile),\
+							which will be the input of a dependent job ( input: 'mytask.done')\
+	group: "mygroup"				rules belonging to the same group are submitted as one connected job\
+							(should be used for small fast-running jobs)\
+\
+	params:\
+		param1=".....\{sample\}......"	assign arbitrary parameters to be used in shell command as \{params.param1\}\
+		param2=lambda wildcards, input, output, threads, resources: "......config...... \{input\}....."\
+							params can also take callback function with access to wildcards and other rule parameters (as keyword arguments)\
+	\
+ \
+	run:						you can use python in your rules\
+		with open(output[0], "w") as out:\
+			for l in sorted(open(input[0])):\
+				print(1, file=out)\
+		within a python-based rule, you can execute shell commands using:\
+			shell('command \{args\}')	\
+		you can even use the output of shell commands:\
+			for line in shell('command\{args\}, iterable=True):\
+				do something pythonic\
+		\
+	threads: 4					set cores used by one job with that rule\
+							can also be a callback  lambda wildcards[, input]: integer for threads\
+	resources: mem_gb=0.75		set memory resources allocated to one job of these rules\
+							can be a callback using wildcards, input, threads and attempt (number of current rerun)\
+	resources: \
+		mem_mb=lambda wildcards, attempts: attempt * 200 + 2000\
+							incremently increases memory resources used after failed attempts\
+						\
+	log:\
+		"path_to_log"	\
+	conda:\
+		"env.yaml"				manage your environment per rule to allow different dependencies\
+\
+	wrapper:\
+		"0.2.0/bio/samtools/sort"		wrappers automatically provide the required environment and let conda set it for that specific too\
+							it will run the tool using the required \
+\
+	shell:\
+		.....	\
+		\{output.name1\}			you can use defined names from output and input as variables\
+		\{output:q\}				using :q format, automatically quotes strings (good for whitespace file names)\
+		\{input[0]\}				refer to different input files via index\
+		\{output[1]\}\
+		\{input\}			\
+		\{\{TMPDIR\}\}				curly braces must be escaped for ENV-variables \{\{VAR\}\} \
+\
+	script:\
+	refer to R or python scripts - paths are given relative to Snakefile\
+		"scripts/my_r_script.R"		use snakemake@input[[1]] /snakemake@output.name1 to refer to variables from rules in R\
+		"scripts/my_pyscript.py"		use snakemake.input[1] /snakemake.output.name1 to refer to variables from rules in python\
+\
+localrules: my_rule2, my_rule5			specify the rules that are performed locally and should not be submitted to the cluster	\
+\
+\
+
+\f0\b wildcards:
+\f1\b0 \
+	you can replace parts of input and output strings with wildcards\
+	Snakemake will determine how to replace the wildcards with values to satisfy required output files:\
+rule my_rule:\
+	input: 	"data/\{sample\}.fastq		any non-existing folder will be created by snakemake\
+							\{sample\} will be filled with the required string\
+	output: "result/\{sample\}.bam		\
+	\
+	shell:\
+		"samtools sort -T sorted/\{wildcards.sample\} "		in shell, wildcards can be accessed as attributes of wildcards object\
+		"..........."							continuing lines will be automatically concatenated by Snakemake\
+!!	if you need actual curly braces in your shell, escape them using \{\{ ....\}\}\
+!!	you can restrict the kind of wildcard by providing a regular expression that has to be matched by the wildcard:\
+		input:\
+			data/file\{sample, /regexp/\}	only wildcards matching the regexp will be allowed\
+	\
+\
+a job will only be performed if the required input file producing a neccessary output is not there or newer than the output \
+--> refreshing a required input wil force rerun of the job producing a required output\
+\
+
+\f0\b helpers:
+\f1\b0 \
+	expand("....\{name\}......", name=NAME)	expands the \{name\} into a list just like bash expansions; NAME has to be defined as python list\
+\
+\
+
+\f0\b DAG
+\f1\b0 \
+diacyclic graphs follow a complex mathematical theory and allow optimized allocation of jobs\
+can be visualized using:\
+	$ snakemake --dag <output.files> | dot -Tsvg > <name>.svg\
+		--d3dag				output in JSON format	\
+			dot -Tpng			outputs png file\
+\
+	\
+
+\f0\b run snakemake:
+\f1\b0 \
+	snakemake [target file]			run snakemake with desired target files or target from all rule\
+		-j 2 /--cores 2 / --jobs 2		limits available cores to be allocatable to jobs\
+		--resources mem_gb=1		limit available memory\
+		--restart-times n			define number of restarts for jobs terminated because of limited resources\
+		-n					dryrun	 --> only show what would be done\
+		-p					print resulting shelll commands for control\
+		--forcerun [rule | file]		forces reexecution of a given job or jobs to produce given file\
+		--forceall				run everything again\
+		--reason / -r				give explanations for snakemakes decisions\
+		--use-conda				set environments per rule (if specified)\
+		\
+\
+	}

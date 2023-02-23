@@ -1,0 +1,1057 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2580
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww12540\viewh18620\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\fs26 \cf0 ls
+\f1\b What is R?
+\f0\b0\fs20 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 	easy to learn programming language focussed on easy mathematics\
+	the flow of the language is actually the programming language S\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 R studio\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl380\partightenfactor0
+\cf0 	
+\f0\b0\fs20 helper to run R code in a browser environment\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl380\partightenfactor0
+
+\f1\b \cf0 utilities:
+\f0\b0 \
+	press tab on a datatype to see all possible methods\
+	press shift+tab (or help(object.method) to see documentation about the use of the function\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\tqr\tx9339\pardeftab720\ri-1283\sl380\partightenfactor0
+
+\f1\b\fs26 \cf0 Environment/ Terminal\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\partightenfactor0
+\cf0 	
+\f0\b0\fs20 $ R				start R prompt\
+	$ q()				quit and return to the command prompt\
+					if you saved your session, restarting R will return to the last session\
+	.RData and .Rhistory		store the data from last session\
+\
+
+\f1\b setting environments:
+\f0\b0 \
+	folder-specific environments can be set using a folder-resident initialization file \
+		location of initialization file is taken from R_PROFILE (but is normally not tampered with)\
+.Rprofile\
+	you can add .Rprofile to your folder or in your ~/ to be sourced when R is invoked in that folder\
+	alternatively you can set R_PROFILE_USER as the path to your settings file\
+.First()	\
+	in your .Rprofile file, the .First() function is executed and can initialize your environment\
+\
+if you want to run R without .Rprofile run R --vanilla\
+	\
+\
+
+\f1\b running R scripts:\
+
+\f0\b0 	$ R CMD BATCH "\'97args arg1 arg2" foo.R &	run R script from command line with arguments\
+		in script you can retrieve args via:\
+		args <- commandArgs(TRUE)		returns character vector of args\
+or better $ Rscript foo.R arg1 arg2\
+or even better as R script foo.R\
+	chmod 755 foo	\
+foo.R::	#! /usr/bin/env Rscript\
+	args <- commandArgs(TRUE)\
+	...\
+	q(status=<exit status code>)			stop the script with the specified exit code\
+\
+\
+\
+	> source("script.R")		runs the R script "script" from R prompt\
+	> sink("file_name")		direct output from console to external file file_name\
+\
+	variables are stored in global environment\
+	ls()				lists all variables in global environment\
+	ls(pat="regExp")		limit ls to objects having specified pattern\
+	ls.str()				shows more detail about objects\
+	ls.str(pat="regExp, max.level=-1)	max.level determines amount of info (-1 == minimum)\
+	rm(list = ls())			removes all variables from global environment\
+	\
+\
+\
+
+\f1\b\fs26 File / OS
+\f0\b0\fs20 \
+\
+	setwd('path_to_directory')	change work directory\
+	getwd()				returns current folder\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl380\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 Packages\ul \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 \ulnone 	about 25 packages are considered core packages and are ready to be imported\
+	library()				see all packages stored at your site\
+	library(package.name)		load package into environment\
+	search()			see all packages loaded into environment\
+	loadedNamespaces()		shows also invisible packages\
+	getAnywhere()			finds objects in namespace, search path, S3 method, even invisible objects\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 namespaces
+\f0\b0 \
+	my.namespace::variable		selects variables from that name space\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 OS Files
+\f0\b0\fs20 \
+	file.create()			like touch\
+	dir.create()			like mkdir\
+	file.copy()			like cp\
+compressed files:\
+	gzip compression is supported by R:\
+	\
+\
+										
+\f1\b\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\tqr\tx9339\pardeftab720\ri-1283\sl380\partightenfactor0
+\cf0 Standard functions\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\tqr\tx9339\pardeftab720\ri-1283\partightenfactor0
+
+\f0\b0\fs20 \cf0 \
+	help.start()				starts an HTML helper\
+	ls()					lists object in the workspace\
+	rm(obj1, obj2)				remove objects from workspace \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\partightenfactor0
+\cf0 	?function/class				opens a helper in the console\
+	summary(var)				creates some kind of overview of data\
+	str()					shows the structure of the variable\
+	print() / cat()				give output to the standard output\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl380\partightenfactor0
+
+\f1\b\fs26 \cf0 	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \ul \ulc0 Syntax
+\fs36 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\fs20 \cf0 \ulnone general
+\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 	work_app != Work_App
+\f1\b\fs26 			
+\f0\b0\fs20 R is case-sensitive\
+	a<-3;b<-4				commands are separated by ; or newline character\
+	\{command1; command2\}		commands can be grouped together via \{ \}r inst\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 Form-stem arguments
+\f0\b0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 \ul 	
+\f0\b0 \ulnone many functions take the arguments either as positional or as named keys:	\
+	e.g.
+\f1\b\fs36 \ul \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 \ulnone \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 Comments
+\f0\b0 			\
+	#  afasdf				comments can be placed anywhere and go until the end of the line\
+\
+
+\f1\b comparisons
+\f0\b0 \
+		! (condition)			also returns boolean\
+		==				equal to (possibly after type conversion to number)	\
+		!=				not equal\
+		<= / >=				obvious\
+		<  >				can be used for strings and compares alphabetically string by string\
+\
+
+\f1\b math operations
+\f0\b0 \
+		+ - * /				standard math operations\
+		//				floor division \'97> returns rounded down integer\
+		%				modulus\
+		**				power of\
+		a + b				binary + ; concatenates strings. If both operants are number, it is a mathematical +\
+		a * b				if one is a string it gets concatenated number times\
+		a += 1				increment\
+\
+	can be used serially:\
+		a < b < c == d			a < b and b < c and c == d\
+		=				assign value; can be used sequentially and returns a value\
+		a = b = c = 1+2			a, b, c == 3\
+		a = (b = a + b)			a, b = 6; \
+\
+	logical operators			\
+		&				logical AND\
+		&&				examines only first elements of composites\
+		|				logical OR\
+		||				examines only first elements of composites\
+		!				logical NOT\
+	logical operators are short circuit and only perform the necessary steps to determine the outcome\
+\
+		NA				is value for missing value: any operation on NA will return NA\
+unsuccessful coersion leads to NA value of coerced class\
+		NA_real_			NA of type numeric, good for return values\
+		NA_character_			NA of type character, good for return values\
+		NA_Integer_			NA of type integer\
+		is.na(vector)			returns boolean vector with NA or NaN elements returning TRUE elements\
+		x == NA			returns NA for all elements because condition is not resolvable\
+		NaN				is returned from numerical calculations that do not compute\
+		is.nan(vector)			returns only true if element is NaN\
+	most functions have the keyword argument na.rm = FALSE that can be set to true\
+		\
+
+\f1\b Variables
+\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 	variables are declared and assigned in one step:\
+		var1 <- value			creating object of value and binding it to name var1\
+		var2 <- value			another binding to the same obj\
+	or 	value -> var2\
+	they are now part of the .GlobalEnv namespace (search path level 1)\
+names of variables can contain letters, numbers, _ and . but cannot start with _ .  and cannot be reserved words\
+	or\
+	can be written with backtick and have any characters\
+		`___d..` <- value		is valid because string is wrapped in backticks\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 Expression
+\f0\b0 \
+	commands can be grouped using \{\} and the return value of the expression is the return value of the last command\
+	\{ expression.1, expression.2 \'85.\}\
+	grouped expressions can be wrapped in () to be used in expressions\
+		\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 \ul Flow
+\fs36 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\fs20 \cf0 \ulnone If
+\f0\b0 		\
+	dim1 variant of ifelse	\
+	if (condition) expression.2 else expression.3		simple as that\
+	if (cond1 || cond2) expr3					short circuit operators && and || can be used\
+	x <- if (x>3) 5 else 3					if clauses return values that can be assigned					x <- if (FALSE) 4	# x is NULL			missing false expression returns NULL\
+
+\f1\b Ifelse\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 	ifelse(condition(x), yes, no)				vectorized version of if (yes/no expression can be literals or f(x)\
+								condition(x) is a boolean vector\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 case_when							
+\f0\b0 generalised ifelse with more conditions\
+	case_when(\
+		cond1(x)  ~ expr1(x),\
+		cond2(x)  ~ expr2(x),\
+		\'85\
+		TRUE ~ default.expr(x)\
+	)\
+	\
+vector variant\
+	ifelse( condition, a, b)					a and b are vectors of same size as condition\
+\
+
+\f1\b for 
+\f0\b0 \
+	for (name in expression)	 expr				expression can be vector, sequence, etc.\
+	!!! running variable in for loop overwrites any global variable of the same name !!!\
+	next							skips to next cycle\
+	break							breaks the loop\
+	 \
+best practice for for loop:\
+	result <- vector("double", ncol(df)			first create an empty target vector for the computed result\
+	for (i in seq_along(df)) \{					seq_along creates an iterator of length of df\
+		<compute stuff on df[[i]]>\
+		result[[i]] <- computed result			\
+
+\f1\b switch
+\f0\b0 \
+	switch(variable,\
+		val1 = 'result if variable == val1',\
+		val2 = 'result if variable == val2'\
+		stop("result if none where fitting')\
+	)\
+\
+
+\f1\b while
+\f0\b0 	\
+	while (condition) expression				\'85					\
+\
+repeat	expression						repeats expression until break\
+\
+break	to exit any loop function\
+	\
+next								to continue to next cycle ( like continue)\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 \ul Primitive types or modes
+\fs36 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 \ulnone R considers atomic (or primitive types) as objects consisting of the the same type or mode: numeric, complex, logical, character, raw\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs36 \cf0 \ul \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\fs20 \cf0 \ulnone Numerics integers
+\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 	numbers can be of type:\
+		integers				Integer\
+		numeric				floating point number  - division always returns floats		\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 Characters
+\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 	text or strings are called characters\
+	are always printed with double quotestest\
+\
+useful stuff:\
+	letters					prebuilt list c("a", "b",\'85."z")\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 Logicals 
+\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 	boolean values are called logical\
+	values are TRUE or FALSE\
+\
+ \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 methods
+\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 	mode and length (number of primitives or recursive elements) can be accessed via:\
+		mode(object)\
+		length(object)\
+	atomic types can be converted to other modes using:	\
+		as.character(object)			\
+		as.numeric(object)\
+		as.integer(object)	\
+	\'85.	as.something(object)\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 \ul Atomic types
+\fs36 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 \ulnone \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 Vectors
+\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 array that stores primitive data of the same mode\
+vectors ca have attributes like any other object\
+NULL is a special type of empty vector		\
+\
+	my_vector <- c(a, b, c) 			concatenator function creates a vector\
+	new_vecotr <- c(vector1, vector2)	c() flattens all vectors into a new concatenated vector\
+	my_vector <- 1:9			shortcut for c(1,2,3,4,5,6,7,8,9)\
+	names(my_vector) <- c("label_for_a", "label_for_b", "label_for_c")	assigns names to the vector elements\
+	this creates something like a dict\
+or\
+	setNames(my_vector, c("label_for_a", "label_for_b", "label_for_c")) 	directly assigns named vector\
+or\
+	c(a=1, b=2, c=3)			also assings named vector directly (no use for quotes!!!)\
+	my_new_vector<-c(my_vector, other_vector, primitive)	c() concatenates any list or vectors together into a vector\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 types:
+\f0\b0 \
+	typeof(v)				gives the mode of the elements\
+test directly for the type using:\
+	is.logical(v) / is.integer(v) / is.double(v) / is.character(v)	 \
+\
+type conversion can be performed for all members using:\
+	as.integer / as.logical\
+\
+if different modes are entered into a vector, R is trying to coerce the data:\
+type coercion goes from character --> double --> integer --> logical\
+\
+\
+\
+
+\f1\b selection:
+\f0\b0 \
+	my_vector[1]				select first element of vector !!! (R starts with index 1)!!!\
+						also returns a vector\
+	my_vector[[1]]				returns the value of the first element\
+	my_vector[2:5]				select second to (including!!!!) 5th element\
+	my_vector['label_for_a"]			key selection\
+	my_vector[c(1,2,4,5)]			select individual elements by index\
+	my_vector[c("label_for_a", "label_for_b")] select individual elements by key\
+	my_vector[TRUE, FALSE, FALSE]	selects only the elements for which the selector is TRUE\
+	my_vector[boolean_vector]		optionally, you can pass a logical vector as selector\
+	order(my_vector)			returns elements indices in numerical, alphabetical order\
+	my_vector[order(my_vector)]		returns ordered vector\
+\
+\
+
+\f1\b operations:
+\f0\b0 \
+	standard vector operations occur element-wise:\
+	my_vector *2				constants are reused per element\
+	my_vector + my_other_vector		single elements of vectors are combined and the result is a vector of max(len(a), len(b))\
+						missing dimensions are reused\
+	min(x) / max(x,y,z)			smallest/ largest value in a vector or list of vectors\
+	pmin(), pmax(x,y,z)			returns vector with the min / max of each input vector\
+	range(x)				== c(min(x), max(x))\
+	length(x)				number of elements\
+	length(x) <- n				changes length of vector to n\
+	sum(x)					total of elements\
+	prod(x)					product of all elements\
+	mean(x)\
+	var(x)					variance == sum((x-mean(x))^2/ (length(x) -1)\
+\
+
+\f1\b sequences
+\f0\b0 \
+	a:b == c(a,a+1, a+2, \'85., b-1, b)		high priority operator to generate regular sequence\
+		if a > b, order will be reversed\
+	seq(begin, end[, by, length, along]\
+or	seq(from=value, to=value, by=value / along=vector / length= value)	\
+		by.. 				step size\
+		length.. 				number of arguments\
+		along=vector			length=length(vector)\
+	rep(vector, times=n)			repeats vector n times	 \
+	rep(vector, each=n)			repeats every element of the vector n times and then moves to next element\
+you can create n random numbers between 0 and 1 with:\
+	runif(n)\
+\
+
+\f1\b logical vectors	
+\f0\b0 \
+	are generated by condition\
+	condition(vector)			returns logical vector with values TRUE, or FALSE for all elements applied to the condition:\
+		x <- 1:5\
+		y <- x < 4			returns TRUE, TRUE, TRUE, FALSE, FALSE\
+\
+
+\f1\b character vectors:
+\f0\b0 \
+	paste(vector1, vector2)			pastes values as strings element-wise\
+		sep='delimiter'			sets how values are pasted together\
+\
+naming vectors:\
+	names(vector) <- c('key1', 'key2', 'key3')	applies names to the elements (like named tuples in python)\
+or use setNames:\
+	named.vector <- setNames( value.vector, names.vector)\
+remove naming via:\
+	names(v) <- NULL\
+\
+
+\f1\b empty vectors\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 \
+	vector <- numeric()			creates an empty vector of mode numeric that can easily assigned to via:\
+	vector[i] <- 3				coerces value into preset mode if neccessary\
+	vector <- character()	\
+	vector[i] <- 4				\'97> c("4")\
+\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 indexing
+\f0\b0 \
+	indexing can be done by square brackets even directly after an expression returning a vector\
+	indexing works by indexing vectors by several ways:\
+		indexing via logical vector:\
+			x[!is.na(x)]		returns vector with all elements that are not NA\
+		indexing by number:\
+			x[4] or x[4:6] or x[3,5]	returns vectors with the indicated elements\
+		indexing by exclusion:\
+			x[-5] or x[-(1:4)]		returns vector without indicated elements\
+		indexing by name:\
+			x['key1']			returns vector with element named 'key1'				\
+	you can also index the assignee:\
+	eg	x[is.na(x)] <- 0			changes only the is.na(x) TRUE elements of the vector	\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 \ul Composite types
+\f0\b0\fs20 \ulnone \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 Lists
+\f0\b0\fs20 \
+	ordered (numbered) list of various data components (can be named and then behave like a dict)\
+	actually, lists are more like vectors of type "reference" to other objects (and not only primitives)	\
+	are called recursive structure because their components can again be lists (other recursive structures are functions and expressions)\
+create:\
+	my_list = list(comma_separated_elements)\
+	or my_list = list(key1 = comp1, key2 = comp2\'85.)\
+	is equal to:\
+	my_list = list(comp1, comp2,\'85)\
+	names(my_list) <- c(key1, key2, \'85)\
+	my_new_list <- c(my_list, new_key = new_comp, another_list,..)\
+adding:\
+	my.list[5] <- list(a,b,c)lst\
+	c(list1, list2, vector1)			creates flat list of same hierarchy level of components\
+						vectors are upcast to lists for that\
+	\
+indexing:\
+	my_list$key1 \
+or	my_list[['key1']]					selects element with key key1\
+	my_list[1]					selects first element of my_list\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx4878\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 	my_list[[1]] = my_list$name_of_first_element		select value of my_list[1]\
+	my_list[[expression/var]]					returns proper component if expression or var returns index or keystringa\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 you can test for list with:\
+	is.list()		\
+convert a list to an atomic vector via \
+	unlist()						do not use it\
+				\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 Array
+\f0\b0\fs20 \
+array is a multiply subscripted collection of data entries\
+\
+create\
+	a dim vector specifies the number of elements per dimension:\
+		c(3,4,5)					can serve as a dim-vector for a three-dimensional array\
+	a vector can be turned into an array using the dim attribute:\
+	array<-c(3,4,5,4)\
+	dim(array) <- c(2,2)				assigning a dim-vector to a vector makes it an array of the given size\
+you can also use the array function for that:\
+	my_array <- array(data.vector, dim.vector)	works the same way\
+\
+
+\f1\b indexing/subsetting
+\f0\b0 \
+	a[2,3,4]						index specific element\
+	a[,]						is the entire array\
+	a[2,3,]						returns a vector\
+you can also index using an index matrix, that contains in every row the dim-tuple of the desired element \'97> can be used for query and assignment\
+\
+
+\f1\b operations:
+\f0\b0 \
+	standard array operations occur element-wise on arrays of identical dims and create array of same dims:\
+	operations of arrays with vectors are performed by recyling vector elements until matching array with most elements\
+operation mode outer:\
+	outer(a, b, 'f')					f can be any numeric function \ul taking two arguments\ulnone  and returning a number\
+	for example:\
+	a %o%	b	or outer(a,b,'*')			outer product: 	\
+\
+	aperm(array, perm)				perm is a permutation of 1\'85dim(array) determining the transpose of the array:\
+	eg (array, c(2,1))				if array is of dim=2 is a simple matrix transpose\
+	\
+\
+
+\f1\b\fs26 Matrix
+\f0\b0\fs20 \
+matrix is a collection of similar data arranged into rows and columns == dim2 array\
+create:\
+	matrix(collection, byrow = TRUE, nrow = number_of_rows)	\
+			byrow			whether matrix is filled by rows\
+	colnames(my.matrix) <-	colname.collection	assigns column names to matrix\
+	rownames(my.matrix) <- rowname.collection	assigns row names to matrix\
+select:\
+	my_matrix[row_number, column_number]	selects element of matrix \'97> returns matrix\
+	my_matrix[row,]					selects entire row of matrix \'97> returns vector\
+	my_matrix[1:4, 1:2]				selects submatrix\
+	my_matrix[c(1,2,3)]\
+\
+operations:\
+	nrow() / ncol				returns row and column number of matrix\
+	var(matrix)				n-by-p matrix \'97> p-by-p covariance matrix\
+	rowSums(matrix)			calculates vector with sum of rows\
+	cbind(matrix, vector, matrix \'85)		merges matrices and vectors by column\
+	rbind(matrix, row1, row2, matrix)		merges matrices and rows by row\
+	rbind(vector) / cbind(vector)		allow unambiguous treatment of vectors as rows or columns\
+	t(matrix)				== aperm(matrix, c(2,1)) 	a simple transpose\
+	matrix `operator` matrix			operates on individual elements of matrices								\
+	matrix %*% matrix			standard matrix multiplication\
+	crossprod(matrix1, matrix2)		== t(matrix1 %*% matrix2\
+	diag(vector)				creates matrix with diagonal vector and the rest is 0\
+	diag(matrix)				returns diagonal vector of matrix\
+	diag(integer)				returns n x n identity matrix 	\
+	as.vector(matrix)			coerces matrix into vector\
+	outer(matrix1, matrix2, FUN=, \'85)	outer array product, FUN is applied to all value pairs between the two matrices\
+						extra keys are applied to FUN\
+	%o%					overload operator for outer\
+\
+statistics\
+	solve(matrix, vector)			solution of equation b = A %*% xf\
+\
+	eigen(symmetric_matrix)		returns list of eigenvalues and eigenvectors	\
+		$values				eigenvalues\
+		$vec				eigenvector\
+	eigen(symmetric_matrix, only.values=TRUE)$values	saves calculation of the eigenvectors\
+	lsfit(matrix, vector)			least squares fitting returning\
+
+\f1\b\fs26 \
+Factors
+\f0\b0\fs20 \
+factor is a variable containing categorical data (of limited set of values called "levels"):\
+	my_factor = factor(c(vector_of_categories_as_strings))
+\f1\b\fs26 \
+	
+\f0\b0\fs20 options: 	ordered = FALSE		if TRUE, an order is assumed \'97> is.ordered(my_factor)
+\f1\b\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 			levels = my_levels		vector of possible values (in order from lowest to highest if ordered = TRUE)\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 methods:
+\f0\b0 \
+	levels(my,factor) <- c(new_alphabetical_assignment_of_level_descriptors)	changes levels to new descriptors\
+	summary(my.factor)			outputs numbers of values in each level\
+	tapply(vector, corresp.factor, function)		the function could be mean or sum or other\
+							returns the function on all sets belonging to the same levels \
+\
+	split(vector, factor)			splits larger vector in list of vectors based on factors\
+	\
+\
+
+\f1\b calculate:
+\f0\b0 \
+	my_factor[1]				returns descriptor for first level\
+	\
+
+\f1\b\fs26 Data Frames
+\f0\b0\fs20 \
+
+\f1\b 	dataframe
+\f0\b0  is a matrix-like object containing various kinds of data\
+	the rows are called observations and the columns variables\
+	actually it is a list with components having certain conditions\
+a dataframe is an S3 vector built on top of lists\
+	names() of a dataframe are the column names\
+	names of the vector elements are the rows\
+\
+attributes:\
+	df$class			"data.frame"	\
+	df$nrow()			length of vectors\
+	df$ncol() == df$length		number of vectors\
+	\
+\
+
+\f1\b declaration: 
+\f0\b0 \
+	df <- data.frame(vector1, vector2,\'85, factor1, data.frame.1, list.1)		vectors are the ordered observations for one specific variable (becoming column of the df)\
+\
+if you want to add a list as a column, you have to wrap it in the identity-operator I(list) in order to prevent coercion into vector\
+\
+
+\f1\b conversion\
+	
+\f0\b0 read.table()					allows importing file as data.frame\
+\
+
+\f1\b selection:	
+\f0\b0 \
+	df[1:4]						selection with single index returns columns\
+	df[1:4,1:3]					selection with double index works like in matrices (first row, then columns)\
+	df[1:4,"column.name"]\
+	df[,"column.name"] == df$column_name	shortcut for column selection (used without quotes)\
+	df[logical.vector, ]				selects only rows for which logical vector is TRUE\
+	\
+
+\f1\b operations:
+\f0\b0 \
+	df$column < 3					condition returning logical vector\
+	subset(df, subset = column < 3)			shorthand for df[df$column <3, ]\
+	order(df$column_a)				returns index vector sorted according to column_a\
+	df[order(df$column_a),]				returns df with rows sorted according to column_a\
+\
+
+\f1\b methods
+\f0\b0 \
+	head(df)					shows first rows of data frame\
+	tail(df)						shows last rows of data frame\
+	str(df)						shows the structural info for your data frame\
+	subset(df, subset=condition)\
+	attach(my.data.frame)				places data frame variables into the name space (glaub ich)\
+
+\f1\b\fs26 \
+\
+!!! --> do not use data.frames --> use tibbles\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs24 \cf0 tibbles are lazy and do not coerce data during input\
+they do not convert char vectors to factor
+\f1\b\fs26 \
+
+\f0\b0\fs24 \
+in both data.frame and tibble, data with lower length is broadcast to fit the dimensions of the table\
+\
+in tibbles, rownames are depreciated and rather should be converted into a column\
+transfering data.frames into the tibble has helper:\
+as.tibble(df, rownames = "names")		rownames of df will be converted to column "names"\
+\
+subsetting a tibble has a clear outcome\
+tb$column always returns a vector\
+\
+tb[,4] always returns a tibble\
+\
+testing for data.frame or tibble:\
+	is.data.frame(df)\
+	is_tibble(tb)\
+\
+in tibbles, lists can be entered without explicitly having to prevent coercion\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \ul I
+\f1\b\fs26 /O
+\f0\b0\fs20 \ulnone \
+R has strict demands on data input prior to import\
+several tools/ packages allow more flexible import\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 read.table()
+\fs26 \
+	
+\f0\b0\fs20 first line contains names of columns\
+	next lines have first a row label and the values for each variable (row label can be ommitted if you want to use default indices\
+	numeric values are read as numbers and strings as strings unless defined otherwise\
+	read.data <- read.table('my.data', header=TRUE)	header = TRUE says you want to use the first line as variable names\
+\
+
+\f1\b scan()
+\fs26 \
+	
+\f0\b0\fs20 a more general tool for reading data in\
+	target.data <- scan('my.data', list("",0,0))			reads in a data table as list of vectors using the dummy list structure to determine\
+								mode of target vectors\
+	target.data[[1]]						access individual vectors\
+	target.data <- scan('my.data', list(name=''', x='', y='')		naming read-in vectors allows accessing them via their name:\
+		target.data$name ; target.data$x		\
+	scan(my.data, 0)					if second argument of scan is just a dummy mode, a single vector is read-in that can be combined..\
+	my.matrix <- matrix(scan(my.data, 0), ncol=4, byrow=TRUE)\
+data()	\
+	you can load data from built-in datasets simply by referring by name or via:\
+		data(dataset.name)\
+	loading data from packages:\
+		data(dataset.name, package='package-name')\
+	\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 \ul Objects in R
+\f0\b0\fs20 \ulnone \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 Attributes\
+	
+\f0\b0\fs20 every object can contain attributes that are attached to the object like properties in other OOLs\
+	object@attribute\
+	attributes(object)				lists all attributes\
+	attr(object,'name')				like obj[key] in JS\
+can also be a setter:\
+	attr(object, 'name') <- value\
+to get/ set multiple attributes, use attributes() or structure():\
+	attributes(object)				returns a list of all attributes\
+
+\f1\b\fs26 Class
+\f0\b0\fs20 \
+	every object has a class\
+	class(object)					returns the class\
+	can be a mode for vectors or list, matrix, data.frame, factor\
+	methods(class="object")				returns all the functions usable by instances of that class\
+many generic functions have special action for different classes they are called upon\
+	plot()\
+	summary()\
+	methods(generic.function)			returns list of all special utilities of that function
+\f1\b\fs36 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 \ul Functions in R
+\f0\b0\fs20 \ulnone \
+Functions are objects of mode function
+\f1\b\fs26 	
+\fs20 \
+assignment\
+	
+\f0\b0 f.name <- function(arg1, arg2, argN = value) \{	default values can be given and can depend on other arguments\
+		expression				the return value of the function is the return value of the expression\
+	\}	\
+	f.name(value1, arg2 = value2,) 			calls the function with the parameters (first positional args)
+\f1\b \
+							
+\f0\b0 arguments can be given in function call as positionals or as arg=value\
+\
+	... 						rest operator, list(...) unpacks them into a named list of arguments\
+							\'85 can be passed unchanged to another internal funciton\
+							..1 refers to the first additional argument\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 function call\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 	f <- function(a,b,c)\'85.				define functions\
+optionA\
+	f(a,b,c)						arguments in parantheses\
+optionB					\
+	args <- list(a,b,c)\
+	do.call(f, args)					call function with list of args\
+	\
+	match.fun(\'93f\'94)(a,b,c)				match.fun returns the function object with given identifier\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 variables
+\f0\b0 \
+	variables have function scope			are generated within function and killed in function\
+	assignment to global variables can be done with <<- operator or assign() method
+\f1\b\fs26 \
+	\
+
+\fs20 Binary operators
+\fs26 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0\fs20 \cf0 	a %do.something% b					binary operator returning a value\
+	%do.something% <- function(arg1, arg2) \{expressions\}\
+	\
+if you have a predefined function f and a global variable var you want as a function argument you can do:\
+	do.call(f, var)					I do not know what this is good for\
+\
+	the magittr package provides the pipe operator allowing the stacking of function sequences\
+	obj %>%\
+		function on the object %>%\
+		function on the returned object of the previous function\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 return values:
+\f0\b0 \
+	per default, last evaluated expression is returned by the function\
+	you can explicitely return value  (and exit function) with return(value)\
+	you can return values without printing them using invisible(return_value)\
+\
+\
+
+\f1\b scope
+\f0\b0 \
+\
+functions in R use lexical scope allowing closures\
+variables assigned within a function mask the outer variable\
+if you call a function with its name, R does exclude non-function names from the search query up the scope path\
+\
+to check for the scope of a function, you can use codetools::findGlobals(f) \'96 if will liist all unbound symbols (external dependencies) including names from any outer scope\
+\
+to clear functions of any outside dependencies, run:\
+	environment(f) <- emptyenv()\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 \ul Errors in R
+\f0\b0\fs20 \ulnone \
+	errors can be thrown using stop('message')\
+	
+\fs26 \
+
+\f1\b \ul Statistics in R
+\f0\b0\fs20 \ulnone \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 statistical tables:
+\fs26 \
+	
+\f0\b0\fs20 for any kind of distribution, R provides tables that take additional arguments depending on the distribution\
+		beta		\
+		binom\
+		geom\
+		lnorm			logarythmic normal distribution\
+		pois			Poisson distribution\
+		t			Student's t\
+		wilcox			Wilcoxon		
+\f1\b\fs36 \
+	
+\f0\b0\fs20 use these (and many more) distributions with prefixes d, p or q for:\
+		d --> x			probability density, first argument is x\
+		p \'97> q			cumulative distribution function (first argument q)\
+		q			quantile function (smallest x for given q with P(X <x) > q  (first argument p)\
+		r			random deviates (stimulation) first argument is n (number of samples)
+\f1\b\fs36 \
+
+\fs20 methods\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 for data vectors:\
+	summary()			returns Min, 1st Q, Median, Mean, 3rd Q, Max\
+	fivenum()			Tukeys 5-number summary (minimum, lower.hinge, medium, upper-hinge, maximum)\
+	stem(vector[, scale = , width=, atom=)\
+		scale			plot length\
+		width			width of plot\
+		atom			a tolerance ?\
+	hist(vector, breaks)	plots a histogram with the bins defined by breaks (a sequence, vector or expression returning a vector)\
+		prob=TRUE		plots relative frequencies\
+\
+	density(data, bw)		creates kernel density estimate vector for data vector\
+		bw=\'93nrd.0\'94		the bandwidth for the smoothing\
+	lines()				plots lines according to imput\
+	\
+Significance\
+	boxplot(A, B)		\
+	\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b\fs26 \cf0 \ul Graphics in R
+\f0\b0\fs20 \ulnone \
+	R automatically opens graphic device using quartz() function driver\
+	device driver opens a special graphics window\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b \cf0 recommended packages:
+\f0\b0 \
+	grid				built-in but hard to use\
+	lattice				used for multivariate data analysis\
+	ggplot2				modern standard for data visualization\
+	\
+
+\f1\b\fs26 High level plotting
+\f0\b0\fs20 \
+\
+
+\f1\b plot() function\
+	
+\f0\b0 output is determined on the input data type:\
+	plot(vector)			plots values against their index\
+	plot(vector1, vector2)		plots a scatterplot\
+	plot(named.list.of.vectors)	plots a scatterplotmt\
+	plot(df)				plots distributional plots\
+	plot(factor)\
+	\
+\
+other useful plots:\
+	pairs(matrix)			plots scatterplots of every variable against every other\
+	qqplot(vector1, vector2)		plots quantiles of vector1 against quantiles of vector2 for comp of distributions\
+	hist(x, nclass=, breaks=b)\
+	rug(x)				plots all data points below x-axis in histogram				\
+\
+special options for high-level plotting:\
+	add=TRUE			adds the plot to existing plot\
+	axes=FALSE			suppresses axes\
+	log="x" / log="xy"		changes axes to log-scale\
+	for plots:\
+		type='l'			lines\
+		type='p'			points\
+		type='b'			points connected with lines\
+		type='h'			lines from data points to zero-axis\
+		type='n'			no plotting of data at all - only axes and stuff\
+	xlab=string / ylab=string		labelling of axes\
+	\
+
+\f1\b\fs26 Low level plotting
+\f0\b0\fs20 \
+	\
+all low level plotting adds graphical components to the current graphics\
+	points(x,y)			x and y can be numbers or vectors				\
+	lines(x, y)\
+	text(x,y, labels)			adds text to points\
+	polygon(x,y,..)			\
+	legend(x,y,legend, ...)		legend at specified position\
+		fill=color.vector\
+		col=			color of drawn elements\
+\
+	title(main, sub)	\
+	axis(side, ...)			adds axis to given side\
+ \
+plotmath				contains libraries of mathematic symbols to be used in graphics\
+\
+par()					lists all parameters for current graphics\
+	?par				lists a comprehensive explanation for these params\
+	changing par() makes any changes permanent for the given device\
+\
+	these arguments can be changed temporarily within a high level plot by setting arg to new value\
+	\
+
+\f1\b parameters
+\f0\b0 \
+	pch=				defines the point of the scatter\
+		1.. default\
+		'.'.. centered point\
+	lty=	1 	solid line	linetypes\
+	    	 2-..	dashed\
+	lwd=				lineweight\
+	col				colors for points etc\
+	col.axis\
+	col.lab\
+	col.main\
+	col.sub\
+	font= 	1	plain		font style\
+		2	bold\
+		3	italic\
+	font.axis....				\
+	adj=	0	left		adjust of text (can be fractions)\
+		1	right\
+		0.5	center\
+\
+	\
+	lab=c(x.ticks, y.ticks, length.of.chars.for.labels)\
+	las=	1	horizontal	orientation of axis labels			\
+		0	parallel to axis\
+		2 	perpendicular\
+	tck=				length of tick marks (in fraction of plot size)\
+\
+
+\f1\b\fs26 devices
+\f0\b0\fs20 \
+	R can output your data to different devices\
+	quartz()				use on Mac\
+	pdf(file, sizex, sizey)		output to pdf\
+	dev.off()				terminates the current device}

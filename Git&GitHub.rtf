@@ -1,0 +1,247 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2638
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red27\green31\blue34;}
+{\*\expandedcolortbl;;\cssrgb\c14118\c16078\c18039;}
+\margl1440\margr1440\vieww24020\viewh28020\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 GIT/ GITHUB\
+	
+\f1\b0\fs20 the world's most popular version control system\
+\
+works local as git \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 GIT
+\f1\b0\fs20 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b \cf0 install
+\f1\b0 \
+	$ apt-get install git\
+\
+\
+
+\f0\b initialize
+\f1\b0 \
+initialize Git on your project folder:\
+	git init							creates a .git folder with all your compressed versions\
+								also creates one default branch called master\
+set your credentials:\
+	git config --global user.name "My Name"\
+	git config --global user.email my@email.com\
+	git config \'97global core.editor "code \'97wait"		makes VisualStudio default editor\
+put files you do not want to put on GITHUB in .gitignore file\
+\
+git has three levels:\
+	WIP							the index of the changed files (work in progress)\
+	staged area						files that should be committed to a save\
+	save points						different saved points in the history of the project\
+\
+
+\f0\b version control
+\f1\b0 \
+	git add . 						stage all your files for commit\
+	git add file1 file2 file3					stage specific files\
+	git restore --staged file1					put staged file1 back to WIP\
+	git diff --cached						see changes to be committed\
+	git commit -m 'comment about update'			commit staged files\
+	git commit -a						add . and commit in one step\
+	git status						see whats cooking\
+	git log							see all the commits\
+	git log -p						see complete diffs of commits\
+	git log --oneline						show short version\
+	\
+
+\f0\b branching
+\f1\b0 \
+	git branch 'new branch'					create new branch from master\
+	git branch						show all branches\
+	git checkout `new branch`				move HEAD to new branch\
+or\
+	git switch `new branch`\
+	git checkout -b `ID`					create a new branch from that commit\
+or\
+	git switch -c 'new branch'				create and switch to new branch\
+	git checkout <commitID>				go back to old commit (with HEAD detached)\
+								you can create new branch from here\
+	git checkout HEAD~3					go back three commits back in time \
+	git merge 'new branch' 					merge 'new branch' into current commit (master)\
+	git branch -d 'new branch'				delete branch 'new branch' if changes have been merged \
+	git branch -D 'new branch'				force delete branch\
+	git branch -M "new_name"				changes name of current branch to "new_name"\
+	gitk							show graphical visualization of git branches\
+\
+	git reset --hard commit_ID				delete every changes and go back to a previous commit\
+\
+
+\f0\b diffing\
+	git diff [option] [commit |  | branch1..branch2] [file]
+\f1\b0 \
+	git diff							show changes between WIP and staging area\
+	git diff HEAD						show changes between WIP and last commit\
+	git diff <commitID>					show changes between WIP and certain commit\
+	git diff <file>						only show diff (between WIP and staging area) for that file\
+	git diff --cached						show changes between staged and HEAD (seen changes to be committed)\
+	git diff --cached <commitID>				show changes between staged and that commit\
+	git diff --cached <branch>				show changes between staged and HEAD of some branch\
+	git diff commitID1..commitID2				show changes between two commits\
+	git diff branch1..branch2					show changes between the HEAD of two branches	\
+
+\f0\b stashing\
+	
+\f1\b0 quickly switching to different branch brings along all WIP and staged area\
+	better to stash the changes for later use
+\f0\b 	\
+	git stash [pop | apply]		\
+	
+\f1\b0 git stash
+\f0\b 						
+\f1\b0 saves all WIP and staged changes for later use and removes them from index								if stash already exists, adds a new stash to the stash stack\
+	git stash pop						remove the stash and put it back to WIP and staging area
+\f0\b 	
+\f1\b0 git stash apply						put stash to WIP and staging area but keep in stash\
+	git stash list						show list of stashes\
+	git stash apply stash@\{N\}				apply one of the stashes from the stash list\
+	git stash clear						delete entire stash stack\
+\
+undo changes\
+	git restore						change everything back to last commit (HEAD)\
+	git restore file						change file back to version from last commit\
+	git restore --source <commitID> [file]			change everything or file back to that commit\
+\
+\
+	\
+
+\f0\b collaboration
+\f1\b0 \
+	git clone original_project new_path			creates new project copy in new_path\
+a fork is created with changes running on a different branch\
+	new_path$ git commit -a				new edits committed in copy branch\
+\
+a fork can be pulled back in using git pull	\
+	original_project $ git pull new_path			git pull gets changes from new_path and merges them into original project\
+\
+creating shorthand for the remote repo:\
+	git remote add new new_path				remote repo is stored as 'new' - you do not need the entire path anymore  \
+\
+before pulliing, the different branch can be inspected with fetch:\
+	git fetch new_path master				now the master is moved to the fetched HEAD (FETCH_HEAD) from new_path\
+	git log -p HEAD..FETCH_HEAD				inspect the changes in new_path without losing your own data\
+	gitk HEAD..FETCH_HEAD				visualization of the changes in the forked history from FETCH_HEAD\
+	git log -p HEAD...FETCH_HEAD				inspect unique changes in both forks since the forking \
+\
+\
+
+\f0\b rebase
+\f1\b0 \
+	git switch <branch>					switch to <branch> that has commits that are not in <other_branch>\
+								<other_branch>  has commits that have not been merged into <branch>\
+	git rebase <other_branch>				place my commits on the HEAD of other branch and rewrite commits of <branch> AS IF they were performed after the last commit of <other_branch>\
+								this is often done to do a clean merge of a feature branch into master that has unrelated commits\
+								also, if <branch> has merged a few commits from <other_branch>, these are cleaned up AS IF all commits in <branch> happened afterwards\
+								NEVER use rebase if your rewritten commits are already public\
+	git rebase -i <lDofLastCommit>				opens editor allowing renaming, collapsing, or dropping some of the commits in current branch back until the specified commit\
+\
+
+\f0\b tagging
+\f1\b0 \
+	git tag							list all tags in a repo\
+	git tag -l "*pattern*"					allows listing of all tags matching a wildcard pattern\
+	git tag <tagname> [commitid]				tag HEAD [or a certain commit] with a lightweight tag using tagname\
+	git tag -a <tagname> -m "tag message"			tag HEAD with an annotated tag providing the tagmessage\
+								if you omit -m option, the editor will be opened\
+	git tag -f <tagname>					force-tag HEAD with tagname (removes previous tag of same name)\
+	git tag -d <tagname>					delete tag\
+	git push \'97tags						push your changes AND INCLUDE tags\
+								normally, tags are ignored\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 GITHUB\
+
+\f1\b0\fs20 \
+online repositories for sharing and cloning code\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b \cf2 \expnd0\expndtw0\kerning0
+ssh on github\
+
+\f1\b0 create an ssh key:\
+	$ ssh-keygen						provide a keypath_name and optionallly a passphrase (can leave it blank)\
+if it is not the default rsa key, you have to add it to your identity\
+first, verify your key:\
+	$ eval "$(ssh-agent -s)"					start up the ssh agent\
+	$ ssh-add -l -E md5					you should see and md5 string with your credentials at the end. If not, add the key:\
+	$ ssh-add <path_to_your_ssh_key>			this adds the key to your list of keys
+\f0\b \
+	
+\f1\b0 \
+use a public key on github and make the ssh link to your origin:\
+	$ git remote remove origin\
+	$ git remote add origin \'85\'85..ssh\'85link\'85\'85..\cf0 \kerning1\expnd0\expndtw0 \
+\
+
+\f0\b create repository online
+\f1\b0 \
+	give some background to your repo and retrieve the link \
+push git repository to GITHUB:\
+	$ \cf2 \expnd0\expndtw0\kerning0
+git remote add origin `link_to_github_repository`	create a remote called origin (could be any name) with that link\
+	$ git push --set-upstream origin main			push your local master branch to remote main of same name\
+								if that branch does not exit on remote, it will be created\
+	$ git push origin master:main				push your local master branch to remote main branch\
+	$ git push --set-upstream master			connect your current local branch to remote branch master\
+or	$ git push -u origin main					next time you can omit the remote name and the branch\
+--> 	$ git push						if current branch is master, it will push to remote origin master\
+							\
+	$ git switch <remote branch>				creates a local branch of same name tracking the remote branch origin/<remote branch>\
+change remote name:\
+	$ git remote rename origin new-origin			rename remote repo in git to new-origin\
+
+\f0\b \
+	
+\f1\b0 $ git fetch [remote]					updates remote branch without changing your WIP\
+								remote changes are branched \
+	$ git remote -v 						shows the remotes for your repo\
+change remote url:\
+	$ git remote set-url origin new_URL			\
+\
+!! changing master to main\
+	$ git switch master					switch locally to master\
+	$ git branch -m main					rename local branch to main\
+on github, change master to main in the branch/tags panel, then..\
+	$ git fetch origin						get new branch info from remote\
+	$ git branch -u origin/main main				connect local main to remote branch main\
+	$ git remote set-head origin -a				synchronize the local and remote HEAD\
+\
+\
+\
+
+\f0\b logging
+\f1\b0 \
+for seeing every action that was made (including commits but also switches and branch creations and renames etc.), use \
+	
+\f0\b $ git reflog show [branch[@\{qualifier\}]]
+\f1\b0 			shows all actions [on a branch [with certain criteria]]\
+the output shows commit and a history of actions - these names can be used also for switches and diffs\
+	$ git diff HEAD@\{4\} HEAD~4				show diff between HEAD 4 actions ago vs HEAD 4 moves ago 								HEAD~4 is standard way of adressing the commit history\
+	$ git reflog show						shows everything\
+	$ git reflog show HEAD					shows all action of HEAD\
+	$ git reflog show <branch>@\{5\}				shows all stored actions on <branch> up to 5 actions ago\
+	$ git reflow show master@\{1.day.ago\}			shows all stored actions on master up to 1 day ago\
+	$ git reflow show master@\{<timestamp>\}		shows all stored actions on master up to that timestamp\
+\
+
+\f0\b HEROKU
+\f1\b0 \
+add heroku as a remote:\
+$ heroku git:remote <app_name>\
+set local environments via:\
+	\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \kerning1\expnd0\expndtw0 \
+}

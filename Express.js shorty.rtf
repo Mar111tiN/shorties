@@ -1,0 +1,54 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf400
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 install:
+\b0 \
+
+\fs20 CLI->	npm install express \
+app.js	->	var express = require('express');\
+		var app = express();			express is initialized in app\
+							functions are called in app.\
+		app.listen(port,  hostname, callback)	port is the port requests are send from and to, \
+							callback is a function to run on an empty request\
+on C9:		app.listen(process.env.PORT, process.env.IP);	setup for Cloud9 on server
+\fs24 \
+	\
+\
+
+\b routing:\
+
+\b0\fs20 	app.get(path, function(req, res) \{			first matching route is run; subsequent routs are ignored\
+		req.doSomethingWithRequest();		req is a complex object containing all data of the get submit \
+		res.respondProperly();\
+			\}\
+	app.get\{'/':var1/fixedName/:var2', callback);	after : is treated as variable wildcard within that path to be used 							by the callback (is called route parameter)\
+	\
+			\
+	request:	is an object with complex info on the request:\
+		request.params				contains all variables defined in get(path with :var/\
+	\
+\
+	responds:\
+		res.send(something);			just sends the content of something to caller\
+	\
+default routing:	\
+	app.get('*', callback);				callback runs for every request from any path\
+\
+
+\b\fs24 Render HTML with EJS\
+	
+\b0\fs20 res.render(fileName.ejs)				html pseudocode in subfolder views/ is rendered\
+	in ejs file use HTML and embed javascript with <% %>\
+	<%= %>					expression is directly added to the HTML\
+	<% %>						script is run without rendering\
+	individual ejs-files can be included in other ejs-files as partials using:\
+	<% include path_to_file.ejs %>\
+\
+
+\b\fs24 Include files via link\
+	
+\b0\fs20 safasdf}

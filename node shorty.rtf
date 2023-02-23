@@ -1,0 +1,404 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf400
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red41\green0\blue130;\red20\green0\blue65;}
+{\*\expandedcolortbl;;\cssrgb\c21681\c10251\c58230;\cssrgb\c10369\c3853\c32394;}
+\margl1440\margr1440\vieww14780\viewh16940\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Node from Terminal:
+\b0\fs24 \
+
+\fs20 	 $node					node starts and shows >\
+	> ^C					press twice and node closes\
+	$ node file.js				run a file using node\
+	npm init					create a package.json file for your app into current folder\
+	npm install package \'97save		install a package in the current path and write the dependency into a package.json file\
+	\
+Packages:\
+	let packageName = require('package');		uses packages installed via npm\
+\
+	npm install nodemon \'97save		restarts server automatically upon file change\
+\
+	\
+\
+
+\b\fs26 Node-JS core
+\b0\fs20 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 insert packages:
+\b0 \
+		const moduleName = require(module-name);	can be used for packages stored in node_modules folder\
+		\
+\
+
+\b use modules:
+\b0 \
+	to split code you can create modules:\
+		split code\'85\
+		let variable = \'85\'85..\
+		module.exports = variable/ expression		stuff to be send out to the file calling the module\
+\
+	call module using:\
+		let moduleName = require('./path_to_file');	if path is a folder, an index.js file is imported (that can then require other modules)\
+\
+
+\b paths in Node.JS  !!
+\b0 \
+		the current path (from where the node app is run) needs to be referenced as .\
+		subfolders of the main dev-folder: ./folder and so on \
+\
+
+\b env variables
+\b0 \
+	environment variables are used in Node as:\
+		process.env.VARIABLE\
+	declare in command line:\
+		export VARIABLE=value\
+	or use dotenv:\
+		require('dotenv');				create .env file and store VARIABLE=value pairs in it\
+			\
+\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b\fs26 \cf0 EXPRESS
+\fs20 \
+	
+\b0 express is standard server for Node.js\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 declaration:
+\b0 \
+		const express require('express')\
+		const app = express();				declare app as the handler for express server\
+	setup:	\
+		app.set('view engine', #view engine)		sets interpreter for HTML markup (eg. ejs) \'97> path set to /views\
+								file extensions do not have to be included anymore (eg. home instead of home.ejs)\
+		app.use(express.static(__dirname + 'public'));	sets path to accessory files (eg. css or js) to /public (from __dirname = local of app.js)\
+		app.listen(#port, function() \{			sets port to listen to (for home projects 3000)\
+			possible action at startup\
+		\}				\
+	for deployment use:\
+		app.listen(process.env.PORT, process.env.IP)\
+		\
+
+\b routes:
+\b0 \
+		app.get(#path, function(req, res) \{		sets route for a get request to path #path (page views are get requests)\
+			\'85actions				req = request object containing lots of stuff\
+			req.query.#name			accesses the data from the get-request\
+			req.params				outputs a data-object containing all key:value pairs from from submission (name: value)\
+		\};						res = response object\
+\
+		app.post(#path, function(req, res) \{		<form action='#path' method='POST'> <input name='#name'></form>\
+			\'85actions\
+			req.body.#name				requires body-parser / req.body contains name-value-pairs from post-request\
+			req.body.data				<form action='#path' method='POST'> <input name='datat[#name]'></form>\
+		\}						if name="data[name1]  all posted data can be obtained from req.body as object called data\
+\
+		app.put('path', function(req, send) \{\}		put requests are not supported by HTML and changed into a GET request\
+								so you need a Method-Override as a workaround:\
+		\
+	in HTML:	<form action="path"+ "?_method=PUT" method="POST">	a description tag "?_method=PUT" is added to the form action\
+	in Node.js: 	const methodOverride = require('method-override);\
+			app.use(methodOverride('_method'))	sets method-override module to treat ?_`method` POST requests as `method`requests\
+\
+	routes can be modularized in separate files:\
+		dependencies for route.js:\
+		const express = require('express');\
+		const Model = require('models/model');		all required MongoModels have to be there\
+		const router = express.Router(\{mergeParams: true\});	all router functionality is stored in object router for export to app.js\
+									mergeParams: true \'97 all req.params (even the ones stored in the prepend path) are accessible\
+	\'97>	module.exports = router;			export to app.js\
+	use module:\
+		const routes = require('path_to_route.js);\
+		app.use('prepend_server_path',routes);		prepend path will be added to all router.get/post/put/delete paths in route.js\
+	\
+			\
+
+\b response:
+\b0 \
+		res.render('file');					renders an HTML page using a file from /views-path (without file-extension ejs)\
+		res.redirect(path);				used to redirect a post-request back to the original path\
+		res.redirect('back');				sends back to last page\
+\
+
+\b local variables:
+\b0 \
+		res.local.variable				is accessible as `variable` by all view-files\
+\
+
+\b middleware:
+\b0 \
+	middleware are functions working between req and res:\
+	app.get('path', middleware, (req, res) => \{\'85\'85.\});		middleware is run before the routing is done\
+		middleware = (req, res, next) => \{\
+			do something with req and res;\
+			return next() or return next(err);		calling next brings back the callback of the routing and you can pass in errors\
+		\}\
+\
+
+\b sanitizer:
+\b0 	\
+	const expressSanitizer = require('express-sanitizer');	\
+	app.use(expressSanitizer());\
+		text = text.sanitize(text);				all <script> tags are removed to savely import HTML-styled text	\
+	\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b\fs26 \cf0 RESTful routing
+\b0\fs20 \
+a conventional routing pattern for CRUD (create/read/update/destroy)\
+REST = representational state transform\
+	index:		get	/items			showing all data				DataItem.find()\
+	new:		get	/items/new		displaying the `new item` form		\
+	create:		post	/items			adding new item			DataItem.create()\
+	show:		get	/items/:itemID		showing full data on item		DataItem.findById()\
+	edit:		get	/items/:itemID/edit	showng edit form for item		DataItem.findById()\
+	Update		put	/items/:itemID		update data for particular item		DataItem.findByIdAndUpdate()\
+	destroy		delete	/items/:itemID		delete an item				DataItem.findByIdAndRemove\
+\
+\
+\
+\
+
+\b\fs26 EJS
+\b0\fs20 \
+	EJS allows to use HTML markup with JS injections\
+		res.render('ejs-file', \{data: datavar\})		JS objects can be used in the ejs-markup using \{ejs-var: js-var\}\
+		\
+		<%   %>					standard JS injection without a value\
+		<%= %>					JS injection giving a value\
+		<%- %>						JS injection evaluating the value as HTML\
+	\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 const bodyParser = require('body-parser');
+\b0 			allows req.body to be accessed as a JS object\
+app.use(bodyParser.urlencoded(\{extended: true\}));		standard setup for bodyParser\
+\
+
+\b const request = require('request');				
+\b0 package used to make HTTP calls (and HTTPS), good for API calls \
+	request('#http-path', function(error, response, body) \{	callback-function is called when result is there (is a promise)\
+		if (!error && response.statusCode == 200) \{\
+		     let data = JSON.parse(body)			APIs respond to a request with a JSON file in the body\
+		\}	\
+	\}\
+\
+const \
+\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b\fs26 \cf0 MongoDB
+\b0\fs20 	\
+	database for flexible data\
+	databases contain collections\
+	\
+ 	Mongo binary is installed on /usr/local\
+	Mongo data folder is on root\
+	\
+	start mongoDB using:\
+		mongod					starts the mongo demon\
+	open a new terminal tab and type:\
+		mongo						starts the mongo shell\
+\
+mongo shell:\
+	show dbs						shows databases on system\
+	help							opens a list of commands\
+	use `db name`						opens or creates a new database and switches to it\
+	db.`collection`						access (or create) collection of current database\
+	db.`collection`.find()					lists all elements of collection\
+	db.`collection`.find(\{key: value\})				finds all items with defined conditions\
+	db.`collection`.insert(data)				insert data object to collection\
+			data is inserted as objects\
+	.update(\{key: value\}, \{keyNew: valueNew\})		find item with key:value and change all data to keyNew:valueNew\
+	.update(\{key: value\}, \{$set: \{keyNew: valueNew\})	find item and update only keyNew while leaving the rest unchanged\
+	.remove(\{key: value\})					delete all selected\
+	.drop()							deletes the entire collection\
+\
+
+\b\fs26 Mongoose
+\b0\fs20 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 Mongoose is package to interact via JS with mongoDB\
+	mongoose is object-data-mapper
+\b0 \
+	const = mongoose = require('mongoose');\
+	mongoose.connect('mongodb://localhost/`dName');	create or open a new database and connect to it\
+	mongoose.Promise = Promise;				if you use the built-in Promise library, you don`t need callbacks but will chain commands with .then and .catch\
+	const dataSchema = new mongoose.Schema(\{		create a rough data schema to adhere to in your database\
+    		name: String,\
+    		image: String,\
+		age: Number,\
+		email: \ul \{ type: String, required: true, unique: true\}	\ulnone 	Schema can be further specified within curlies \
+	\});								unique failure returns err.code = 11000\
+\
+	let `DataItem = mongoose.model('DataItem', dataSchema);	make dataItem the JS object to interact with and adds new functionalities							also, a new collection is created using the plural of the model name (here dataitems)\
+					\
+	dataItem = new DataItem(\{				create new data element\
+		name: `name`,\
+		image: `url`,\
+		age: `23`\
+	\});\
+\
+	dataItem.save(function(err, item) \{			save data to db\
+		(err) \
+		   ? do something\
+		   : save item	\
+		\});\
+		\
+	DataItem.find(\{\}, function(err, item) \{\
+		if (err) \{\
+			console.log(err);\
+		\} else \{\
+			console.log(item);\
+		\}		\
+\
+	DataItem.create(\{data..for..item\}, function(err, item) \{\
+		if (err) \{do something;\
+		\} else \{\
+			do something:\
+	\
+	DataItem.findById(id, callback);\
+\
+	DataItem.findByIdAndUpdate(id, dataObject, callback);\
+or	DataItem.findOneAndUpdate(\{key: value\}, dataObject, callback, \{new: true);	if new is true, it will respond in the callback (promise.resolve) with the updated dataItem\
+\
+	DataItem.remove(\{key: value\})				delete item that has key value\
+		also findByIdAndRemove(id)\
+\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b\fs26 \cf0 Sessions and User Auth\
+	
+\b0\fs20 sessions allow state to be transferred via HTTP requests\
+packages:	\
+		require('express-session');			to control page entry via authenticated sessions\
+		require('passport')				for all authentication in node.js\
+		require('passport-local')				fit for passport.js for local authentication (instead of via google/ twitter/ etc.)\
+		require('passport-local-mongoose')		specially fit for mongoose\
+		app.use(passport.initialize());\
+		app.use(passport.session());\
+		app.use(require('express-session')(\{		sessions are cookie based and this is a middleware that sends a cookie \
+    			secret: 'We have nothing to hide',	with an encryption secret to the browser to initialize sessions\
+    			resave: false,				this cookie will become part of every request from browser to server\
+    			saveUninitialized: false,			require('client-sessions') is an alternative to 'express-session'\
+			expires: new Date(Date.now() + ms))	set time for session expiration\
+			secure: true,				only HTTPS\
+			ephemeral: true				kill cookie when browser closes \
+		\}));\
+\'97> declare auth model:	\
+	const userSchema = new mongoose.Schema(\{\
+   		 username: String,\
+    		password: String\
+	\});\
+\
+	userSchema.plugin(passportLocalMongoose);       	// adds methods to User Schema nice and easy\
+								this hashes your password and saves it instead of the standard string\cf2 alternatively you can has manually:\
+	require('bcryptjs');\
+	app.post('/register', (req, res) => \{ let hash = bcrypt.hashSync(req.body.password, 14);	14 is bcrypt work factor\
+		req.body.password = hash;				hashed password is saved instead of the standard to user\
+		let user = new User(req, body);				overwrite plain password with hashed password\
+		user.save((err) => \'85.	\
+	\
+	app.login('/login', (req, res) => \{ User.findOne(\{username: req.body.username \}, (err, user) => \{\
+		if (!user) \{return (some kind of error flash + return res.redirect(:)) \}\
+		if (!bcrypt.compareSync(req.body.password, user.password)) \{ return (some kind of error flash + return res.redirect(:))\
+		req.session.userId = user._id			session is set\
+		req.redirect('hidden_range');\
+		\}); \});\
+\
+	middleware for session ID:\
+	app.use((req, res, next) => \{ if (!(req.session && req.session.userId)) \{	creates a general middleware that extracts user data from \
+			return next(); 						session, if session is active\
+		\}\
+		User.findById(req.session.userId, (err, user) => \{\
+			if(err) \{ return next(err);\
+			\}\
+			if(!user) \{return next();\
+			\}\
+			user.password = undefined;\
+			req.user = user;\
+			req.locals.user = user;					req.locals stores locally available data for session-specific actions\
+			next();\
+			\});\
+		\});\
+	middleware for session permission:\
+		function isLoggedIn(req, res, next) \{\
+			if(!req.user) \{\
++			   return res.redirect('/login');\
+			\}\
+			next();					if login, you can go on\
+		\}\cf3 \
+\cf0 \
+	const User = mongoose.model('User', userSchema);	// if Schema is defined in module\
+\
+\'97> define encryption:\
+	passport.serializeUser(User.serializeUser());\
+	passport.deserializeUser(User.deserializeUser());\
+\
+in HTML define sign up form:\
+	<form action="/register" method="POST">  \
+		\'97> input name / input password\
+\
+\'97> define post route for register:\
+\
+	app.post('/register', function(req, res)\{\
+	    User.register(new User(\{username: req.body.username\}),	only username gets entered into db\
+		req.body.password,					password is passed and will be converted to encrypted hash\
+		function(err, user) \{\
+			passport.authenticate('local')(req, res, function() \{\
+				whatever should happen after registering..\
+			\})\
+		\}\
+	    \});\
+	\});  \
+\
+\
+\'97> create login form (get route + HTML)\
+	<form action='/login' method='POST'>\
+\
+\'97> define post route for login:\
+	app.post('/login', passport.authenticate('local', \{     		this is a middleware, a function run before the routing\
+   		 successRedirect: '/secret',\
+    		failureRedirect: '/login'\
+    		\}), function(req, res) \{\
+\
+	\});					\
+		\
+	\
+\
+
+\b\fs26 FLASH messages
+\b0\fs20 \
+	used to give instant hints to the user\
+		const flash = require('connect-flash');\
+		app.use(flash());\
+	flash message is declared in middleware (before redirect) as:\
+		req.flash('type', 'text');\
+		redirect(\'85.)						redirect gets req.flash passed along\
+	can be called from routers:\
+		res.render('login', \{message: req.flash('type')\})		will be passed to ejs file for data display\
+									will only work with redirect (disappears after refresh)\
+	flash messages are best used in the header after saving to res.locals.message in middleware\
+\
+\
+\
+}
