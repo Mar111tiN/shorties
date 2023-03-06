@@ -1,0 +1,165 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf400
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 HelveticaNeue;}
+{\colortbl;\red255\green255\blue255;\red38\green38\blue38;\red255\green255\blue255;\red255\green239\blue203;
+}
+{\*\expandedcolortbl;;\cssrgb\c20000\c20000\c20000;\cssrgb\c100000\c100000\c100000;\cssrgb\c100000\c94750\c83363;
+}
+\margl1440\margr1440\vieww14760\viewh18800\viewkind0
+\deftab720
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Regular expressions\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\b0\fs20 \cf0 	RE are used to declare a search pattern in the following way:\
+	as reg-literal within /\'85\'85/+modifiers	\
+		/pattern/modifiers;	and are often used with string methods search() and replace()\
+	as new RegExp object:\
+		reg = new RegExp("search"[, flags])	with new RegExp() you can incorporate variables into your query \
+							by way of a string literal as first argument of the instantiation call\
+	\
+
+\b flags/modifiers:
+\b0 	\
+		/i				case insensitive\
+		/g				global match instead of stopping after first match\
+		/m				multiline matching\
+		/y				sticky (regExp.exec() method \
+		/u				Unicode flag allows processing of 4-byte letters correctly\
+\
+
+\b patterns:\
+
+\b0 	sets: signify only one character of this pattern!				\
+		[abc]				find either a,b or c \
+	ranges:\
+		[0-9]				find any of the digits, ranges can also be concatenated in the pattern description:\
+		[0-37-9]				0 to 3 or 7 to 9\
+		[0|9]				find either 0 or 9\
+	excluding ranges:\
+		[^0-9]				anything but a digit\
+		[^aieou]				everything but vowels\
+		[^\\s]				any non-space character == \\S	\
+in [\'85], escaping is not neccessary (except for ^at the beginning and - in the middle\
+			\
+
+\b metacharacters/ character classes
+\b0 	\
+		\\d				any digit 						==  [0-9]\
+		\\s				find a space (whitespace, tab, newline)		== [\\t\\n\\v\\f\\r]\
+		\\w				letter/digit/underscore				== [a-zA-Z0-9_]\
+		\\b				is not a character but a boundary at end or start of string or between \\w and not \\w
+\f1 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\
+	uppercased classes mean everything but:\
+		\\W				every character except wordy
+\f0 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+		\\uxxxx				find Unicode character xxxx\
+		.				a dot . is any character except a newline\
+
+\b quantifiers\
+	
+\b0 make it possible to define the count of characters we search for\
+		n+				find string containing at least one n	== \{1,\}\
+		n*				find string contains zero or more incidences of n == \{0,\}\
+		n?				find strings containing less than two incidences ( 0 or one) of n == \{0,1\}\
+		n\{x\}				matches any string containing a sequence of exactly x n`s\
+		n\{x,y\}				matches any string containing a sequence of x to y n`s\
+		n\{x,\}				if second parameter is omitted, it means more or equal to x n`s \
+		n$				n at the end\
+		^n				n at the beginning\
+		?=n				finds characters followed by n\
+		?!n				not followed by n\
+		a(?=b)				finds a when directly followed by b\
+		a|b				a or b\
+\
+	in greedy mode (default), the regExp machine interprets quantifiers to encompass as many characters as possible to fulfill the condition:\
+	'Hallo, how are you"./H.+o/		will return 'Hallo, how are yo' because this is the maximum that fulfills the requirements\
+	lazy mode is opposite and is set by placing \ul ? after a quantifier\ulnone :\
+	'Hallo, how are you"./H.+?o/		+ quantifier has a ? to set lazy mode\
+\
+\
+
+\b capturing groups\
+	
+\b0 allow quantifiers to be used for entire expressions:\
+		/("?[aoeiu].*"?)\{1,2\}/ig		one or two times of expression "?[aoeiu].*"?\
+	allow use of grouped match to be used as value:\
+		("?[aoeiu].*"?)\{1-2\}.exec('"Auto""Obus')	the value in the first parens will be the second item of the results array (first item is the whole match),\
+						the value in the second parens will be the third array item\
+	also applies to string.match(reg) w/o g-flag\
+	parens can be nested and array position is according to first appearance of parens\
+	parens of optional quantifiers that are not present create array fields with `undefined`\
+	\
+	if you only need the group for proper quantification, you can exclude it from appearing in results array by using ?: at the beginning:\
+		upper reg becomes:\
+		/(?:"?[aeiou].*"?)\{1,2\}/ig\
+\
+	in str.replace() you can use the parens values as $1, $2\'85\
+	in reg you can backreference the parens value by \\1, \\2, etc..\
+\
+\
+
+\b alternation:
+\b0 \
+	alternative expressions can be separated by | and the different options are placed into parens\
+						\
+\
+
+\b escaping:
+\b0 \
+	in reg-literals /\'85/ you have to escape ()[]/.$^?+ etc if you want to use them as actual search strings using them \\\
+		/3\\.5/	-> 3.5\
+		/ has to be escaped with \\/  because in JS it is used to declare reg-literal\
+	in newRegExp, you have to accommodate for string escape rules as well: \\ is used to escape in strings as well and they are consumed during reg transformation\
+	therefore, we need to use \\\\ to escape RegExp special characters because they will be consumed to single \\\
+		\
+\
+
+\b line position
+\b0 \
+	if you want to specify expression to be at beginning or end of string, use ^ or $:\
+		/^<[^>]+>/			tag at beginning of string\
+		/<//?[^<>]+>$/			tag at end of string\
+	if you use m-flat, this applies to \ul beginning and end of every line\ulnone  (separated by \\n)\
+\
+\
+			\
+
+\b methods on regExp
+\b0 	\
+		str.search(reg)			finds first position of reg in str ( -1 if not)\
+		str.match(reg)	no -g		returns array\
+			array.index		position of find\
+			array.input		== str\
+			array[0]			full match \
+			array[1]		 	any possible match of parenthesized query:  can be several parens\
+			''hallo'.match(/ha(ll)o/)		\
+				array[0] == 'hallo'\
+				array[1] == 'll'\
+		str.match(reg) with g-flag	array of all matches without index or other features	\
+						!!! if there is no match, match() returns \cb4 null\cb1 \
+		str.replace(reg, arg/func)	second argument can contain special characters:\
+		for arg:	$&			the match itself\
+			$`			part of the string before the match\
+			$'			part of string after match\
+			$n			content of the n-th parenthesis from left to right:\
+		'Hello world'.replace(/(hello) (world)/i, '$2 $1')	  == 'world Hello'	\
+		callback:			second argument can be a callback function:	\
+			(match[, paren1, paren2,\'85parenN], index, str) => value for each found match\
+						\
+\
+		reg.test(string)			returns true, whether the regular expression is contained in string (==  ~str.search(reg) )\
+		reg.exec(string) no g-flag	returns the first match as array with properties\
+		reg.exec(string) with g-flag	returns full match as array with properties and sets `lastIndex` to first position after match for next exec() call\
+						reg.lastIndex can be manually set to control scope of search\
+						if there is no more left match, exec() returns null and lastIndex is set to 0\
+		reg.exec(string) with y-flag	exec() only looks at lastIndex and does not crawl		(needed for parsing)\
+\
+\
+
+\b Examples
+\b0 :\
+		/\\b#([0-9a-f]\{3\})\{1,2\}\\b/ig		find hexnumbers #abc or #abcdef:\
+		/-?\\d+(\\.\\d)?/g			any number (negative, positive, integer, float)	\
+		/[01]\\d|(2[]0-3]):[0-5]\\d		pattern for time hh:mm}

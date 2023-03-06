@@ -1,0 +1,474 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf400
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww13980\viewh17940\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 D3 and DOM
+\b0\fs20 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 Selecting and changing DOM elements:
+\b0 \
+	    d3.select('css-selector');\
+	    d3.selectAll('css-selector');\
+	these methods return selection object \{_groups: [array], _parents: [array]\}\
+	then you can interact with them via d3 or call them as HTML elements via .node() (first element) or nodes():\
+	    d3.selectAll('css-selector').nodes()		returns array of matching elements\
+	but normally you interact directly via selection objects:\
+	    d3.select('css-selector')\
+		.style("style-property", "value)				all methods return the selection object and can be chained\
+		.attr("attr","value")					\
+		.property("property", "value")\
+		.text("string")						like innerText				.html("html-string")					like innerHTML\
+		.classed("class1" "class2" "class3"\'85 "classN", true/false)		space-separated list of classes and boolean whether they should be set\
+\
+	if no arguments are passed, these methods work as getters - with arguments they are setters\
+		.attr("attr")						returns value of "attr"\
+	instead of values you can pass callbacks that return that value:\
+	    d3.selectAll('css-selector')\
+		    .attr("top", (_, idx) => f(idx))				first argument is _data_ (only applies if data() has been added \'97> see below)\
+									second argument is the index of the element in the selection\
+	this also works for classed when using callbacks for the boolean return value\
+	methods for DOM manipulation:\
+	    d3.selectAll('css-selector')\
+		.append("tagName")					returns new selection including the new element\
+\
+
+\b events\
+	
+\b0 events are set using on keyword\
+	    d3.select('css-selector')\
+		.on("eventType", (d3.event => \{callback\})				only one element per selection\
+\
+\
+
+\b data join
+\b0 \
+	entering data is done via the data( data-array ) method:\
+	    d3.select('css-parent')					here select the parent element in order to allow removing elements to work\
+	        d3.selectAll('css-children')					here comes the d3 select for the element group receiving the data\
+									!!! if there are no elements (yet), virtual elements are created\
+		.data([1,2,3,4,5], keyfunction)				data method returns a data object:\
+									\{__groups: array,_parent: array, _enter: array, _exit: array\}\
+									the _enter array contains an array for each data item binding the data in _data_ \
+									the _exit array contains array of all elements that have no data match\
+									(the others are in the array but undefined)\
+									key function binds data from data array to data stored as _data_ in elements (default is just by corresponding idx)\
+	eg.	.data(dataArray, (d) => d[key])				data is matched via specific data key FROM data array TO data key from data bound as _data_ to element\
+		.enter()							the enter method creates a selection for all data that has no matching element in the DOM\
+									calling the enter(method) allows appending the enter nodes to the DOM\
+		.append('css-element)					required number of nodes (if any) is added to the DOM\
+		   .classed(\'85\'85.)\
+		   .text((d,idx, nodes)=> \{d[key]\'85..\}			the callback function receives the _data_ , the index, and the array of elements in the data array\
+									after entering the elements, they remain bound to the data for every ensuing callbback\
+		.exit()							creates a selection for all elements that have no matching data\
+	unless you specify enter() or exit() you target the update selection, that contains all elements with matching data \
+		.enter()			do something\
+		.merge(update selection stored in variable)		var updateSelection = d3.select(parent).select(children).data(data, keyfunction)  stores the update selection and merge combines it with the enter selection\
+	\
+
+\b general update pattern:
+\b0 \
+	let dataList = d3.select('css-parent')				update selection in a variable\
+	        .selectAll('css-children')\
+		.data(data, keyfunction)					\
+	dataList								make changes specific to the update selection \
+	   .style\'85\'85\
+	   .text((d) => \'85\'85)\
+	   .exit()								process the exit selection \
+	     .remove();							\
+	dataList\
+	   .enter()							\
+	      .append(css-element)					add new data to the list	\
+		.style\'85\'85						style new data\
+		 .text((d) => \'85\'85)			\
+	    .merge(dataList)						merge enter and update and make style changes applying to all elements\
+		.style\'85\'85\
+		.text((d) => \'85\'85)\
+		\
+	if you have a group of elements (text, bars) that are combined to represent the data, use a <g> tag to update data\
+	!!! because selections apply to all subsequent methods, you have to call methods again for every subelement (store update and enterSelection in separate variables for ease of use)\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b\fs26 \cf0 helper functions
+\b0\fs20 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 math helpers:
+\b0 \
+	d3.max(dataArray, callback)   /d3.min\'85..			the callback specifies what value of the dataItem is used for comparison	d3.extent(dataArray, callback)					returns array [min, max]	\
+	d3.sum(dataArray, callback)					\
+\
+
+\b scales:
+\b0 \
+		d3.scaleLinear()						this is a mathematical helper mapping domain values to a (pixel domain)\
+		d3.scaleLog()\
+		d3.scaleOrdinal()					maps a discrete set of domain values to a range\
+		d3.scaleSqrt()						ideal to map values to circle area\
+		d3.scaleTime()						ideal for time serial (the domain is range of time values)\
+		d3.scaleSequential()					used for interpolators that want values betweeen 0 and 1 \
+		    .domain([0,100])				\
+		    .interpolator(d3.interpolateRainbow)			does not take range but interpolator\
+\
+		  .domain([start, end])					range of the input values\
+			.nice()						calling nice() on the scale extends the domain to suitale values for ticks\
+	  	  .range([start, end])					range of the output values (can also be colors)\
+you can specify a range and domain array with more than two (identical count) values and interpolation of values is performed staggered\
+\
+for colors, d3 has a set of color schemes handy (eg. d3.schemeCategory10)\
+	   //	  .rangeRound([start, end])				rangeRound rounds the output values to nearest integers\
+		  .ticks(number)						returns appr. number of evenly distributed tick coords within the domain\
+		.invert(output)						returns input value from output value (good for interpreting user clicks in range)\
+	\
+\
+
+\b axes:
+\b0 \
+		d3.axisTop(scale)  /..Left / Bottom / Right		the kind determines the positioning of the legend, not the position of the scale itself\
+									use a predefined scale as argument\
+\
+		\
+\
+		select\'85\'85\
+		   .append('g')\
+		       .call(d3.axis\'85.)\
+\
+	customize position of axis by using:\
+		      .attr('transform', 'translate(x,y))\
+	customize ticks by using.\
+	   d3.axis\
+	       .tickSize(size)						size > 0 goes away from axis, size < 0 makes it grid-like \
+	       .tickSizeOuter(size)						the opposite axis is drawn in grid unless .tickSizeOuter(0)\
+		.tickFormat(d3.format('.0f'))				reemoves commas from ticks\
+\
+
+\b Histograms\
+	
+\b0 data sets are put \
+		d3.histogram()						d3 function that returns a function\
+		  .domain()						by default, histograms use the extent of the whole data set to create the bins\
+		  .domain(someScale.domain())				using the domain from a predefined scale allows using its tick method (see below)\
+		  .thresholds([values, , ])					thresholds sets the width of individual bins based on an array\
+		  .thresholds(someScale.ticks())				any predefined scale comes with a ticks() method which is just an array of evenly distributed numbers in the domain of someScale\
+		  .thresholds(number)					if you pass a number, histogram tries to create that number of bins\
+\
+	var bins = histogram(data)					puts the data into subarrays (bins) that can be output as bins.length\
+	\
+
+\b Pie Chart method\
+	
+\b0 Pie Charts are grouped into a <g> element and automatically centered within\
+	\
+	d3.pie() returns a function that transforms data to be used within a pie chart:\
+		d3.pie()\
+	       	    .value(d => d[key])(data)				.value specifies which values from which dataset are being used for angle setting\
+	an array of objects containing startAngle and endAngle is returned:\
+		\{\
+			data:						original data\
+			startAngle:	 				angles are returned in 2\uc0\u960  fractions\
+			endAngle:\
+			index:						sorted from highest to lowest values\
+			padAngle:					sets space between arcs\
+			[cornerRadius]:					rounds the arc edges\
+			value:						value from the data used for angle\
+		\}\
+	\
+	you can specify a different sorting method using:\
+		d3.pie.sort(comparator)					as normal array sort comparator\
+	d3.arc()	converts info about radius and angle into arc-paths:\
+		d3.arc()(\{\
+			innerRadius: ..					if certain values are constant, they can be set via arc.innerRadius(val) etc.\
+			outerRadius:..\
+			startAngle:..\
+			endAngle:..\
+		\})\
+\
+	you can define common values for these keys using:\
+		d3.arc().key(value)  eg.   d3.arc().cornerRadius(5)\
+\
+		\
+
+\b Tooltips:
+\b0 \
+	is done with no built-in method but standard CSS and JS (position absolute and control via opacity)\
+\
+\
+\
+saiba37eu\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b\fs26 \cf0 Transition:
+\fs20 \
+
+\b0 	is used to make data change more visible\
+	d3.selectionAll(#css)\
+		.transition()	\
+			.attr(\'85.)					attr is changed using default interpolator\
+			.style(\'85)					style is changed from start value using transition values\
+									d3 uses prebuilt interpolators to set in-between-values\
+	you can also create custom interpolators (using attrTween / styleTween) in case it does not work with your case:\
+		.transition\
+			.attrTween(name, factory)			a factory is a function that returns an interpolator for the name attribute\
+	you can choose from a number of preset interpolators:		have to be imported as npm install d3-interpolate\
+		eg. d3.interpolateText\
+			.attrTween(name, () => d3.interpolateText(this.getAttribute(name, 'end')\
+	or a custom factory \
+		const myInterpol(a, b) => (t) => attr. as function of t (0 < t < 1) with attr(0) = a and attr(1) = b		 \
+	\
+	customize transition using following properties:\
+		transition\
+			.duration(ms)					change duration of transition (default 250ms)\
+			.ease(d3.easeLinear / easeCubic\'85\'85)		there are many ease functions built-in   (github.com/d3/d3/d3-ease\
+			.delay(ms/callback)				a callback takes d and idx and is usually a function of idx\
+			.on('start', callback)				listens to transition events 'start', 'event' and 'interrupt'\
+		start and end event is fired for every transition - use the index in the callback to specify a transition to listen for		\
+		\
+
+\b\fs26 Async Data Retrival:
+\fs20 \
+
+\b0 	d3 comes with several helper functions to retrieve and convert data to JS objects to be used by d3\
+	!!! in order to load local files, you have to run the html from a server (setup Node completely or use http-server and run index.html via http-server from the dev 	root)\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 data fetch/ conversion:
+\b0 \
+	several methods are available to import and convert data to JS objects:\
+	JSON:\
+		d3.json(url, callback)\
+			callback(error, data) \{error == null if ok, data refers to JSON data\}\
+	CSV:\
+		d3.csv(url, formatter, callback)				d3.csv converts csv-files into an array of JS objects using the header as keys\
+									!!! values from csv files are always strings so a formatter callback \
+									should convert these to propere values\
+		formatter = (row, i, header) => \{				formatter callback takes three arguments: 										row: current csv row as an object\
+										idx: the index of the row\
+										header: array of keys in the header\
+			if (condition) return;				rows that return null or undefined are not used in conversion\
+			return \{\
+			   newKey1 = +row.key1,\
+			   newKey2 = +row.key2				keys that are not converted are not used\
+			\}				\
+			 \
+		d3.xml(url, callback)					format your data within the callback (no formatter available)\
+		callback = (e, d) => \{\
+		    if (e) throw e;\
+		    data = Array.prototype.map.call(d.querySelectorAll('dataItem', 	 querySelectorAll for desired elements and map data (via Array.prototype) via DOM node call to object)\
+			(item) => (\{key1: querySelector('field).textContent / getAttribute('value')\'85   use (\{ \}) to make sure it is not a code block\
+				     key2: querySelector('otherField').textContent / getAttribute('value')\'85.\
+				   \})		\
+ \
+	to chain several fetches together use the queue function:\
+		d3.queue()						queue sets up a list of fetches to be processed\
+			.defer(asyncFunc1[, arguments])	\
+			.defer(asyncFunc2[,arguments])	\
+			.await( (e, res1, res2) => )			returns resolved (or rejected) promises and callback receives data as comma-sep args\
+		queue.awaitAll( (e,res) => res[0]\'85.res[1])	 	returns data as an Array\
+\
+combining data:\
+	combining data is done manually by associating data via filter and map:\
+		\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b\fs26 \cf0 DATA formatting:\
+
+\b0\fs20 	once your data is imported via queue, you can modify your data structure via vanillaJS or use d3 helpers:\
+	data =	d3.nest()						creates an empty array\
+		    .key(d => d.key)					data will be sorted according to specified key into the following structure:\
+		    .entries(dataArray)					dataArray has to be specified to create the new data structure\
+				[value1: [all objects containing value1 for the key , \{\} , \{\}, \{\})\
+		    .rollup( subArray => someProperty of \
+		    \
+		    \
+\
+\
+\
+
+\b\fs26 GeoJSON
+\b0\fs20 	\
+	is a standard for encoding geographic data with JSON\
+	geographic data is stored as array of features, that can be converted into svg paths\
+	in d3, first import the file using d3.json(url, callback)\
+	the json can then be converted into paths using d3.geoPath()	geoPath() returns function that converts GeoJSON into path commands\
+		let path = d3.geoPath();\
+		let featurePath = path(GeoJSON-feature) 		featurePath contains the path for one feature of the GeoJSON\
+									if including as .data( use the path to the features array of the JSON object:\
+		path.projection( any kind of projection   )			applies one of several available projections from 3D to 2D onto the paths\
+		     .scale(value)							(see {\field{\*\fldinst{HYPERLINK "https://github.com/d3/d3-geo-projection"}}{\fldrslt https://github.com/d3/d3-geo-projection}})\
+		     .translate([x, y])\
+		     .rotate([x,y,z])					rotates projection at x/2\uc0\u960  y/2\u960  and z/2\u960  around these axes\
+\
+		d3.select('svg')\
+		    .selectAll('path')\
+		    .data(JSONobject.features)				JSONobject.features contains the feature data required to convert into paths\
+		    .enter()\
+		    .append('path')\
+		        .attr('d', path)\
+	\
+TopoJSON is a more condensed data type omitting recurring paths from a GeoJSON file\
+	convert TopoJSON into GeoJSON:\
+		JSONobject = topojson.feature(TopoJSONobject, locationOfFeature)	path to Feature is usually objName.objects.collection..\
+		for easy manipulation of transform values, you can modify them directly in the TopoJSON before conversion into GeoJSON\
+\
+\
+
+\b\fs26 ForceDirectedGraphs
+\b0\fs20 	\
+	are used to display relationship between objects\
+	d3.forceSimulation([nodes])					starts a force Simulation acting on nodes\
+	   .force(`name`, typeOfForce)					add a force to create tension within the node system\
+force types	d3.forceCenter(x, y) 					attraction to a center defined by x and y\
+		d3.forceManyBody()					attraction or repulsion between nodes	      		.strength()					set strength of many-body-force ( < 0 repulsive ; default: -30)\
+		d3.forceLinks(arrayOfLinks)				links can also added afterwards using .links() method\
+									arrayOfLinks = [\{source: value, target: value\},\{source: value, target: value\},\'85.]\
+			.id(d => d.color)					.id() links the source and target values to properties in the nodes\
+			.distance(value)					links want to have that distance and are pulled to that distance\
+			.distance(d => f(d.source.prop, d.target.prop)	ideally, distance is a callback of properties of source and target:\
+			\
+			.strength()					the pull to distance is proportional to strength * difference to the optimal distance\
+\
+	   .on('tick', () => \{						adding the tick-eventListener to update positions after every tick of a timer\
+		nodeSelection						selection of elements that are controlled by the stimulation\
+			.attr('x', d => d.x)				update of the positions\
+			.attr('y', d => d.y)		\
+simulation uses a decaying alpha-value that decreases every tick which cools down the simulation by weakening the forces\
+after cool-down (alpha below a threshold) nothing moves anymore\
+	simulation.alpha()						gets or sets the alpha to a value\
+		.alphaMin(value)					get or sets the threshold for cooldown (default 0.001)\
+		.alphaDecay(value)					get or sets the decay rate per tick (default ~0.0228)\
+		.alphaTarget(value)					get or sets what alpha decays to (default 0)\
+	simulation.restart()						restarts the simulation (eg after drag and setting the alpha to intermediate value)\
+
+\b\fs26 DragNdrop
+\b0\fs20 	\
+	d3.drag is easily applied to elements via call:\
+		nodeSelection		\
+			.call(d3.drag)					drag is enabled on element\
+                           	  	.on('start', dragStart)			three events are possible and will be answered with a callback\
+                            		.on('drag', drag)\
+                            		.on('end', dragEnd)\
+		function dragStart() \{\
+									fx and fy fix the position of elements independently of simulations\
+									remove fixed positions setting fx and fy to null\
+		\}\
+================================================================================================================\
+\
+
+\b\fs26 SVG
+\b0\fs20 \
+\
+scalable vector graphics\
+	<svg width='value' height='value'>\
+	   \'85\'85\'85svg elements\'85\'85\'85\
+	</svg>\
+ \
+	no element can exceed the svg element\
+	the z-index of element is determined by the occurrence in the document\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b \cf0 SVG elements:
+\b0 \
+	all elements can have id='\'85\'85'\
+	all elements can be shifted from original position via dx and dy\
+	line:\
+		<line x1='..' x2='..' y1='..' y2='..' 		/>\
+	rectangle:\
+		<rect 	x='..' y='..' rx='..' ry='..'				x/y: start coordinates | rx / ry  rounded corners | \
+			width='..' height='..' style='..'	/>\
+	circle:\
+		<circle 	cx='..' cy='..' r='..'		/>		cx/cy: center coordinates | r: radius\
+\
+	ellipse	<ellipse cx='..' cy='..' rx='..' ry='..'		/>		rx/ry: ellipse radia\
+\
+	polygon:\
+		<polygon points="x1, y1, x2, y2, x3, y3,\'85,xn, yn"	as many points as you want\
+\
+	polyline:							continuous connected lines\
+		<polyline points="x1, y1, x2, y2, x3, y3,\'85,xn, yn"\
+\
+	path:\
+		<path d="Mx y $command$x y $command$x y \'85 Z"		path is defined by d attribute containing commands combined with points\
+\
+		commands:		capital letters = absolute position / lower case = relative position\
+			M	moveto	(start)\
+			L	lineto\
+			H/V	horizontal/vertical lineto\
+			C	curveto xy(control1) xy(control2) xy(endpoint)\
+			S	smooth curveto\
+			Q	quadratic Bezier  xy(control point) \'a0xy(endpoint)\
+			T	smooth quadratic Bezier\
+			A	elliptical arc:	rx ry(ellipse radia) rotateDeg 0/1(largeArc?) 0/1(sweep?) xy(endpoint)\
+			Z	closepath (end)\
+\
+	elements can be grouped in 	<g style="\'85">    \
+					</g> 				common styles can be assigned to group\
+\
+
+\b SVG text:
+\b0 \
+	<text x=".." y=".."  text-anchor="start / middle / end" 		x/y : lower left coords for text-anchor="start" / lower right for text-anchor="end"\
+	    alignment-baseline="\'85"					you can also use alignment-baseline="hanging / middle / baseline" for vertical alignment\
+	    font-size=".." font-family=".." fill=".." stroke=".."			also text style can be set here\
+	    transform="rotate(deg, rot-centre x, y )\
+	> text \
+		<tspan x=".." y=".."> text </tspan>			text can be subdivided into <tspan> elements\
+		<tspan x=".." y=".."> text </tspan>\
+	</text>\
+	text can be wrapped in an <a> element for weblink functionality:\
+	       <svg xmlns:xlink="http://www.w3.org/1999/xlink">\
+		<a xlink:href="path" target="_blank">\
+			<text> linktext </text>\
+		</a>\
+	       </svg>\
+\
+
+\b SVG modifications:
+\b0 \
+	style is applied either as combined style attribute:\
+	    style=':\
+		fill:\
+		stroke:							line color\
+		stroke-width:						line thickness\
+		stroke-linecap: butt/ round/ square			end of line options\
+		stroke-dasharray: fill-width empty-width fill-widh empty-width \'85\'85..\
+		fill-rule:  nonzero / evenodd				controls fill according to number of overlapping elements\
+	or as individual properties:\
+		stroke='..' fill='..'\
+	transform="rotate(deg x,y)"\
+\
+
+\b filters and gradients:
+\b0 \
+	filters and gradients are defined in the <defs> tag and are referred to by the SVG elements via a mandatory id:\
+		<defs>\
+		     <filter id="filter1" x="0" y="0">\
+			<feGaussianBlur in="SourceGraphic / SourceAlpha" stdDeviation="\'85" />\
+			<feOffset result="offOut" in="SourceGraphic / SourceAlpha" dx=".." dy=".." />\
+			\'85. many filters can be combined to one\
+		    </filter>\
+		    <linearGradient / radialGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="0%" \{direction of gradient\} >\
+			<stop offset="0%" style="\'85\'85" />\
+			<stop offset="50%" style="\'85\'85" />\
+			<stop offset="100%" style="\'85\'85" />\
+		</defs>\
+		<SVGelem \'85\'85 filter="url(#filter1)" fill="url(#grad1) />\
+\
+
+\b animation:\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\b0 \cf0 	\
+	\
+	    }

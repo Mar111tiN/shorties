@@ -1,0 +1,81 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2578
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Menlo-Regular;\f2\fswiss\fcharset0 Helvetica-Bold;
+\f3\fnil\fcharset0 Menlo-Bold;}
+{\colortbl;\red255\green255\blue255;\red64\green11\blue217;\red0\green0\blue0;\red0\green0\blue0;
+\red255\green255\blue255;\red0\green0\blue0;\red59\green35\blue34;}
+{\*\expandedcolortbl;;\cssrgb\c32308\c18668\c88227;\csgray\c0;\cssrgb\c0\c0\c0;
+\csgray\c100000;\csgray\c0\c0;\csgenericrgb\c23317\c13541\c13291;}
+\paperw12240\paperh15840\margl1440\margr1440\vieww20760\viewh16380\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 download the SNP database to ~/work/downloads/annoDBs:\
+\
+cd 
+\f1\fs22 \cf2 \CocoaLigature0 ~/work/downloads/annoDBs\
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf3 \
+export HG38=path_to_hg38.fasta\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f2\b\fs24 Step1: convert chroms from NC_0001.11 to chr1
+\f1\b0\fs22 \
+\pard\pardeftab720\sl360\partightenfactor0
+\cf4 \cb5 \expnd0\expndtw0\kerning0
+\CocoaLigature1 $ gunzip < dbSNPxxx.vcf.gz | ## unzip\
+ sed -e 's/NC_00000?([1-9XYM][0-9T]?)\\.[0-9]+/chr\\1/'   ## convert NC_00001.11 to chr1\
+\cb6      -e 's/chr23/chrX/' -e 's/chr24/chrY/' |   ## convert chr23 to chrX etc\cf3 \kerning1\expnd0\expndtw0 \CocoaLigature0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\
+Step2: convert vcf to text list with separate entries\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 # get the tools\cf3 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+$ export VCF=\cf7 ~/tools/mawktools/vcf/vcf2csv.mawk\cf3 \
+$ export EXP=\cf7 ~/tools\cf3 /mawktools/misc/expandDBSNP.mawk\
+$ gunzip < dbSNP154.ln.vcf.gz | $VCF | $EXP | mawk 'length($3) == length($4) && $7 > 0' | pigz -p 8 > dbSNP154.hg38.csv.gz\
+\
+
+\f3\b\fs24 Step3: filter for BEDfile
+\f1\b0\fs22 \
+$ export FILTER=\cf7 ~/tools/mawktools\cf3 /filter/filterBed.mawk\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf7 $ export BED=$STATIC/annotation/csv/hg38_ensembl104.bed\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf3 $ gunzip < dbSNP154.hg38.csv.gz | $FILTER $BED > dbSNP154.hg38.ens104.csv; gzip \cf7 dbSNP154.hg38.ens104.csv\cf3 \
+$ export BED=$STATIC/bed_files/SureSelect/hg38/SS_HAEv7_hg38_Padded.bed\
+$ gunzip < \cf7 dbSNP154.hg38.ens104.csv\cf3  | $FILTER $BED > \cf7 dbSNP154.hg38.HAEv7.csv\cf3 \
+$ export BED=$STATIC/bed_files/SureSelect/hg38/SS_HAEv6r2_hg38_Padded.bed\
+$ gunzip < \cf7 dbSNP154.hg38.ens104.csv\cf3  | $FILTER $BED > \cf7 dbSNP154.hg38.HAEv6r2.csv\cf3 \
+\
+
+\f3\b\fs24 Step4: split the file to chroms
+\f1\b0\fs22 \cf0 \CocoaLigature1 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 # create the anno file\
+$ \cf7 \CocoaLigature0 export COORDS=~/tools/mawktools/vcf/coords2annovar.mawk\
+$ gunzip < dbSNP154.hg38.ens104.csv.gz | $COORDS | mawk '\
+	NR==1\{\
+		OFS="\\t";printf("%s\\t%s\\t%s\\t%s\\t%s\\tdbSNP154_ID\\tdbSNP154_AltFreq\\tdbSNP154_DB\\n",$1,$2,$3,$4,$5)\
+\}	NR>1\{\
+		print($1,$2,$3,$4,$5,$6,$8,$9)\
+\}' > $STATIC/annotation/annovar/humandb/hg38_dbSNP154.txt\cf0 \CocoaLigature1 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf3 \CocoaLigature0 $ gunzip < dbsnp153.hg38.ln.sep.csv.gz | $COORDS | pigz -p 5 > dbsnp153.hg38.anno.txt.gz\cf0 \CocoaLigature1 \
+\cf3 \CocoaLigature0 \
+# bedFilter the annoFile\
+gunzip < dbsnp153.hg38.anno.txt.gz | filterBed $BED | pigz -p 5 > bedFiltered/dbsnp153.hg38.SS_HAEv7.anno.txt.gz\
+\
+Step5: split the file to chroms\
+$ export SPLIT=$\{HOME\}/mawktools/chromSplit.mawk\
+$ $SPLIT -f HAEv6split dbSNP154.hg38.HAEv6r2.SNP.csv.gz \
+# make short bedfile versions\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf0 \cb1 \CocoaLigature1 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf3 \CocoaLigature0 \
+\
+\
+}

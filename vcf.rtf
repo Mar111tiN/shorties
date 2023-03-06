@@ -1,0 +1,113 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww12620\viewh7900\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 VCF is format for storing variant information in a compact way\
+BCF is the binary counterpart which has much more strict limitations (every field must be described in header\
+\
+
+\f1\b Header:\
+
+\f0\b0 every line is preceded with a ##\
+first line is fileformat=VCFv4.x	the exact version of the VCF file
+\f1\b 	
+\f0\b0 \
+##fileDate=20190823\
+##source=\
+##reference=				what reference is used\
+##phasing=partial			is the haplotype given/imputed\
+\
+every key in the info field has to be described in the header like this:\
+##INFO=<ID=`KEY`, Number=1,Type=Integer/String/Flag/Float/Character="description of the Info-field">\
+\
+filters used for passing have to be described like this:\
+##FILTER=<ID=`filter_short_name`,Description="filter description">\
+\
+every format key has to be described in similar fashion to info field:\
+##FORMAT=<ID=`key`,Number=1,TYPE=Integer/String/Character/Float,Description="description of the format key">\
+	Number describes the number of values this key has (eg. KEY=Val1,Val2 \'97> Number=2)\
+	special characters for Number:\
+		A:			field has one value per alternate allele\
+		R:			field has one value per all possible alleles including the ref allele\
+		G:			one value per possbile genotype (AA, AB, BB)\
+		.			number of values varies\
+\
+##ALT=<ID=type,Description="\'85.">\
+	for symbolic alternate alleles (without exact base composition), these options are described in the ##AT field format:\
+	DEL				deletion relative to the reference\
+	INS				insertion\
+	DUP				duplication\
+	INV				inversion\
+	CNV				copy number variation\
+	BND				break end\
+	\
+you can give detailed information to the samples in the header using fields previously described in the ##META field\
+##META=<ID=Disease,Type=String,Number=.,Values=[None, Cancer, Vascular, other]\
+##META=<ID=Ethnicity,Type=String,Number=1,Values=[AFR, CEU, ASN]\
+\
+##SAMPLE=<ID=Sample1,Disease=Cancer,Ethnicity=AFR,Description="\'85.">\
+\
+
+\f1\b Colums:
+\f0\b0 \
+mandatory in header line (tab-separated):\
+	#CHROM:			chromosome number\
+	POS:				genomic start position\
+	ID:				if existing, the dbSNP identifier (eg. rs2066844)\
+	REF:				base in ref genome\
+	ALT:				variant called in samples\
+					can be more then one (comma-separated)\
+					optimally, one variant per line, though!\
+					can be a symbolic alt in angle-brackets (eg. <DUP>)\
+	QUAL:			Phred-score of calling this mutation\
+	FILTER:			PASS if it passed all filters of caller\
+					comma-separated list of filters that did not pass\
+					keys for the filters have to be defined in the header\
+	INFO:				arbitrary info can be dumped in here\
+					info is stored as keys that can be flags or contain data \
+					in this format:\
+					<KEY1>;<KEY2>,<KEY3>=<data>;<KEY4>=data1,data2\
+					key1 and 2 are flags, key3 contains one datum, key4 two data\
+					keys can be arbitrary but have to be defined in header\
+					several keys are however de-facto standards:\
+		AC			allele count in genotype\
+		AN			total number of alleles in called genotypes\
+		AF=			allele frequency for all Alts (comma-separated if several alts)\
+		NS=			number of samples with variants at this site\
+		DP=			combined depth across samples\
+		END=			end position of this variant (useful for CNVs or large indels)\
+		H2			membership in hapmap2 (haplotype map of human genome)\
+		H3			hapmap3 membership\
+		1000G		membership in 1000Genomes\
+		DB			membership in dbSNP\
+		SB=			strand bias at that position\
+		SOMATIC		the record is a somatic mutation\
+		VALIDATED		validated by follow-up experiments\
+		CIGAR=		CIGAR string of the mapping\
+		BQ=			base quality at that position\
+		MQ=			mapping quality at that position\
+\
+for genotype information, the following columns are included as well:\
+\
+	FORMAT:			gives the keys for the values used in the ensuing sample columns\
+					keys are separated by semicolons\
+					pseudo standard keywords are used but all have to be described in the header\
+than follow the individual samples (if more than one, column name is sample name) with the semicolon-separated values according to the FORMAT keys - if not available, a dot is placed\
+\
+		GT			genotype as alleles 0 is ref, 1 is first allele in Alt, 2 is second allele in Alt\
+					0/1 means that sample has one allele ref and one allele is first variant in Alt\
+					0|1 means the genotype is phased at that site and haplotype can be given\
+		DP			read depth at this position for this sample\
+		FT			sample-specific genotype filter (PASS or semicolon-separated list of Filter keywords)\
+		GL			three floating-point log-likelihoods for AA,AB, BB genotypes (A ref, B alt)\
+		GQ			genotype quality -10log10(genotype is wrong)\
+		HQ			haplotype quality two comma-separated phred-qualities\
+		MQ			mapping quality per allele\
+		AD			read depth per allele\
+		ADF / ADR		read depth per allele on forward / reverse strand\
+		GP			genotype posterior probabilities (0<x<1) in order of GL field order\
+\
+}

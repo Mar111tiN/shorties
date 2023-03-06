@@ -1,0 +1,104 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1561\cocoasubrtf200
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 Consolas;\f2\fnil\fcharset0 Consolas-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red236\green236\blue236;\red255\green255\blue11;
+\red255\green255\blue10;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c94118\c94118\c94118;\cssrgb\c100000\c100000\c0;
+\cssrgb\c99942\c98555\c0;}
+\margl1440\margr1440\vieww17280\viewh10120\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Apache-Server MacOS\
+\
+
+\b\fs26 \ul Apache:
+\b0\fs24 \ulnone 		
+\f1\fs28 \cf2 \cb3 \expnd0\expndtw0\kerning0
+sudo apachectl start | stop | restart\
+				Troubleshooting:	apachectl configtest\
+\
+
+\f2\b \ul Folder-structure:
+\f1\b0 \ulnone \
+Apache-Folder (hidden):				/etc/apache2/users\
+Root-Folder for User-websites:		/Users/mahtin/Sites/\
+Root-folder for localhost:			/Library/Webserver/Documents/\
+\
+
+\f2\b \ul Setup:
+\f1\b0 \ulnone \
+1: create mahtin.conf in /etc/apache2/users\
+	cd /etc/apache2/users\
+	sudo nano username.conf\
+	 add:<Directory "/Users/\cb4 mahtin\cb3 /Sites/">\
+\pard\pardeftab720\sl364\partightenfactor0
+\cf2 		AllowOverride All\
+		Options Indexes MultiViews FollowSymLinks\
+		Require all granted\
+		</Directory>\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 	apply permissions via Terminal: sudo chmod 644 username.conf\
+\
+2: Open Modules on Apache2: \
+	via BBedit open /etc/apache2/http.conf\
+	make available the following modules (remove #):\
+		LoadModule authz_host_module libexec/apache2/mod_authz_core.so\
+		LoadModule authz_host_module libexec/apache2/mod_authz_host.so\
+		LoadModule userdir_module libexec/apache2/mod_userdir.so\
+		LoadModule include_module libexec/apache2/mod_include.so\
+		LoadModule rewrite_module libexec/apache2/mod_rewrite.so\
+
+\f2\b \ul PHPready:
+\f1\b0 \ulnone 	LoadModule php7_module libexec/apache2/libphp7.so\
+		Include /private/etc/apache2/extra/httpd-userdir.conf\
+		LoadModule rewrite_module libexec/apache2/mod_rewrite.so\
+		search for "AllowOverride controls what.."\
+			change AllowOverride None\'97>All\
+		\
+	via BBedit open /etc/apache2/extra/httpd-userdir.conf\
+	make available the following module (remove #):\
+		Include /private/etc/apache2/users/*.conf\
+\
+
+\f2\b \ul MySQL
+\f1\b0 \ulnone 	download from {\field{\*\fldinst{HYPERLINK "https://dev.mysql.com/downloads/mysql/"}}{\fldrslt https://dev.mysql.com/downloads/mysql/}}\
+		install it accordingly - remember the password\
+		create (or modify) .bash_profile\
+		in Terminal:	cd ; nano .bash_profile\
+		add line:	export PATH="/usr/local/mysql/bin:$PATH"\
+		Save .bash_profile\
+		-via Terminal: source ~/.bash_profile\
+	change password:\
+		-sudo /usr/local/mysql/support-files/mysql.server stop\
+		-sudo mysqld_safe --skip-grant-tables\
+	open new terminal window:\
+		-mysql -u root\
+		-FLUSH PRIVILEGES;\
+		-ALTER USER 'root'@'localhost' IDENTIFIED BY '\cb5 MyNewPass\cb3 ';\
+		-\\q\
+	start MySQL \
+		-via Terminal: sudo /usr/local/mysql/support-files/mysql.server start\
+		-via System preferences\
+		-to see version: enter mySQL dialogue via: /usr/local/mysql/bin/mysql -v -uroot -p\
+		-quit via \\q\
+	Fix the 2002 MySQL Socket error:\
+		-sudo mkdir /var/mysql\
+		-sudo ln -s /tmp/mysql.sock /var/mysql/mysql.sock\
+\
+
+\f2\b \ul phpMyAdmin
+\f1\b0 \ulnone \
+		-download phpMyAdmin: {\field{\*\fldinst{HYPERLINK "https://www.phpmyadmin.net/downloads/"}}{\fldrslt https://www.phpmyadmin.net/downloads/}}\
+		-unzip and install in /Sites folder\
+		-create config folder (via Terminal mkdir ~/Sites/phpmyadmin/config)\
+		-change permission: chmod o+w ~/Sites/phpmyadmin/config\
+		-\
+Write permissions:\
+		- when working on a project in Sites, set write permission to apache by:\
+		sudo chown -R _www ~/Sites/#sitename\
+\
+direct access from other computers:\
+10.0.1.12 = users/mahtin/Sites\
+\
+\
+}

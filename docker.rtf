@@ -1,0 +1,215 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2639
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw12240\paperh15840\margl1440\margr1440\vieww14860\viewh16440\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 Docker is a container to run and distribute images (processes) locally and in the clout\
+\
+-------------------------------------------------------------------------------------------------------------------\
+-------------------------------------------------------------------------------------------------------------------\
+
+\f1\b\fs28 Installing
+\f0\b0 :
+\fs24 \
+Mac:\
+	download the docker desktop app for Mac (simple)\
+	you need root access (provide password)\
+		\
+\
+Linux:\
+	install the latest stable version with Docker's automated script:\
+	$ curl -sSL https://get.docker.com/ | sh\
+\
+
+\f1\b Basic commands:
+\f0\b0 \
+either as \
+$ docker <command>\
+$ docker <management_command> <subcommand>\
+\
+$ docker version			see version and check proper install\
+$ docker info				lots of information\
+\
+\
+-------------------------------------------------------------------------------------------------------------------\
+-------------------------------------------------------------------------------------------------------------------\
+
+\f1\b\fs28 containers
+\f0\b0\fs24 \
+\
+
+\f1\b run a container
+\f0\b0 \
+	$ docker container run \'97publish 80:80 nginx		run nginx in a container listening to local port 80\
+other options for container run	(have to come before the image name):\
+		\'97publish / -p localPort:containerPort		set the network\
+		\'97detach / -d						runs container in the background\
+		\'97name <container_name>			give your process a name\
+		\'97env / -e						pass environment variables to container\
+		\'97rm							remove container when it exits\
+		--platform linux/amd64				run an intel container\
+	$ docker container ls	(or docker ps)		list all running containers\
+	$ docker container ls -a 	/ -all				list all created containers\
+	$ docker container stop <id>\
+	$ docker container prune					remove all stopped containers\
+	$ docker container rm <id>	 / <container_name>	remove container with that id\
+	$ docker container rm -r <id> /<container_name>	remove even running containers\
+\
+
+\f1\b inspect containers\
+
+\f0\b0 	$ docker container logs <container_name>		give the log information for that container\
+	$ docker container top <id>/<container_name>		list processes of a specific container\
+	$ docker container inspect  <id>/<container_name>	show a json with all container info\
+		--format/-f \'91\{\{ .NetworkSettings \}\}\'92\
+\
+	$ docker container stats [<id>/]				show online resource consumption for containeres\
+\
+\
+
+\f1\b entering containers\
+	
+\f0\b0 $ docker container run [options] <image> <cmd>	run a command on a new container instead of the default command\
+									cmd \'84bash\'94 opens a bash session (mostly works for interactive work)\
+									alpine does not have bash so you have to use \'84sh\'94\
+	required options for entering:	\
+		-t 							get pseud-tty (works as an interactive shell)\
+		-i							run interactively (stdout stays open) \
+--> 	$ docker container run -it <image> bash			creates a new container from the image <id> and\
+									opens an interactive session in container \
+		#							promt  \
+\
+									\
+		# exit							exit the bash on the container \'97> stops the container\
+	$ docker container start -ai <container_name>		restart a stopped container with interactive shell\
+									container state is kept\
+\
+	$ docker container exec -it <container_name> <cmd>	run a new command (process) in a running container\
+\
+	\
+-------------------------------------------------------------------------------------------------------------------\
+-------------------------------------------------------------------------------------------------------------------\
+
+\f1\b\fs28 Images
+\f0\b0\fs24 \
+\
+
+\f1\b get images
+\f0\b0 \
+go to hub.docker.com and look for the desired docker image\
+official images are well-maintained and curated and are the only ones without a backslash\
+tags tell you about the version and are appended to the image after colon\
+	$ docker pull <image>[:<version_tag>]			version tags can be "latest" or "1" or "1.2" etc.\
+	\
+	$ docker image history <img>				gives chron. list of changes to the image layers\
+	$ docker image inspect <img> 				get the json config file with all info\
+\
+
+\f1\b inspect images\
+
+\f0\b0 	$ docker container logs <container_name>		give the log information for that container\
+	$ docker image ls						list all installed images\
+	$ docker pull <image>					gets the docker image without running it\
+\
+	\
+
+\f1\b build images\
+
+\f0\b0 for a build you first create a Dockerfile containing the instructions for the build (see Dockerfiles.rtf for descriptions)\
+then you build your docker image that you can then push to your repo
+\f1\b \
+	
+\f0\b0 $ docker image build <workdir>				builds your docker image with data and Dockerfile contained in workdir\
+		-f <path_to_dockerfile>				use another Dockerfile\
+		-t <img>:<tag	>					tag your image for use\
+		-t <img>:<tag>					you can create different tags for your image\
+\
+
+\f1\b build multiplatform images
+\f0\b0 \
+
+\f1\b 	
+\f0\b0 using buildx, you can create new builders that support multiplatform building\
+	$ docker buildx ls						shows you the build kits and their respective platform compatibilities\
+									the active build driver has an asterics\
+	$ docker buildx create 					creates a new multi-platform builder that can be activated\
+		--name <name_of_builddriver>			name your new driver\
+		--use							directly switch to that build driver\
+	$ docker buildx use <name_of_builddriver>		activate that build driver as a default driver\
+  \
+now you can use the buildx driver that supports multi-platform builds:\
+	$ docker buildx build \
+		--platform linux/amd64,linux/arm64 		build images for comma-separated platforms\
+		-t <repo/image:tag> -t <repo/image:tag2		set the tags\
+		--push 						multi-platform images cannot be stored locally--> use --push\
+		.							path to build folder
+\f1\b \
+\
+tagging
+\f0\b0 \
+	docker images have no actual names - only repository and the tag\
+	the tag just points to a specific image with a unique image id - many tags can point to the same image\
+	to create a new tag to an image use:\
+		$ docker image tag <org_image>[:<tag>] <new_image>[:<new_tag]		\
+	..this creates a new tag for that image (and keeps the old tag as well)\
+	..both appear in your list (docker image ls)\
+\
+
+\f1\b pushing
+\f0\b0 \
+	$ docker login\
+	$ docker push <img>:<tag>\
+		--all-tags						push all tags of an image to your repo\
+\
+-------------------------------------------------------------------------------------------------------------------\
+-------------------------------------------------------------------------------------------------------------------\
+
+\f1\b\fs28 container volumes
+\fs24 \
+\
+
+\f0\b0 container volumes are there to persist data created or manipulated inside your container\
+a) in Dockerfile\
+	if you specify in Dockerfile:\
+		VOLUME /path/to/volume/on/container\
+	you create a folder in your container that is stored on a hidden location on host os and outlives the container \
+\
+	$ docker volume ls 						lists the persisted volumes with their ID\
+\
+b) during container start:\
+	if you run your container with a volume mount:	\
+		$ docker container run --name <container-name> -v <volume-name>:/path/to/volume/on/container container	the volume is named and can easily be reused by other containers (mostly during development)\
+	you get a named volume if your <volume-name> is not a valid path; otherwise it will be a bind mount\
+\
+c) you can create the docker volume ahead of time by the command:\
+		$ docker volume create [OPTIONS] <volume-name>\
+	here you can specify drivers if you need something special\
+\
+d) bind mount\
+	you can bind a host directory/file to a location inside the container using bind mounts as such:\
+		$ docker container run --name <container-name> -v /path/to/volume/on/host:/path/to/volume/on/container container\
+\
+\
+-------------------------------------------------------------------------------------------------------------------\
+-------------------------------------------------------------------------------------------------------------------\
+
+\f1\b\fs28 docker networks
+\fs24 \
+
+\f0\b0 inspect\
+	$ docker network ls						list all docker networks\
+	$ docker network inspect <net_name>			get the json config for that network\
+create\
+	$ docker network create [options] <net_name>		create a new network with the default driver (bridge)\
+attach to containers\
+	$ docker container run -d \
+		--network <net_name> <img>	run a container in the specified network\
+\
+	$ docker network connect <net_id> <container_id>	connect a container to a network\
+internally, containers on the same network use their container names as DNS names (resolved by docker daemon DNS server)\
+this only works with containers on a new network (bridge only supports this using the \'97link option) doc\
+\
+\
+}

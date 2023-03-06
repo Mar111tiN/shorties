@@ -1,0 +1,171 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2578
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fswiss\fcharset0 Helvetica-Bold;\f2\fnil\fcharset0 Menlo-Regular;
+\f3\fmodern\fcharset0 Courier;\f4\fnil\fcharset0 Menlo-Bold;\f5\fmodern\fcharset0 Courier-Bold;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red59\green35\blue34;\red215\green211\blue183;
+\red0\green0\blue0;\red161\green207\blue206;\red209\green113\blue37;\red57\green164\blue40;\red212\green34\blue255;
+\red166\green82\blue12;\red164\green77\blue122;\red24\green127\blue13;\red168\green0\blue255;}
+{\*\expandedcolortbl;;\csgray\c0;\csgenericrgb\c23317\c13541\c13291;\cssrgb\c87500\c85798\c76563;
+\cspthree\c0\c0\c0;\cspthree\c71750\c83848\c84086;\cssrgb\c85991\c52029\c18734;\cssrgb\c26425\c68732\c20500;\cssrgb\c87269\c29650\c100000;
+\cssrgb\c71625\c39781\c4053;\cssrgb\c70873\c39304\c55012;\cssrgb\c8092\c55770\c5123;\cssrgb\c72685\c10904\c100000;}
+\paperw12240\paperh15840\margl1440\margr1440\vieww16500\viewh16380\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 genmap allows identification of uniqueness of kmers in the population\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 install \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 conda install -c bioconda genmap\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 make genome index
+\f0\b0  (mem > 40Gb)\
+- before working with it genmap needs to build a genome index in a folder\
+$ genmap index \
+	-F $HG38 				the reference genome\
+	-A	divsufsort | skew		algorithm to use (use divsufsort if memory > 40Gb is not a problem)\
+	-S 	INT				increase if memory consumption is too high (writes more to disk)\
+	-I <path_to_index_folder>		folder should not exist yet\
+\
+\
+
+\f1\b create the genmap:
+\f0\b0 \
+$ genmap map \
+	-K	INT				the kmer-size\
+	-E	INT				the number of allowed mismatches\
+	-I 	<path_to_index_folder>	index folder containing genome index built in previous step\
+	-O	<output_path>		here the txt/\'85 files are created\
+	-t	flag				create text file\
+	-w	flag				create wig file\
+	-bg	flag				create bedGraph\
+	-fl	flag				create frequency instead of mappability\
+\
+this tool creates space-separated list of mappabilities for every base-position in genome\
+	1					kmer starting at that position is unique\
+	~0					kmer starting at that position is extremely abundant\
+	\
+
+\f1\b convert\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 this file format can be converted to position-based output using mawk-tool convertGenmap.mawk\
+CONV=
+\f2\fs22 \cf2 \CocoaLigature0 ~/tools/mawktools/misc/convertGenmap.mawk\
+
+\f0\fs24 \cf0 \CocoaLigature1 \
+cat output | convertGenmap \
+	-u	flag				if set, only the first of repeating mappabilities is printed\
+	-p	INT				the float-precision of the mappability\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f1\b \cf0 center\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b0 \cf0 also get rid of first entry at pos 1\
+	$ 
+\f3 \cf3 \cb4 \CocoaLigature0 for S in \{30,50,75,100,150\}; do \
+		echo S=$S; for f in hg38_$\{S\}_*; do \
+			echo $f;
+\f0 \cf0 \cb1 \CocoaLigature1  gunzip < $f | 
+\f2\fs22 \cf2 \CocoaLigature0 mawk 'NR==1 \{OFS="\\t";print\}NR>1\{print($1,int($2+'$S' / 2),$3)\}' | pigz -p20 > ../centered/$f;\
+		done;\
+	  done;\
+rename the files\
+	$ cd ../centered\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+	 $ rename ".pos.txt" ".centered.txt" *\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f4\b bedFilter:
+\f2\b0 \
+FILTER=~/tools/mawktools/filter/filterBedSparse.mawk\
+BED=$STATIC/bed_files/SureSelect/hg38/SS_HAEv7_hg38_Padded.bed\
+\
+for f in *; do echo $f; gunzip < $f | $FILTER $BED | pigz -p 20 > ../filtered/$f; done\
+cd ../filtered\
+rename ".centered.txt" ".HAEv7.txt" *\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f4\b combine
+\f2\b0 \
+in ipython:\
+\
+import os\
+import numpy as np\
+import pandas as pd\
+# get ordered file list\
+files = sorted(os.listdir('.'))\
+# make file, col list\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+# ff = \cf5 \cb6 [\cf2 \cb1 (f,f.replace(\cf7 "hg38_"\cf2 ,\cf7 ""\cf2 ).replace(\cf7 "\cf2 .HAEv7.txt.gz\cf7 "\cf2 , \cf7 ""\cf2 )) 
+\f4\b \cf8 for
+\f2\b0 \cf2  f 
+\f4\b \cf9 in
+\f2\b0 \cf2  files\cf5 \cb6 ]\cf2 \cb1 \
+ff = \cf5 \cb6 [\cf2 \cb1 (f,f.replace(\cf7 "hg38_"\cf2 ,\cf7 ""\cf2 ).replace(\cf7 "\cf2 .ens104.txt.gz\cf7 "\cf2 , \cf7 ""\cf2 )) 
+\f4\b \cf8 for
+\f2\b0 \cf2  f 
+\f4\b \cf9 in
+\f2\b0 \cf2  files if \cf7 "\cf2 .ens104.txt.gz\cf7 " in f\cf5 \cb6 ]\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf2 \cb1 ff = ff[8:] + ff[:8]\
+#load index df\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+df = pd.read_csv(\cf7 "../index/index.ens104.txt.gz"\cf2 ,sep=\cf7 "
+\f4\b \\t
+\f2\b0 "\cf2 , compression=\cf7 "gzip"\cf2 ) \
+# merge in the other files\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f4\b \cf8 for
+\f2\b0 \cf2  file, col 
+\f4\b \cf9 in
+\f2\b0 \cf2  ff: \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+\cf8     print\cf2 (file) \
+	df = df.merge\cf5 \cb6 (\cf2 \cb1 pd.read_csv(file, sep=\cf7 "
+\f4\b \\t
+\f2\b0 "\cf2 , compression=\cf7 "gzip"\cf2 ).rename(\{\cf7 'map'\cf2 :col\},axis=\cf8 1\cf2 ), on=['Chr', 'Pos'], how=\cf7 "outer"\cf5 \cb6 ).drop_duplicates(['Chr', 'Pos'])\
+	df.loc[:, col] = np.round(df[col], 3)\cf2 \cb1 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f3\fs24 \cf3 \cb4 chrom_list = [\cf10 f"chr
+\f5\b \cf11 \{i\}
+\f3\b0 \cf10 "\cf3  
+\f5\b \cf12 for
+\f3\b0 \cf3  i 
+\f5\b \cf13 in
+\f3\b0 \cf3  \cf12 range\cf3 (\cf12 23\cf3 )] + [\cf10 "chrX"\cf3 , \cf10 "chrY"\cf3 ] \
+df.loc[:, \cf10 "Chr"\cf3 ] = pd.Categorical(df[\cf10 "Chr"\cf3 ], chrom_list) \
+df = df.sort_values([\cf10 'Chr'\cf3 , \cf10 'Pos'\cf3 ], ascending=
+\f5\b \cf12 True
+\f3\b0 \cf3 )\
+print("Writing")
+\f2\fs22 \cf2 \cb1 \
+df.to_csv("../hg38_genmap.ens104.txt", sep="\\t", index=False)\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f4\b compress/split
+\f3\b0\fs24 \cf3 \cb4 \
+	$ cd ..\
+	$ mv hg38_genmap.txt hg38_genmap.HAEv7.txt; gzip hg38_genmap.HAEv7.txt\
+	$ SPLIT=~/tools/mawktools/misc/chromSplit.mawk\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f2\fs22 \cf2 \cb1 	$ 
+\f3\fs24 \cf3 \cb4 $SPLIT hg38_genmap.HAEv7.txt.gz -f split
+\f2\fs22 \cf2 \cb1 \
+\
+}

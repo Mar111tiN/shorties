@@ -1,0 +1,435 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf400
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw12240\paperh15840\margl1440\margr1440\vieww14480\viewh15560\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs36 \cf0 Numpy
+\fs26 \
+	
+\f1\b0\fs20 import numpy as np
+\f0\b\fs26 \
+\
+
+\fs28 Numpy Arrays:
+\fs20 \
+
+\fs24 create:
+\fs20 \
+
+\f1\b0 numpy arrays can be created from lists
+\f0\b \
+	
+\f1\b0 my_list = [1,2,3,4,5,6]\
+	my_array = np.array(my_list)			turn a list into an numpy array\
+	my_new_array = my_array.copy()		creates new  copy of my_array\
+	\
+numpy matrices are special arrays of dim > 1\
+	my_2dlist = [list1, list2, list3]\
+	my_matrix = np.array(my_2dlist)\
+\
+
+\f0\b\fs24 creation methods:
+\f1\b0\fs20 \
+	np.arange(start, end[, step])			like range with start, end(not incl.), step\
+	np.zeros(n)					array of n zeros (1d)\
+	np.zeros((n1, n2, n3\'85))				use tuple of (n1 x n2 x n3)	dim == dim of tuple\
+		eg: np.zeros((3,5))			matrix of 5 zeros (3d: 5 zeros x 5 zeros x 5 zeros)\
+	np.zeros_like(my_array)				returns array of zeros with same shape as my_array (np.zeros(my_array.shape)\
+	np,ones((dim, length))				like zeros\
+	np.full(dim, sclarar)				create array of dim filled with scalar value\
+	np.empty(dim)					uninitialized array (for out=array fill from other function)\
+	np.linspace(start, stop, count)			returns array of count numbers evenly spread between start and stop\
+	np.eye(n)					returns square matrix with 1 in diagonal\
+	np.random.`any_random_method`(n1, n2, n3\'85)	returns array with n1 x n2 x n3 \'85 random elements\
+		random.random(dim)			array of random numbers between 0 and 1\
+		random.rand(dim1, dim2...)		evenly distributed (0 < n < 1)\
+		random.randn(dim1, dim2)		normal distribution around zero !!! dimension as indiviual parameters, not as tuples\
+		random.randint(a,b)			integer between a and b (exclusive)\
+		random.normal(mean, stdd, dim)	normally distributed random values\
+	if you need extra arguments for random type, they have to come first and then a tuple of dimensions\
+		np.random.randin(a,b,(n1, n2\'85))\
+\
+
+\f0\b\fs22 arguments during creation:
+\f1\b0\fs20 \
+	np.array( x, dtype = int / float / str)		set the data type of the array				\
+\
+
+\f0\b\fs24 matrix vs array:
+\f1\b0\fs20 \
+	matrix is almost similar to 2d-array so you should just use np.array instead of np.matrix\
+\
+\
+
+\f0\b\fs24 array attributes:
+\f1\b0\fs20 \
+	my_arr.shape					returns the dimensions (eg. 3,4 for 3 x 4)\
+	my_arr.dtype					returns datatype of array entries\
+\
+
+\f0\b\fs24 array indexing:
+\f1\b0\fs20 \
+1d:\
+	array[[a,b,c]]					if the index is a list, it shows only the rows from the list in specified order\
+2d:\
+	arr_2d = np.array([[1,2,3], [1,2,3],[1,2,3]])	a 2d-array\
+	double-bracket notation:\
+		arr_2d[0][1]				second element in first row\
+		arr_2d[0]				entire first row\
+	comma-notation:\
+		arr_2d[0,1]				second element in first row\
+
+\f0\b !! very important:\
+	array slicing and indexing returns views into the existing array 
+\f1\b0 \'97> use copy() !!!\
+\
+
+\f0\b\fs24 array slicing:
+\f1\b0\fs20 \
+	arr[1:3]						first until (excluding) 3rd element\
+	arr[:]						all elements	\
+	arr[1:9:2]					element 1 to 9 but only every 2nd\
+	arr[::2]						every second element\
+	arr[::-2]						every second element starting from the last\
+this splicing can be done for every dimension:\
+	arr = np.ones((3,4))\
+	arr[::2, 1:3]					spliced array view\
+	arr[::-1]						reversed array\
+
+\f0\b !! very important:\
+	array slicing and indexing returns views into the existing array 
+\f1\b0 \'97> use copy() !!!\
+\
+
+\f0\b\fs24 conditional selections:
+\f1\b0\fs20 \
+	array = np.arange(1,11)				array([1,2,3,4,5,6,7,8,9,10])\
+	bool_arr = arr > 5				returns array containing booleans for all comparisons on the elements - nice!\
+	arr[bool_arr]					array([6,7,8,9,10])\
+		array with boolean selection array returns array with elements where bool_array returns True\
+	in one step:\
+		arr[condition on element]		returns array where condition is true	\
+\
+
+\f0\b\fs24 getting indexes:
+\f1\b0\fs20 \
+	np.where(condition)				returns indexes where condition is met\
+can be used in conditional selection with multiple dimensions:\
+	arr[np.where(condition of arr elements)]		returns array of arr where conditions are met\
+\
+
+\f0\b\fs24 reshaping arrays:\
+
+\f1\b0\fs20 	my_arr.reshape(dim..)				if my_array has sufficient entries to fill the new dimensions\
+nice: 	np.arange(10).reshape((3,4))\
+	array[:, np.newaxis]				creates a new unfilled axis\
+eg. 	x = np.arange(10)\
+	x.reshape((1,10)				creates column vector\
+	x[np.newaxis, :]					also creates column vector \
+\
+
+\f0\b\fs24 UFuncs:
+\fs20 \
+
+\f1\b0 most regular functions are overloaded to work on arrays (and on pandas dataframes)\
+operations are performed per element\
+they can be used with unary operand or as object methods (for more functionality):\
+\
+math ufuncs:\
+	a + b		a.add(b)			every element of a is added to corresponding element of b\
+	a + 3		a.add(3)			every element of a is increased by 3\
+	-		np.subtract	\
+	- 		np.negative\
+	*		np.multiplly\
+	/		np.divide\
+	//		np.floor_divide			3 // 2 = 1\
+	**		np.power(a,b)\
+	%		np.mod\
+\
+assign-type ufuncs: \
+	set the elements to certain values:\
+	=\
+	+=\
+	-=\
+	*=\
+	/=\
+\
+comparison ufuncs:\
+	== 		np.equal\
+	!=		np.not_equal\
+	<		np.less\
+	<=		np.less_equal\
+	>		np.greater\
+	>=		np.greater_equal\
+boolean ufuncs:\
+	& 		np.bitwise_and()\
+	| 		np.bitwise_or()\
+	^		np.bitwise_xor()\
+	~		np.bitwise_not()\
+		\
+\
+aggregate boolean:\
+	np.any()					returns True if one element is True\
+	np.all()						returns True if all elements are True\
+	np.sum()					for booleans, sum adds 1 for True and 0 for False\
+		or np.count_non_zero()			same same\
+\
+also operations that work as methods can be used on np.arrays:\
+	np.abs						returns absolute values per elements\
+	np.sin(arr)					sin is computed on all matrix elements\
+	cos, tan, arcsin, arctan..\
+	np.exp(x), np.log(x)				e^x , ln x\
+!!!	np.expm1(x), np.log1p(x)			specialized exp and log for higher precision around small numbers == e^x -1, ln(1+x)\
+	np.sum(a*b) 	(== (a*b).sum()\
+	np.dot(a, b)	(== a.dot(b) == b.dot(a)		gives the dot product\
+	np.linalg.norm(a)				gives the absolute value of an array (vector)\
+\
+\
+
+\f0\b\fs24 array agregations:\
+
+\f1\b0\fs20 all binary ufuncs have the methods reduce and accumulate that are used on single operands as such:\
+	np.add.reduce(x)				repeated execution of <add> to return single value (axis 0 is default)\
+		.reduce(x, axis=0) or .reduce(x, 0)	reduce over first axis\
+		.reduce(x, (0,1))				reduce over axis 1 and 2\
+		.reduce(x, None) 			reduces over all elements\
+	np.add.at(x, ind)				performs ufunc unbuffered at given indices (index repeats are performed as desired)\
+	np.add.reduceat(x, ind)				performs local reduce at given indices\
+	np.add.accumulate(x)				returns iterative elements of execution of ufunc (eg. add)\
+	np.add.outer(x,y)				returns the binary operation of all elements of x with all elements of y\
+\
+following aggregations all take optional axis argument (default None --> aggregate over all elements)\
+	my_arr.max() / .min()				max and min value of my_array\
+	my_arr.argmax() / .argmin()			index position of extreme value\
+	my_arr.sum() or np.sum(my_arr)			total sum of elements in array ( == np.add.reduce(x, None)\
+	np.std(my_arr)					standard deviation\
+	np.var()						variance\
+	np.median()					median\
+	np.percentile(my_arr, q)				percentile of q\
+all these have NaN-save versions that do not return error at NaN (ignore NaN values):	\
+	nanmax() nanmin() nanargmax nanmedian.....\
+\
+\
+\
+
+\f0\b !!! options for ufuncs (in method mode):
+\f1\b0 \
+	np.add(fill_value= )				if NaN is encountered the operation returns the fill_value\
+\
+
+\f0\b special array operations
+\f1\b0 \
+	array1 * array2					element by element multiplication (dimensions must match)\
+	array1.dot(array2)				matrix multiplication (matrix of dot products of rows of A with columns of B\
+							rows of A == columns of B\
+	np.linalg.inv(array)				creates the inverse of a square matrix (dim = n,n) (np.linalg.inv(array).dot(array) == np.eye(n)\
+	np.linalg.det(array)				returns the determinant of an array\
+	np.diag(1_dim_array)				returns 2d array with zeros and 1_dim_array as the diagonal\
+	np.diag(2_dim_array)				returns 1d array with diagonal of 2_dim_array\
+	np.outer(array1, array2)				outer (or dyadic) product of two 1d arrays\
+	np.trace(array)					sum of the diagonal of a vector\
+	array.T						transposed matrix\
+	np.cov(array)					covariance matrix\
+	np.linalg.eig(array)				returns the eigenvalues as tuple and the corresponding eigenvectors as rows in a matrix\
+	np.linalg.solve(matrix, vector)			solves the linear system Ax = b and returns vector x\
+\
+
+\f0\b\fs24 array sorting:\
+
+\f1\b0\fs20 all binary ufuncs have the methods reduce and accumulate that are used on single operands as such:\
+\
+	np.searchsorted(bin, x)				returns indexes of x to maintain order in bin --> used for histogram\
+
+\f0\b\fs28 \ul Pandas\
+
+\fs26 \ulnone 	
+\f1\b0\fs20 import  pandas pd
+\f0\b\fs26 \
+	
+\f1\b0\fs20 pandas is an open-source library built on top of NumPy\
+	is perfect for data preparation\
+
+\f0\b\fs26 \
+Pandas series: 
+\f1\b0\fs20 \
+	series are labeled arrays (work as data tables) with fast indexed look-ups\
+		labels = ['label1', 'label2', 'label3'\'85]\
+		data = np.array([1,2,3,4,5,6\'85])\
+	pd.Series(data = data, index=labels)			pd.Series creates a labeled array with the specified label\
+		label1	1\
+		label2	2\
+	or pd.Series(data, labels)				shorthand declaration\
+	pd.Series(dict)						if you input an dictionary, the labels will be the keys\
+
+\f0\b indexing:
+\f1\b0 \
+	access data like a dictionary\
+		series['label1']					get value of label1 data\
+	access like a Numpy array\
+\
+
+\f0\b operations:
+\f1\b0 \
+	mathematic operations are performed on label base	non-fitting labels between series will become nan\
+\
+
+\f0\b standard methods:
+\f1\b0 \
+\
+	ps.nlargest(n)						returns dataSeries of n highest values	\
+\
+
+\f0\b\fs28 DataFrames 
+\fs20 \
+	
+\f1\b0 pandas dataframes are arrays of series arranged as columns	- 	one series = column of dataFrame\
+
+\f0\b 	!!! use inplace=True if you want changes\
+convert\
+	
+\f1\b0 in order to work with (write to) different data types, several dependencies are required:\
+SQL:	sqlalchemy\
+HTML:	lxml html5lib BeautifulSoup4\
+CSV:	pandas comes with CSV support\
+Excel:	pandas comes with Excel support\
+\
+	pd.read_csv(`path_to_file`)				imports csv-file as dataFrame\
+		.read_json					many data formats are possible	\
+		.read_html\
+		.read_excel('file.xlsx, sheetname='Sheet1')	to import excel files you have to specify the sheet in the excel-workbook\
+		.read_sql
+\f0\b \
+
+\f1\b0 	\
+	pd.to_csv(`path_to_file`, index=False)			creates csv-file without an automated range index (uses pre-existing index)\
+	\
+\
+\
+\
+	pd.to_excel('new_file.xlsx', sheet_name='NewSheet')\
+	pd.read_html('hyperlink')				returns a list of all table elements in html source code (???) as dataFrames\
+\
+you can read in the files as generators with chunksize=N option\
+\
+
+\f0\b create:
+\f1\b0 \
+	df = pd.DataFrame(\
+	df[new-column] = pd.Series(\'85) or operation on df.columns\
+\
+	df.drop(label, axis=0/1, inplace=True)			deletes row/ column if inplace == True\
+\
+
+\f0\b\fs24 standard methods:
+\f1\b0\fs20 \
+	df.transpose()						swap x and y axis\
+	df.head(n=5)						shows column-headers and first n rows for overview\
+	df.tail()							like head() but shows last rows in dataFrame\
+	df.rename(columns=\{old_key: new_key, old_key2: new_key2\}, inplace=True)	renames columns\
+	df['column_name'].unique()				returns np-array of unique values in column_name\
+	df['column_name'].nunique()				returns  number of unique values in column_name\
+	df['column_name'].value_counts()			returns dataSeries with unique values and their frequency in dataFrame\
+     
+\f0\b\fs26  !!!
+\f1\b0\fs20 	df['column_name'].apply(calculation_function)		returns dataSeries with callback applied to values in column_name\
+		or with lambda:\
+	df['column_name'].apply(lambda x: f(x))\
+	eg: df.apply(lambda row: f(row['name1'], row['name2']), axis=1)	axis=1 :: function is applied over each row (default is column)\
+	df.columns						property returning Index object of column names\
+	df.index							returns index object of indeces\
+	df.sort_values('column_name')				sorts accordingly\
+	df.isnull()						returns dataFrame with boolean values in case of null or NaN\
+	df.pivot_table(values='column_name', index=[desired_index_columns, \'85.], columns=[list of columns])		sorts out repetitive indexes into columns and rows and put in specified values from specified column\
+	df[col_name].max()					returns maximum value of col_name values\
+	df[col_name].idxmax()					returns index of row where col_name value is maximum\
+	df.nlargest(n, col_name)					n highest rows of col_name 	\
+	df.shape[0]						get row count				\
+\
+
+\f0\b\fs24 indexing:
+\f1\b0\fs20 \
+	columns:\
+		df[column-name]				returns the column as a pandas series\
+		df.column-name					works as well (like in SQL)\
+		df[[column-name1, column-name2]]		returns a dataframe containing these two columns\
+	rows:\
+		df.loc['rowlabel']					index by label: returns the row as a series\
+		df.iloc[index of row]				index by index: returns the row also as series\
+	elements:\
+		df.loc[row-label, column-label]			like in numpy\
+	fancy:\
+		df.loc[[row-label1, row-label2],[column-label1, column-label2]]	returns a sub-dataframe like in numpy\
+\
+
+\f0\b\fs24 conditional selection:
+\f1\b0\fs20 \
+		df condition					returns boolean df with True where condition is met\
+		df[condition]					returns df with values where True and NaN where False\
+		df[df[column] meets condition]			returns a df with only the rows where the condition is met:\
+		df[df[column1] >0]				returns only the rows in which the value in column 1 is positive\
+	can be chained with further indexing because a df or series is returned\
+	more conditions:\
+		df[(df[column1] condition1) & (df[column2] condition2)]	combine conditions with & and and | or\
+\
+
+\f0\b\fs24 grouping:
+\f1\b0\fs20 \
+	df.groupby(column_name)				returns DataFrameGroupBy object for ensuing aggregate functions\
+	df.groupby[[column1, column2])				you can also group by many columns\
+		.mean()						returns dataFrame with aggregate mean per group index\
+		.sum()\
+		.count()						counts the number of instances per group - returns dataFrame\
+		.max() / min()					returns dataFrame with highest instance per group\
+		.describe()					returns set of information per group\
+		.agg(\{key1: mean_of_key1, key2: mean_of_key2\})	returns summed dataFrame of specified keys\
+\
+
+\f0\b combine dataFrames:
+\f1\b0 \
+	pd.concat([df1,df2,df3])					concats dataFrames (stacks rows on top of each other)\
+	pd.concat([df1,df2,df3], axis=1)				stacks columns next to each other\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\tx12240\tx12300\tx12300\pardirnatural\partightenfactor0
+\cf0 	pd.merge(df1, df2, how='inner', on=`key_name`)		stacks colums of dataFrames next to each other and merges key_name\
+								only rows that share value of key_name are included in new dataFrame\
+		if merged dataFrames have different numbers of rows with similar key values, rows are duplicated to match the dataFrames\
+	pd.merge(df1, df2, how='inner', on=[key1, key2])		\
+	how-parameter allows SQL-like parameter during merge:\
+		how='inner'					only includes rows that share all the values of keynames\
+		how='outer'					rows with non-compatible key-values are included and values become NaN		how='left'					enforces all the rows from left dataFrame and fills the right with NaN\
+		how='right'					enforces all the rows from right dataFrame and fills the left with NaN\
+	on-parameter specifies the shared column-key used for merging - if dataFrames have differing column-keys use:\
+		left_on='column_key_in_left_df'\
+		right_on='column_key_in_right_df'\
+	indicator=True						adds column _merge that states how merge occurred (both / left_only / right_only)\
+		\
+	df1.join(df2)						merge two dataFrames based on index (merge uses columm-keys)	\
+\
+
+\f0\b\fs24 operations
+\f1\b0\fs20 				\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	asdf\
+\
+\
+
+\f0\b reset/delete
+\f1\b0 \
+resetting index:\
+	df.reset_index()						index becomes first column and index will be numerical\
+	df.set_index('columnX')					sets one of the columns as index column\
+deleting incomplete data:\
+	df.dropna()						deletes all rows that contain missing data (NaN)\
+	df.dropna(axis=1)					deletes all columns that contain missing data\
+	df.dropna(thresh=n)					drop all rows that contain less than n valid data\
+	df.fillna(value=\'85)					substitute NaN with value\
+	df.drop(df['column1'] < x)				conditional drop of rows\
+	df.drop(df.index[list of rows])				rows to drop\
+	df.drop('column1', axis=1)				delete column1\
+\
+
+\f0\b\fs24 import/export
+\f1\b0\fs20 \
+	\
+}

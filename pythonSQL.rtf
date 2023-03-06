@@ -1,0 +1,71 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww10700\viewh17880\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 SQLITE
+\f1\b0\fs24 \
+\
+
+\f0\b imports
+\f1\b0 \
+	import sqlite3\
+\
+
+\f0\b init
+\f1\b0 \
+	connection = sqlite3.connect("<path_to_db_file")\
+\
+	\
+
+\f0\b execute
+\f1\b0 \
+	with connection as con:\
+		con.execute(SQL_QUERY_AS_STRING)\
+	\
+	\
+pass in arguments to SQL statements as tuples of values:\
+	con.execute("INSERT INTO <table> VALUES (?,?,?);", (value1, value2, value3))\
+\
+\
+
+\f0\b query\
+\
+
+\f1\b0 to make things explicit, you should define a cursor to chunk the queried results\
+in SQLlite, cursors load all results from the db but simplifies the data retrieval from cursor variable\
+cursor stores resulting rows into iterable that can be retrieved as data tuples\
+data can be returned as tuple of data with cursor.fetchall()\
+
+\f0\b \
+
+\f1\b0 	with connection:\
+		cursor = connection.cursor()		create the cursor\
+		cursor.execute(SELECT_query)		execute command on cursor\
+		return cursor.fetchall()			return parts or all of the results				\
+\
+
+\f0\b\fs28 PostgreSQL
+\f1\b0\fs24 \
+\
+
+\f0\b imports
+\f1\b0 \
+	import psycopg2\
+\
+
+\f0\b init
+\f1\b0 \
+	connection = psycopg2.connect(url)\
+		url for local postgres:	postgresql://user:password@localhost:PORT/dbname\
+	cursor = connection.cursor()\
+	\
+
+\f0\b execute\
+
+\f1\b0 	with connection:\
+		with connection.cursor() as cursor:\
+			cursor.execute("INSERT INTO <table> VALUES (%s)", (value,))\
+postgreSQL uses "%s" instead of ? for wildcards}

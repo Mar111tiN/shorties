@@ -1,0 +1,459 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf500
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;}
+{\*\expandedcolortbl;;\csgray\c0;\csgray\c100000;}
+\margl1440\margr1440\vieww14000\viewh10780\viewkind0
+\deftab720
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl380\partightenfactor0
+
+\f0\b\fs26 \cf0 What is Flask?
+\f1\b0\fs20 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 	small weight framework to create web applications using Python\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\sl380\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\tqr\tx9339\pardeftab720\ri-1283\sl380\partightenfactor0
+
+\f0\b\fs26 \cf0 Set Environment
+\f1\b0\fs20 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\partightenfactor0
+\cf0 	$ conda create -n 'flaskenv' flask python=3.6		create flask environment\
+	$ . activate flaskenv					flaskenv is activated and shown in parens\
+	(flaskenv) $ conda install `additional_library`		installs library/package into flaskenv\
+	(flaskenv) $ conda install \'97file 'dependencies.txt'		installs all listed requirements into environment\
+or 	(flaskenv) $ pip install -r 'dependencies.txt'	\
+	(flaskenv) $ . deactivate					fall back to default environment\
+	\
+\
+
+\f0\b\fs26 CLI\
+
+\f1\b0\fs20 from CLI you can use the flask command (installed by Flask) that can execute preset commands or commands defined via Click:\
+in your env, you have to first set the application to run:\
+	$ export FLASK_APP=folder/file.py			application factory in folder/__init__.py or app in file.py is detected\
+preset commands:\
+	$ flask run						runs your application ( like python app.py)\
+	$ flask shell						opens the Flask CLI for checking local variables and such..\
+\
+custom commands:						can be set in python modules:\
+	import click\
+	from flask.cli import \'85.., with_appcontext		several useful modules are in flask.cli\
+\
+	@click.command('new_command')			creates new_command to be used as $ flask new_command arg\
+	@with_appcontext					allows access to the app and its config\
+	@click.argument('arg')					adds argument to command\
+	def func(arg):\
+		\'85.\
+or 	@app.cli.command()					the command will be the name of the function and run in context of app (without with_appcontext)\
+	def new_command():\
+		\'85\
+\
+\
+\
+
+\f0\b\fs26 Basics\
+
+\f1\b0\fs20 from flask import Flask\
+\
+app = Flask(__name__)						sets app to run on this module\
+\
+@app.route('path', methods=['GET','POST'])			decorator to trigger decorated function when the path is requested\
+								by default, only GET requests are routed to function (specify methods option)\
+def res_func():							simple function serving plain HTML to browser\
+	return "HTML"\
+\
+@app.route('/bla/<variable>')					parts of the path can be passed as variables to res_func\
+def dynamic_res_func(variable):\
+	return stuff_using_variable\
+\
+if __name__ == '__main__':\
+	app.run()\
+\
+
+\f0\b application factory
+\f1\b0 \
+	for large projects, it is better to instantiate the app in an application factory that returns the app:\
+in root/flaskr/__init__.py\
+	def create_app():\
+		app = Flask(__name__)\
+		app.config\'85\'85\'85..				set all the configurations\
+		return app					app is returned once the \
+\
+!! 	in other modules that refer to app you have to use the current_app object:\
+		from flask import current_app\
+	current_app.config['DATABASE']\'85\'85			any subsequent configs will be done using current_app object which will be transfered to app once instantiated\
+\
+
+\f0\b\fs26 Templates/Statics
+\f1\b0\fs20 \
+from flask import Flask, render_template\
+simply use render_template as viewer for files stored in template folder\
+html can include static info like pics or css which will automatically be served if stored in a static folder:\
+\
+	@app.route('path')\
+	def res_func():\
+		return render_template('some_html_page')		\
+\
+
+\f0\b template variables\
+	
+\f1\b0 this can be done using Jinja, which inserts variables from python into html templates using this syntax:\
+		\{\{some variable\}\}\
+	@app.route('path')\
+	def res_func():\
+		return render_template('some_html_page', var1=some_dict, var2=some_list)	any kind of data can be injected into html\
+\
+in HTML:\
+	<h1> \{\{var1[key]\}\} blablabla \{\{var2[3:6]\}\} \
+\
+g and flash:\
+are globally accessible by templates and used to conveniently inject state into templates:\
+	from flask import g, flash\
+	flash('message', 'category')\
+	in templates you can access flash as\
+		get_flashed_messages(with_categories=True)		returns a list of flashed messages\
+\
+url_for():\
+	for links to internal pages you can use url_for() method passing the res_func name as a string parameter:\
+	in html:		<a href="\{\{url_for('index')\}\}">Home</a>		example for def index()	provided as a res_func\
+	alternatively, you can link to a static file using the following syntax:\
+		<a href="\{\{url_for('folder_name_relative_to_project', filename='file')\}\}">Pic!</a>		\
+\
+
+\f0\b template filters:
+\f1\b0 \
+	filters modify values of variables in predefined ways:\
+	<h1> \{\{ var | `filter`\}\}			modifies var using `filter`\
+common filters:\
+	capitalize				\'97//\'97\
+\
+
+\f0\b template flow\
+
+\f1\b0 syntax for python code in template is \{%  code %\}\
+\
+special care:\
+	for loops have to be ended with \{% endfor %\}\
+\
+
+\f0\b template inheritance
+\f1\b0 \
+used to provide reusable parts of html code (like headers and footers)\
+	create a reusable_html-file marking the page-specific parts as:\
+		\{%block content_name%\}				there can be several different blocks with different names\
+		\{% endblock %\}\
+\
+	in my individual page I use the template via \{%extends 'reusable_file.html' %\} and then write my specific block(s):\
+		\{%block content_name%\}\
+		\{% endblock %\}		\
+\
+
+\f0\b template variables
+\f1\b0 \
+
+\f0\b 	
+\f1\b0 templates have access to the variables injected during render_template as well as the request, session and g object\
+	you can also access the get_flashed_messages() function\
+\
+
+\f0\b \
+\
+Forms\
+vanilla forms\
+\
+	
+\f1\b0 create form in plain HTML in template [ <form action="\{\{ url_for('target_function') \}\}" method="GET">\
+	target function can retrieve sent data as request.args.get('input_name') or directly as dict request.args\
+	request.method stores the type of request ('GET' or 'POST')
+\f0\b \
+	\
+
+\f1\b0 	from flask_wtf import FlaskForm					import the basic Form class\
+	from wtforms import StringField, SubmitField			imports specific form classes \
+\
+
+\f0\b FlaskForms\
+
+\f1\b0 here you can use preformed form classes to use in your templates\
+	from flask_wtf import FlaskForm					integrates Flask with WTForms\
+	from wtforms import 	StringField,				WTForms provides numerous different form elements\
+				IntegerField,				accepts and stores as int\
+				SubmitField,\
+				DateTimeField				format='format string' eg. '%m/%d/%y'\
+\
+	from wtforms.validators import 	DataRequired, 			gives error message when field is empty\
+					InputRequired,\
+					Length,				lets you set length range\
+					NumberRange			number range (min= , max=)\
+\
+\
+create custom class inheriting from FlaskForm:\
+	class MyForm(FlaskForm):					no __init__ required\
+	     username = StringField('Enter user name: ', validators=[	username is the data being sent, the string is used by label field in template\
+		DataRequired(message='Please enter data!'),		validators are set in list providing error message and possible options\
+		Length(message='Length between 4 and 25 chars!', min=4, max=25),\
+		Email(message='Please enter valid email address.')		\
+						   ])\
+		check_it = BooleanField('prompt_string', validators=[\'85])	all form fields are added as instantiations of a Field class\
+					\
+	\
+									\
+		meail\
+in view handlers:\
+	@app.route('path', methods=('GET','POST'))\
+	def form_submit():\
+		form = MyForm(username='Username')			MyForm is instantiated with possible parameters and options\
+									first to arguments can optionally be passed as data to form\
+	options:		csfr_enabled=False				turns off the CSRF protection\
+			\
+				\
+		if form.validate_on_submit():				if branch for submission\
+			form_data = form.username.data			the value of requests is retrieved as .data attribute from form name\
+			return redirect('/success', data=form_data)\
+		return render_template('path', form=form)			branch for entering page (form is injected into template)\
+\
+form fields from instantiated Form classes have the name as id and name attribute (eg. username in above example) and possibly value from Form instantiation		\
+instantiated form fields are callable (via __call__) in order to provide additional HTML attributes like CSS or classes:\
+	form.username(class="form-group", style="width:100px")	\'97> 	<input class="form-group" id="username", type="text" name="username", value="Username" />\
+\
+in HTML:\
+	<form method="POST" action="path'>\
+		\{\{ form.hidden_tag() \}\}					creates hidden CSRF token\
+		\{\{ form.name.label \}\}  \{\{ form.name(size=20) \}\}		creates form elements as attributes of MyForm class\
+					\
+\
+
+\f0\b Static files
+\f1\b0 \
+	store static files (CSS, JS, img) under /static \
+	\
+\
+
+\f0\b\fs26 Request object
+\f1\b0\fs20 \
+	from flask import request					allows access to the request object\
+GET request:\
+	data is stored in request.args					best is to retrieve them using request.args.get('key','default')\
+POST request:\
+	data is stored in request.form					retrieve via request.form['key']\
+	JSON data is stored in request.json				(if MIME type is specified as json)\
+	data = request.get_json()					returns dict from json data if application.json is in the header\
+	data = request.get_json(force=True)				returns dict even if header is not set to json\
+		(silent=True)						returns None in case of error\
+\
+
+\f0\b\fs26 File Uploads
+\f1\b0\fs20 \
+	\
+add enctype="multipart/form-data" to form as attribute\
+		\
+\
+
+\f0\b\fs26 SQLite database\
+
+\fs20 Setup
+\fs26 \
+
+\f1\b0\fs20 setup the data model with the tables for the database\
+first save absolute path to your app in basedir \
+	import os							library to work with paths\
+	basedir = os.path.abspath(os.path.dirname(__file__))		__file__ is the python script name\
+									os.path.dirname returns the relative path to your app\
+									os.path.abspath returns the absolute path of argument\
+set database variables:\
+	from flask_sqlalchemy import SQLAlchemy\
+		app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///'+os.path.join(basedir, 'data.sqlite')\
+		app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False\
+		db = SQLAlchemy(app)					create a database for your server app\
+\
+create a db-entry class for your db:\
+	class MyData(db.Model):\
+		__tablename__ = 'my_data_table'			SQLAlchemy can also create table header from class name\
+		first_column = db.Column(db.Integer)			create as many table columns as you need\
+		second_column = db.Column(db. Text)	\
+			\'85.\
+	\
+		def __init__(self, first_value, second_value, \'85):\
+			self.first_value = first_value\
+			self.second_value = second_value\
+				\'85\
+		def __repr__(self):\
+			return f' \{self.first_value\} \'85\'85'			create __repr__ for print out\
+\
+execute SQL commands:\
+	db.execute('SQL commands with ? placeholders ?', (positional values for placeholder, second placeholder)\
+		returns the SQL response\
+\
+
+\f0\b CRUD
+\f1\b0 \
+make data objects:\
+	data_entry = MyData(value1, value2)\
+	db.session.add(data_entry)\
+	db.delete(data_entry)	\
+	db.session.commit()						to make actual changes to db, use commit\
+\
+	db.query.get(id)\
+	db.query.all()							returns list of all entries		\
+	db.query.filter_by(first_column=some_value)\
+\
+
+\f0\b Flask Migration\
+
+\f1\b0 used to make changes to your database\
+	in myapp.py, add the following:\
+	from flask_migrate import Migrate\
+	Migrate(app, db)						connect your server app to the database\
+	set environment variable FLASK_APP in folder of app:\
+		$ \cf2 \cb3 \CocoaLigature0 export FLASK_APP=myapp.py\
+	initialize db migration folder\
+		$ flask db init						sets up the migrations directory\
+		$ flask db migrate -m "a message about the update"\
+		$ flask db upgrade					perform the migration		\
+\cf0 \cb1 \CocoaLigature1 whenever you make changes to db (add columns etc.), run:\
+		\cf2 \cb3 \CocoaLigature0 $ flask db migrate -m "a message about the update"\
+		$ flask db upgrade					perform the migration	\cf0 \cb1 \CocoaLigature1 \
+\
+
+\f0\b Model Relationships
+\f1\b0 \
+different models can be related by a common key\
+mark relationships in different models using db.relationship:\
+	 class FirstTable(db.Model):\
+		__tablename__ = 'first'\
+		id = db.Column(db.Integer, primary_key=True)		sets the primary Id for FirstTable class objects\
+one-to-many:	related_data = db.relationship('SecondTable', backref='first', lazy='dynamic')	sets SecondTable entries as related to FirstTable\
+one-to-one:	linked_data = db.relationship('ThirdTable', backref='first', uselist=False)		sets ThirdTable as linked to FirstTable\
+												uselist=False because we do not need a list of first data in third\
+	class SecondTable(db.Model):\
+		__tablename__ = 'second'\
+		id = db.Column(db.Integer, primary_key=True)\
+		data_first = db.Column(Integer, ForeignKey('first.id'))				data_first is linked id from FirstTable for backref\
+	\
+	class ThirdTable(db.Model):\
+		__tablename__ = 'second'\
+		id = db.Column(db.Integer, primary_key=True)\
+		data_first = db.Column(Integer, ForeignKey('first.id'))				data_first is linked id from FirstTable for backref\
+\
+
+\f0\b\fs26 Auth Middleware\
+
+\fs20 generate hashed passwords
+\f1\b0 \
+	from flask_bcrypt import Bcrypt\
+	password = 'secret_string'\
+	bcrypt = Bcrypt()\
+	hashed_pwd = bcrypt.generate_password_hash(password=password)\
+	bcrypt.check_password_hash(hashed_pwd, 'wrong_password')				hashes 'wrong_password' and compares the values\
+												returns True or False\
+\
+or 	from werkzeug.security import generate_password_hash, check_password_hash		works similarly to Bcrypt\
+\
+
+\f0\b use middleware
+\f1\b0 \
+	from flask_login import UserMixin, 							injects user-derived info into templates\
+	from flask_login import login_user, login_required, logout_user, LoginManager		provides decorator middleware for login-dependent routing\
+	login_manager = LoginManager								provides middleware user_loader\
+	\
+		@app.route('/only_for_loggedin_users')\
+		@login_required\
+												also provides functions login_user() and logout_user() that control user session\
+												+ inject template with current_user object:\
+	       current_user ==  \{is_authenticated: True,\
+			          username: \'85\'85\}\
+
+\f0\b redirect after login
+\f1\b0 				\
+	next = request.args.get('next')								if unauthorized login redirected to login or whatever, request.args.next stores the initial request\
+\
+\
+\
+\
+
+\f0\b\fs26 Blueprints
+\fs20 \
+
+\f1\b0 creates a url_prefix for submodular components and creates rules as to which view function to use:\
+	from flask import Blueprint\
+	\
+	my_blueprint = Blueprint('bp_name', __name__, url_prefix='/prepath')			creates Blueprint\
+in primary __init__.py ( or app factory) register the blueprint (after importing):\
+	app.register_blueprint(my_blueprint)\
+\
+blueprint-specific views are decorated with:\
+@my_blueprint.route('/path')					if path /prepath/path is requested, endpoint is executed\
+def endpoint():\
+	\'85.			\
+\
+url_for generates URLs for blueprinted endpoints like this:\
+	redirect(url_for('my_blueprint.endpoint'))			use dot syntax for blueprinted endpoints\
+\
+middleware can be used for blueprints:\
+	@bp.before_app_request				e.g. before_app_request can be used with blueprinted views\
+		\
+\
+
+\f0\b\fs26 REST
+\f1\b0\fs20 \
+	REST APIs allow users and other apps to access your data easily\
+	use Postman Testing Tool\
+\
+
+\f0\b request types
+\f1\b0 	\
+POST	Create		item/<id>		201 202: will be created, 400 Bad request\
+\
+GET	Read		item/<id>		200 !404\
+			items/\
+PUT	Update		item/<id>\
+\
+DELETE Delete		item/<id>\
+\
+	from flask_restful import Resource, Api\
+\
+	api = Api(app)						wrap application in Api\
+\
+	class DataProvider(Resource):				create Resource class to use in the API that returns data\
+		def get(self, request_data):\
+			if condition:\
+				return data\
+			else return 404				you can also return HTTP status\
+\
+	api.add_resource(DataProvider, '/path/<string:request_data')	add resource Class to the api specifying the path and the data to be transfered	\
+\
+
+\f0\b Authorization in REST
+\f1\b0 \
+	from flask_jwt import JWT, jwt_required			pip install Flask-JWT\
+	\
+	username_table = \{u.username: u for u in users\}		create dicts for easy access to user objects via username or id calls\
+	userid_table = \{u.id: u for u in users\}		\
+\
+	def authenticate	(username, password):			function authenticate checks user and password provided during API access\
+		user = query from database\
+		if user and password == user.password:		\
+			return user					\
+\
+	def identity(payload):					get identity from request payload and return user object\
+		user_id = payload['identity']\
+		return userid_table.get(user_id, None)\
+\
+\
+	\
+	jwt = JWT(app, authenticate, identity):			bind JWT with its authentication methods to app\
+		an endpoint /auth is automatically created with a view that returns the required webtoken as JSON\
+\
+	class DataProvider(Resource):\
+		@jwt_required()					wrap resourcer with the jwt_required()\
+		def get(self):					any method wrapped like that requires an authentication token sent by the auth post\
+								authentication token is in the header as Authorization: "JWT <token>"\
+			\'85..\
+	\
+
+\f0\b Request parsing
+\f1\b0 \
+	\
+\
+}

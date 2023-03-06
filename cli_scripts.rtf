@@ -1,0 +1,317 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\margl1440\margr1440\vieww15280\viewh18320\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 General:
+\fs20 \
+
+\f1\b0 	bash is a powerful script interpreter allowing to combine shell commands into scripts\
+	scripts are written via Text editors into files and executed by the CLI\
+	shell needs permission to execute program:\
+	$ chmod 755 file_name or 700 for only the user\
+\
+
+\f0\b Paths:
+\f1\b0 \
+	to execute a script, enter the complete path to file or put the parent directory of the script in your path\
+	echo $PATH			displays your path variables used for searching executables\
+	add new directory to path:\
+	echo 'export PATH="$PATH:/new_directory"' >> ~/.bash_profile\
+	. ~/.bash_profile			like source ~/.bash_profile = reads and updates a file\
+\
+
+\f0\b Environment:\
+
+\f1\b0 contains environment variables and other important stuff\
+\
+	$ set				see complete environment file\
+at startup and terminal session, several files are read for setting the environment:\
+	/etc/profile			global config script\
+	~/.bash_profile			user config script (can overwrite global settings)\
+	/etc/bash.bashrc		non-login global config\
+	~/.bashrc			user non-login config script\
+\
+
+\f0\b\fs26 Scripts and Python\
+	
+\f1\b0\fs20 to run python from the terminal there are several options:\
+1) make python script run from shell:\
+	add shebang:\
+		#!/usr/bin/env python3\
+\
+2) add python script to shell script:\
+	add llne:\
+		python3 python_script.py\
+\
+
+\f0\b\fs26 Syntax:
+\f1\b0\fs20 \
+	#!/bin/bash			first line of script is the shebang, telling the OS what interpreter to use (/bin/bash)\
+	#!/bin/bash -x			debug mode\
+	# comment			comments are ignored by bash\
+	;				command separator to write several commands on one line (also in Terminal)\
+	echo \'85.>%2			writes output to error message\
+\
+	finish scripts with exit 0				exit status of script is 0\
+	\\+Enter				line continuation signal (backslash-linefeed)\
+
+\f0\b\fs26 Aliases
+\f1\b0\fs20 \
+are used to shorten commands:\
+- create an alias-file:\
+	touch ~/.custom_aliases\
+- add alias into .custom_aliases via Texteditor:\
+	alias shortname='long-winding command'	you can also create a function that executes several commands:\
+	function name() \{\
+		command 1\
+		command 2\
+		command 3\
+	\}\
+	alias shortname='command1 && command2 "$1" && command3'	use $1 to $n to pass in arguments into the alias call\
+\
+- update the aliases:\
+	source  ~/.custom_aliases\
+	. command is a shortcut for source\
+\
+alternatively, place aliases in your ~/.bash_profile to be used permanently\
+\
+
+\f0\b\fs26 Shell Functions
+\f1\b0\fs20 \
+are used to shorten complex commands\
+variables declared locally n functions actlocal:\
+	local var_name[=value] \
+\
+name() \{\
+	command\
+	command\
+\}\
+\
+are called like normal commands:\
+	&(name)				expanded to the result of the function\
+\
+
+\f0\b Here Script
+\f1\b0 \
+ used to load a data stream as standard input into a command:\
+	command <<	token			start and end token need to confer (usually _EOF_)\
+	\'85\
+	\'85				\
+	\'85\
+	token\
+for better visibility you can use <<- and leading tabs are ignored:\
+	command <<- _EOF_			_EOF_ can be any string but is has to be the same at the end\
+		\'85				command accepts text as standard input\
+		\'85				within a here script you can use quotations without having to escape\
+		\'85\
+	_EOF_					second mention of token string ends input\
+here script can be used to easily feed several arguments into a command to be performed as a script\
+\
+
+\f0\b\fs26 Variables
+\fs20 \
+	
+\f1\b0 are declared as :\
+		var_name=value		name must start with _ or letter and can contain numbers\
+	$var_name				var is expanded to its value\
+better: 	"$var_name"				potential spaces in variable are properly expanded\
+	$\{var_name\}1				use curly brackets to immediately append chars \
+\
+	$?					exit status of last command\
+
+\f0\b environment variables
+\f1\b0  are already set:\
+	printenv					command to list all environment variables\
+	$(command)				is expanded to the standard output of the command\
+	var_name=$(command)			assign command result to variable\
+\
+
+\f0\b\fs26 Flow\
+
+\fs20 if\
+
+\f1\b0 	if eval_command \
+	then commands				shell evaluates commands based on exit status \'97>\
+opt. [	elif eval_command\
+	then commands ]	\
+opt. [	else commands ]\
+	fi\
+\
+exit status is a numeric value indicating success of commands execution (0 = success, 1-255 failure)\
+exit status can be checked using echo $? after execution of command\
+	true					built-in command exiting with 0\
+	false					built-in command exiting with 1\
+	test condition				exits with 0 if condition is true / with 1 if condition is falsy\
+	[ condition ] 				same as test condition (spaces are needed!!!		[[ condition ]] 			 	same as test except allows regexp:\
+	[[ string =~ regexp ]]			string matches regexp\
+	(( arithmetic condition ))			allows full testing for arithmetic conditions\
+\
+shorter variant for if statement (like ternary):\
+	[ condition ] && command_if_true || command_if_false\
+
+\f0\b conditions:
+\f1\b0 \
+	-d file					file is directory ?\
+	-e file					file exists\
+	-f file					file exists and is regular file\
+	-o file					file exists and is owned by effective userID\
+	-L file					file is symbolic link\
+	-r / w / x file				file is readable / writable / executable\
+	file1 -nt file2				file1 is newer than file2\
+	-z string					string is empty\
+	-n string				string is not empty\
+	string = string				strings are equal\
+	string != string				not equal\
+numeric comparison:\
+	a eq b					equal\
+	a ne b					not equal\
+	a ge b					a greater or equal\
+	a gt b					greater than\
+	a le b					less than or equal\
+	a lt b					less than\
+\
+arithmetic condition:\
+	< / > / % / + / - / ** etc are possible\
+\
+string expressions:\
+	-n string				string length greater zero\
+	-z string					string length is zero\
+	string1 == string2			strings are equal\
+	!=					not equal\
+	string1 > string2				string1 sorts after string2\
+	=~ regexp				matches regexp\
+in test use string1 \\> string2 or it will be redirection operator					\
+\
+always place arguments in condition within " .." to make sure to get no null-output (which would lead to argument shift)\
+\
+condition operators:\
+	in [ condition ] use:\
+		-a				AND\
+		-o				OR\
+		!				NOT\
+	in [[ ]] and (( )) use:\
+		&&				AND\
+		||				OR\
+		!				NOT\
+\
+
+\f0\b case
+\f1\b0 \
+	case $var_name in			case branches commands based on a value\
+		value1 ) command;;		in case of value 1 do command	\
+		value2 ) command;;		in case of value 2 do command	\
+		* ) command;;			in ALL other cases do command\
+	esac\
+instead of values case can also check for patterns:\
+	[[:lower:]]  |  [[:upper:]]			letter casing\
+	[0-9] )					value range\
+	* )					always\
+\
+
+\f0\b loops
+\f1\b0 \
+	
+\f0\b while
+\f1\b0  [ condition ] 			while goes through loop as long as condition is true\
+		do command\
+	done\
+	\
+	
+\f0\b until
+\f1\b0  [ condition ]			opposite of while\
+		do command\
+	done\
+\
+	
+\f0\b for 
+\f1\b0 variable in value1 value2 \'85 valueN-1 valueN		 the value list that is applied in serial to variable during each loop progression\
+		do commands\
+	done\
+alternative form (C form): \
+	for (( i=0; i<5; i=i+1 )); do\
+		commands;\
+	done\
+\
+in a for loop, you can create the list by command expansion:\
+	for i in $(cat path_to_file.txt)				file is read by cat and expanded into separate words\
+		do echo "Word  ($1) contains $(echo -n $i | wc -c) characters"\
+or for script parameters (see below):\
+	for i in "$@"; do				loops through all parameters of script call\
+\
+step out of current loop with continue\
+break loop entirely using break\
+\
+
+\f0\b control operator:
+\f1\b0 \
+	command1 && command2		command2 is only executed if command1 exits with status 0\
+	command1 || command2		command2 is only executed if command1 exits with status unlike 0\
+or 	[[ test ]] && command			command is executed if condition is fulfilled\
+\
+
+\f0\b\fs26 Interaction\
+
+\f1\b0\fs20 \
+	read text				read keyboard input into variable text\
+	read variable list			reads space-separated user input into variable list (unused variables become "")\
+	read; echo '$REPLY'			without variable read writes input into variable REPLY\
+		-t 4				provides timeout (here 4 seconds) to input\
+		-s				user input is not displayed\
+		-e				use Readline \
+		-ei string			provides default value if user presses only Enter\
+		-p string			Displays the prompt string before accepting input							\
+
+\f0\b\fs26 Options / Parameters
+\f1\b0\fs20 \
+	if you execute a script like this: \
+		script param1 param2 param3\
+	parameters can be used in the script as $1, $2, $3 etc. 	$0 is the script itself\
+\
+	$\{1:-word\}				default notation: expands to parameter1 OR word if $1 does not exist\
+\
+	shift					built-in command that shifts all positional arguments by one ($2 becomes $1 etc )\
+test for optional parameters:\
+	if [ "$1" != "" ]; then command\
+	$#					contains the number of additional parameters (beside $0)\
+script "arg1" "arg2 arg3"				\
+	$@	\'97> arg1 arg2 arg3		contains the space-separated list of parameters \
+ 	"$@" \'97> "arg1" "arg2 arg3"		with quotes: does not expand quoted arguments\
+	$*	\'97> arg1 arg2 arg3		expands into list of IFS[0] separated positional parameters\
+	"$*"\'97>"arg1" "arg2" "arg3"		when quoted: expands quoted arguments into list of arguments\
+	\
+use case for setting behavior depending on options\
+	while [ "$1" != "" ]\
+	    do case $1 in\
+		-f | \'97file )	shift; filename=$1	if -f is provided shift to next argument and use as filename\
+\
+positional arguments can also be used within functions when called with arguments from terminal or script\
+\
+
+\f0\b\fs26 TRAP
+\f1\b0\fs20 \
+	trap command s	ignal / signal list		if script receives signal from signal list (eg. Ctrl-c = SIGINT), command is executed\
+trap does not execute at SIGKILL kill -9\
+best practice is to define cleanup programm and use in trap\
+	trap cleanup SIGINT SIGTERM SIGHUP\
+\
+
+\f0\b\fs26 Temp files
+\f1\b0\fs20 \
+temp files are commonly placed in temp folder in users home directory:\
+	\cf2 \expnd0\expndtw0\kerning0
+if [ -d "~/tmp" ]; then\
+\pard\pardeftab720\partightenfactor0
+\cf2 		TEMP_DIR=~/tmp\
+	else\
+		TEMP_DIR=/tmp\
+	fi	\cf0 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 create temp-files that are informative but not predictable:\
+	\cf2 \expnd0\expndtw0\kerning0
+TEMP_FILE=$TEMP_DIR/$(basename $0).$$.$RANDOM			\
+		$$				Process name\
+		$(basename $0)		script name\
+\cf0 \kerning1\expnd0\expndtw0 	}

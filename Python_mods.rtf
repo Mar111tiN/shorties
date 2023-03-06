@@ -1,0 +1,405 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf600
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fmodern\fcharset0 Courier;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c100000;}
+\margl1440\margr1440\vieww17940\viewh25780\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 General
+\fs24 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 	\
+virtualenv\
+	
+\f1\b0 work in virtual environments for every app, so you can fix the dependencies\
+\
+dependencies\
+	copy (and update regularly!) the dependencies needed for a project:\
+		$ pip freeze > requirements.txt\
+	declare python version in runtime.txt file\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 Collections
+\fs24 \
+	\
+from collections import Counter\
+	
+\f1\b0 counter works on lists, strings, dicts and returns a dictionary with the number of occurrences of each value:\
+	Counter('string') -> Counter(\{'s':1, 't': 1, 'r': 1, 'i': 1,  'n': 1, 'g': 1\})\
+	method on Counter:\
+	c = Counter(string, list)\
+	c.most_common(3)			returns a 3-tuple of most occurring elements\
+	list(c) / set(c) dict(c)			convert to specific datatype\
+	c.items()				convert to list of (elem, count) pairs\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 from collections import defaultdict\
+
+\f1\b0 	dictionary-like object with certain benefits\
+	it does not raise an error if wrong key is called:\
+	d = defaultdict(object)			when key is called, an object is automatically created as value for that key:\
+		d[1]				calling key 1 creates key 1 with an empty object as value\
+		d == \{1:\{\}\}			\
+	d = defaultdict(list)			when key is called that does not exist, a list is created as value for key\
+works with lambda to provide object prefilled with values:\
+	d = defaultdict(lambda : x)		eg: d = defaultdict(lambda: [1,2,5]	defaults to a list entry [1,2,5]\
+	\
+
+\f0\b from collections import OrderedDict\
+
+\f1\b0 	dictionary-like object with certain benefits:\
+	a = OrderedDict()\
+	sequence of assignment is retained for for-loops or prints\
+	internally represented by a list of tuples\
+	d = OrderedDict.fromkeys(iterable)	creates OrderedDict with keys from iterable and variables None\
+	d.popitem(key, last=True)		returns and removes (key, value) pair (LIFO if last==True | FIFO if last == False)\
+create from standard Dict d:\
+	ordered_dict = OrderedDict(sorted(d.items(), lambda x: x[1]))	OrderedDict sorted by value\
+\
+
+\f0\b from collections import namedtuple\
+
+\f1\b0 	tuple that allows naming of dimension labels:\
+	TupleClass = namedtuple('TupleClass', 'string of tuple names with whitespace separation) \
+eg:	v = namedtuple('Vector', 'x y z')		declare the tuple class; Vector is the typename for this namedtuple class\
+or:	v = namedtuple('Vector', [x,y,z])		you can also pass a list instead of a space-separated string\
+	my_vector = v(x=1, y=2, z=4)		instantiate new named tuple from namedtuple class 'Vector'\
+	my_vector  >>> Vector(x=1, y=2, z=4)	my_vector is a Vector tuple\
+	my_vector.x >>> 1			access values like keys\
+internally, namedtuples are simple classes with immutable properties\
+you can add methods to a subclass of namedtuple:\
+	class NewVector(Vector):\
+		def method(self):\
+			actions\
+			return something\
+	_field					helper property with list of typenames\
+	_asdict()				returns namedtuple as orderedDict \'97> good for JSON conversion:\
+		json.dumps(my_named_tuple.asdict())\
+\
+you can add new fields like that:\
+	NewTuple = namedtuple('NewTuple', oldTuple._fields + ('new_field',))\
+new_tuple = TupleClass._make([value1, value2])		_make() creates new namedTuple instance from list or other iterablese\
+\
+
+\f0\b from collections import ChainMap
+\f1\b0 \
+	stores multiple dicts in a chain\
+	chain = ChainMap(dict1, dict2)\
+	chain[key] looks for keys in all existing dicts and outputs first value it finds\
+	key updates only work on first mapped dictionary\
+\
+	chain.maps				returns list of mappings (mapped dicts)\
+	chain.new_child(m=None/dict)		returns a new ChainMap with \{\} or dict as first mapping followed by all mappings from chain\
+	chain.parents				returns ChainMap containing all but first mapping\
+\
+
+\f0\b from collections import deque
+\f1\b0 \
+	is a double-ended queue that supports adding and removing elements from front and back in O(1)\
+	are poor for random access (unlike list)\
+	are the implementation of a linked-list\
+	new_deque = deque(iterable[, maxlen])	maxlen provides maximum number of elements taken from iterable (like string)\
+		append()\
+		appendleft()\
+		extend(iterable)\
+		extendleft(iterable)\
+		pop() popleft()\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 import types
+\f1\b0\fs24 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 from types import MappingProxyType\
+	
+\f1\b0 wraps a dictionary to prevent write access\
+	r__dict = MappingProxyType(dict)\
+\
+
+\f0\b from types import SimpleNamespace
+\f1\b0 \
+	is like a dict but allows attribute access (dot-syntax) for keys\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 import struct
+\f1\b0\fs24 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 from struct import Struct\
+	
+\f1\b0 can be used to handle binary data stored in files\
+	pack data into binary Struct:\
+		CustomStruct = Struct('i?f')			i= integer; ? = bool, f= float)\
+		data = CustomStruct.pack(324, True, 243.234)	predefined data is packed into CustomStruct data as data blob\
+		extracted = MyStruct.unpack(data)		data can be unpacked again\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 import typing
+\fs24 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0 \cf0 typing allows for the specification of expected types in many situations (functions, Callbacks, Classes, compound data types like namedtuples)\
+
+\f0\b from typing import NamedTuple
+\f1\b0 \
+	improved version of namedtuples with typed fields (if type checking tool like mypy is installled)\
+	class TupleClass(NamedTuple):\
+		x: str\
+		y: float\
+		z: bool\
+\
+
+\f0\b import array\
+
+\f1\b0 supports C-style mutable memory-efficient arrays of bytes, int, str etc \'97> array.array are typed arrays\
+	arr = array.array(`type-code`, list)\
+		type-code:\
+			'b'			signed char\
+			'i'			signed integer\
+			'f'			float\
+			'l'			long\
+		\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 import re (RegExp)
+\fs24 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0 \cf0 module for regular Expressions\
+\
+methods:\
+	re.search\
+		match = re.search(re-pattern, text)				if not found, None is returned:\
+										if found, a match object is returned:		\
+		match								object with many methods\
+			.span()						returns pair of (start, end-index)\
+			.group()						returns the matched part of the string\
+	\
+	re.split\
+		split_term = pattern\
+		phrase = text containing pattern\
+		re.split(split_term, phrase[, max_number])		returns list of text split by pattern\
+\
+	re.findall(pattern, text)						returns list of matches\
+\
+	re.sub(patter, substitution, string[, max_number])		substitutes like s/ / /					\
+\
+\
+patterns:	see RegExp.rtf file\
+	\
+\
+escape:\
+	when declaring re patterns as strings, you have to escape \\ (for symbol escape) with another \\\
+	better: use raw string:\
+		r're-pattern'\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\fs28 \cf0 		\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 import datetime
+\fs24 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\b0 \cf0 datetime.time						time within one day
+\f0\b \
+
+\f1\b0 	t = datetime.time(5, 25, 1)			created a timestamp for 05:25:01	\
+		format is hours, minutes[, seconds[, microseconds]]\
+	t.hour / t.minute/ t.second/  t.microsecond	common properties of time object\
+datetime.date						calendaric data (no fractions of a day)\
+	my_birthday = datetime.date(yy, mm, dd)	set specific date\
+	today = datetime.date.today()			today() is method of date class\
+	date.weekday()					returns weekday (Monday = 0 - Sunday = 6)\
+	date.isoweekday()				returns weekday (Monday = 1 - Sunday = 7)\
+\
+datetime.timedelta					(naive) duration of time\
+	t = datetime.timedelta(d, s, ms)\
+	date1 - date2 == datetime.timedelta(in days)\
+\
+datetime.datetime					contains date and time info\
+	t = datetime.datetime(y, m, d, h, min, seconds, ms)\
+	now = datetime.datetime.now()\
+\
+time and datetime can be naive or aware, if they have an optional parameter tzinfo (time zone info)\
+	tzinfo is an  object conaining info about timezone and timesavings:\
+	tzinfo.utcoffset(d) holds the time zone info\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 import pdb
+\fs24 \
+	
+\f1\b0 nice debugging tool\
+	if something does not run, enter a pdb.set_trace() and you enter an environment in which you can see values of variables and run expressions and such \'97> see documentations\
+\
+
+\f0\b\fs28 import timeit
+\fs24 \
+	
+\f1\b0 tool to see performance of your units\
+	timeit.timeit('your expression as a string', number=10000)	give it a high enough number to actually compare methods\
+\
+
+\f0\b\fs28 import csv
+\f1\b0\fs24 \
+	used to work with and manipulate csv fies (alternative is pandas)\
+	\
+open file:	\
+	with open('path_to_file') as file:\
+		csv_file = cvs.reader(file, delimiter=',')			use csv.reader to convert csv-file into python-ready list format\
+	or: 	csv_file = csv.DictReader(file, delimiter='.')			csv.DictReader converts csv into ordered dictionary\
+									\'85first line of csv is assumed to contain the header to be used as keys\
+\
+
+\f0\b\fs28 import subprocess
+\f1\b0\fs24 \
+	allows the use of terminal CLI processes and to also control input and output\
+\
+\
+
+\f0\b\fs28 import os (os.sys / os.path)
+\f1\b0\fs24 \
+	general utility for file information and os manipulation\
+platform-specific properties:\
+	os.sep					returns os-specific path separator ( '/' for MACOS)\
+	os.pathsep				returns os-specific path separator for PATH list\
+	os.curdir				returns '.' for MACOS\
+	os.pardir				returns '..' for MACOS\
+	os.environ.keys()			returns KeysViews object containing a dict of all ENV variables\
+	os.environ[NAME] = VALUE		create/ change env variable\
+eg	os.environ['HOME']			like $HOME\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 standard
+\f1\b0 \
+	os.getcwd()				= pwd\
+	os.chdir('path')			= cd\
+	os.mkdir('name')			= mkdir\
+ 	os.makedirs('path')				= mkdir -p			\
+	os.removedirs()				remove subfolders of directory (can contain data)\
+	os.remove()				removes a file (raises error if file not there)\
+	os.rmdir				remove an empty directory\
+	os.listdir()				= ls | returns list\
+	os.rename()\
+\
+
+\f0\b manipulating paths:
+\f1\b0 \
+	os.path.basename(directory)	returns the last part of a path\
+\
+	os.path.split(file/direct)		returns tuple with first part of path and basename\
+	os.path.splitext(file)			returns tuple with path+file-root and extension\
+\
+
+\f0\b permissions / checks:
+\f1\b0 \
+	os.chmod('name', number)		= chmod number name\
+	os.umask(number)			sets global umask (default denials)\
+	os.access('file', <mode>)		boolean check for \
+		modes:	os.F_OK		existence of path\
+			os.R_OK		can be read\
+			os.W_OK		can be written\
+			os.X_OK		can be executed\
+	os.path.isdir(directory)			boolean checks for existence and properties\
+		isfile(file)\
+		islink(file)\
+		exists(dir)			returns True if directory exists\
+	\
+
+\f0\b utilities:
+\f1\b0 \
+	os.walk(path)				runs recursively through the path and returns tuples with\
+						(directory, [list_of_folders], [list_of_files])\
+	os.path.walk(path, function)		runs recursively through given path and applies function to all items\
+	os.path.dirname(filename)		returns absolute path of containing directory\
+	os.path.abspath(filename)		returns absolute path of file\
+\
+	os.path.join(os.sep, 'path1','path2') 	concats folder names to a path --> 'path1/path2'\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 import sys
+\f1\b0\fs24 \
+	from sys import getsizeof	\
+		getsizeof(object)					gives byte size of object\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 fileimput
+\f1\b0 \
+	import fileimport\
+	for line in fileimport.input():\
+		process(line)\
+	\
+with fileimport.input(files=('fileA', 'fileB')) as f:\
+	for ilne in f:\
+		process(line)\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 import argparse
+\f1\b0\fs24 \
+	import argparse	\
+	parser = argparse.ArgumentParser(description='desc')		sets up the parser and creates a message seen with option --help or -h\
+	parser.add_argument('posArg1', type=str, help='desc')		provide required positional argument\
+	parser.add_argument('-short', '--long', default=xxx, type=int, help='desc')	provide optional argument (optional because of '-' flag)\
+									alternative flags can be given as a comma-separated list (see above)\
+	--flag, 	action	='store'						store the value (=default) in flag\
+			='store_const', const=...				stores constant in flag, when optional flag is chosen\
+			='append'					flag is stored as a list of values used for --flag\
+	'--flag', '-f' action ='count'					stores the number of calls for argument in flag (eg. -fffff -> stores flag=5)\
+	'--flag', nargs	= N						flag stores a list of N values given as optional values\
+	'		= '?'						only one (the first) argument will be stored in flag	\
+			= '*'						saves all values in list\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\qj\partightenfactor0
+\cf0 			='+'						stores all values in list but gives error message if none are present\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+\cf0 \
+	\
+	args = parser.parse_args()					returns an object with the arguments as attributes with input values\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 import datetime
+\f1\b0\fs24 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f0\b \cf0 from datetime import datetime as dt
+\f1\b0 \
+datetime class accesses time as a combination of date and time\
+	dt.now()							returns datetime.datetime object containing year, month, day, hour, minutes, seconds, ns) as attribujes\
+\
+dt.strftime(timeobj, format_string)	\
+or	timeobj.strftime(format_string)				returns a formatted string representation of the datetime object. \
+	date_format:							format_string can contain the following strings:\
+		%a / %A / %w					weekday short / full name / numerical (0 = Sunday)\
+		%d / %j						day of the month / year (zero-padded)\
+		%b / %B / %m					month short / full name / numerical (zero-padded)\
+		%y / %Y 						year without century / with century\
+	time_format\
+		%H / %I %p						hour 24h/ 12h / 'AM or PM''\
+		%M							minute zero-padded\
+		%S							second zero-padded\
+	eg: "%Y-%m-%d %H:%M:%S" 		 		"\cf2 \cb3 \expnd0\expndtw0\kerning0
+2019-04-29 07:25:02"
+\f2\fs28 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5420\tx5760\tx6480\tx7200\tx7920\tx8648\pardeftab720\pardirnatural\partightenfactor0
+
+\f1\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+dt.strptime(string, time_format)					create a time object from a proper datetime string representation}
