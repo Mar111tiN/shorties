@@ -1,0 +1,109 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2511
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;\red255\green255\blue255;\red0\green0\blue0;
+}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;\cssrgb\c100000\c100000\c100000;\csgray\c0\c0;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww24080\viewh21520\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf2 VARSCAN
+\fs24 \
+
+\f1\b0\fs20 java-based tool for calling variants by comparing different germilne and tumor mappings\
+uses heuristic/statistic approach to call variants\
+literature:\
+"{\field{\*\fldinst{HYPERLINK "http://www.ncbi.nlm.nih.gov/pubmed/23766071"}}{\fldrslt 
+\f0\b \cb3 \expnd0\expndtw0\kerning0
+VarScan2 performed best overall}}\cb3 \expnd0\expndtw0\kerning0
+\'a0with sequencing depths of 100x, 250x, 500x and 1000x required to accurately identify variants present at 10%, 5%, 2.5% and 1% respectively"\cb1 \kerning1\expnd0\expndtw0 \
+developed by Genome Institute at Washington University\
+different modules are avaiable\
+\
+
+\f0\b\fs24 Installation
+\fs20 \
+	
+\f1\b0 $ conda install varscan				installs varscan in a bash wrapper to								o be executed as: varscan <module> \
+or download from {\field{\*\fldinst{HYPERLINK "https://sourceforge.net/projects/varscan/files/"}}{\fldrslt sourceforge}}\
+\
+\
+
+\f0\b\fs24 germline variants
+\f1\b0 	
+\fs20   <- samtool pileup format
+\f0\b \
+	
+\f1\b0 $ varscan mpileup2snp				calls SNPs		\
+	$ varscan pileup2indel				calls indels\
+	$ varscan pileup2cns				calls a consensus genotype based on minimal coverage\
+\
+
+\f0\b\fs24 somatic mutation
+\f1\b0\fs20  <- samtool pileup format \
+	requires germline and cancer genome input as samtool mpileup from sorted bam files:\
+	$ samtools mpileup \
+		-f $\{REF\}					ref genome as fasta file (with fai using samtools faidx)\
+		-q 1						minimum base quality 1\
+		-Q 25						\
+		[ -B						disable BAQ computation ] maybe leave enabled?\
+
+\f0\b principle
+\f1\b0 \
+varscan somatic compares positions where both germline and tumor sample have sufficient coverage\
+algorithm:\
+\pard\pardeftab720\sl280\partightenfactor0
+\cf2 \cb3 \expnd0\expndtw0\kerning0
+\'a0 \'a0\'a0If tumor matches normal:\'a0\
+\'a0 \'a0 \'a0 \'a0 If tumor and normal match the reference\'a0\
+\'a0 \'a0 \'a0 \'a0 \'a0 \'a0\'a0==>\'a0Call Reference\'a0\
+\'a0 \'a0 \'a0 \'a0 Else tumor and normal do not match the reference\'a0\
+\'a0 \'a0 \'a0 \'a0 \'a0 \'a0\'a0==>\'a0Call Germline\'a0\
+\
+\'a0 \'a0\'a0Else tumor does not match normal:\'a0\
+\'a0 \'a0 Calculate significance of allele frequency difference by Fisher's Exact Test\'a0\
+\'a0 \'a0 \'a0 \'a0\'a0If difference is significant (p-value < threshold):\
+\'a0 \'a0 \'a0 \'a0 \'a0 \'a0 If normal matches reference\
+\'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0\'a0==>\'a0Call Somatic\
+\'a0 \'a0 \'a0 \'a0 \'a0 \'a0 Else If normal is heterozygous\
+\'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0\'a0==>\'a0Call LOH\
+\'a0 \'a0 \'a0 \'a0 \'a0 \'a0 Else normal and tumor are variant, but different\
+\'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0 \'a0\'a0==>\'a0Call IndelFilter or Unknown\
+\'a0 \'a0 \'a0 \'a0\'a0Else difference is not significant:\
+\'a0 \'a0 \'a0 \'a0 Combined tumor and normal read counts for each allele. Recalculate p-value.\
+\'a0 \'a0 \'a0 \'a0 \'a0 \'a0\'a0==>\'a0Call Germline\'a0\
+
+\f0\b CLI\
+	
+\f1\b0 $ java -jar varscan somatic\
+		normal.pileup\
+		tumor-pileup\
+		--output-snp <file>	  		specifies output file for snp calls\
+		--output-indel <file>			specifies output for indel calls\
+		--min-coverage-normal [8]		minimum coverage on normal base\
+		--min-coverage-tumor [8]		minimum coverage on tumor base\
+		--min-var-freq [0.1]			minimum frequency to call heterozygous\
+		--min-freq-for-hom [0.75]		minimum frequency to call homozygous\
+		--normal-purity [1]			estimated normal tissue purity\
+		--tumor-purity [1]			estimated tumor purity\
+		--p-value [0.99]				statistical threshold to call heterozygous\
+		--somatic-p-value [0.05]			statistical threshold to call somatic mutation\
+\cb4 		--validation -				if == 1 --> outputs all comparisons (variants and not variants)\
+\
+
+\f0\b\fs24 Varscan left-alignment pipeline:
+\f1\b0 \
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\fs20 \cf2 \kerning1\expnd0\expndtw0 \CocoaLigature0 	$ varscan somatic tumor.pileup normal.pileup --output-vcf 1 --output-snp tumor.snp.vcf --output-indel tumor.indel.vcf  --min-coverage 1 --min-var-freq 0.01 --min-freq-for-hom 0.75 --p-value 0.99 --somatic-p-value 0.05 --normal-purity 0.95 --tumor-purity 0.8\
+	$ bgzip < tumor.snp.vcf > tumor.snp.vcf.gz\
+	$ tabix tumor.snp.vcf.gz\
+	$ bcftools norm -f $HG38 -o tumor.snp.ln.vcf tumor.snp.vcf.gz
+\fs24 \
+\
+\
+
+\f0\b Varscan CopyNumberAlterations:\
+	
+\f1\b0 1. Step \
+}

@@ -1,0 +1,58 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2511
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fmodern\fcharset0 Courier;
+}
+{\colortbl;\red255\green255\blue255;\red59\green35\blue34;\red215\green211\blue183;}
+{\*\expandedcolortbl;;\csgenericrgb\c23317\c13541\c13291;\cssrgb\c87500\c85798\c76563;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww13940\viewh19840\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 Picard Metrix for targeted Panel QC
+\f1\b0\fs26 \
+\
+
+\f0\b 0: Prerequisites\
+
+\f1\b0 bait and target intervals as interval list \
+interval lists are 1-based (bed-files are 0-based) and contain a large header section and a bam-like body\
+	chrom	start		end		strand	interval name\
+\
+- can be converted from bed-files using:\
+$ picard BedToIntervalList\
+	I=input.bed\
+	O=input.interval\
+	SD=ref_seq.dict		dict file of the reference genome\
+	UNIQUE=false		if true, overlapping regions will be merged (dunno?)\
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f2\fs24 \cf2 \cb3 \CocoaLigature0 SS_HAEv7_hg38_Covered.bed --> bait.interval\
+SS_HAEv7_hg38_Regions.bed --> target.interval\
+
+\f1\fs26 \cf0 \cb1 \CocoaLigature1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 dict file can be generated from ref genome using:\
+$ picard CreateSequenceDictionary\
+	R=hg38.fasta\
+	O=hg38.dict\
+\
+\
+
+\f0\b 1: Run Metrix
+\f1\b0 \
+\
+$ picard CollectHsMetrics\
+	I=target.bam			aligned clean sorted bam after all recalibrations before hard deduping (eg. UMI-filtering)\
+	O=target.metrix\
+	R=hg38.fasta\
+	BAIT_INTERVALS=bait.interval			list of actual bait sequences in interval format\
+	TARGET_INTERVALS=target.interval		list of sequences targeted by the baits\
+	CLIP_OVERLAPPING_READS=false		default true\
+	MINIMUM_BASE_QUALITY=20			default=20\
+	MINIMUM_MAPPING_QAUALITY			default=20\
+\
+
+\f0\b 2. Output metrices
+\f1\b0 \
+\
+}

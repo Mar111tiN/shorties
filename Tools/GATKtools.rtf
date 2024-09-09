@@ -1,0 +1,105 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2511
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\froman\fcharset0 Times-Roman;\f2\fswiss\fcharset0 Helvetica;
+}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue233;\red26\green26\blue26;\red255\green255\blue255;
+\red59\green35\blue34;\red215\green211\blue183;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c93333;\cssrgb\c13333\c13333\c13333;\cssrgb\c100000\c100000\c100000;
+\csgenericrgb\c23317\c13541\c13291;\cssrgb\c87500\c85798\c76563;}
+\paperw11905\paperh16837\margl1440\margr1440\vieww11980\viewh18780\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf0 IndelRealigner\
+
+\fs20 primer : {\field{\*\fldinst{HYPERLINK "https://docs.google.com/file/d/0B2dK2q40HDWeLTFzNndsNDBuVms/preview"}}{\fldrslt 
+\f1\b0\fs24 \cf2 \expnd0\expndtw0\kerning0
+\ul \ulc2 \outl0\strokewidth0 \strokec2 https://docs.google.com/file/d/0B2dK2q40HDWeLTFzNndsNDBuVms/preview}}\
+\
+\
+\
+\
+\
+
+\f2\b0 recommended known-sites:\
+	\cf3 \cb4 \expnd0\expndtw0\kerning0
+Mills_and_1000G_gold_standard.indels.hg38.vcf\
+	1000G_phase1.snps.high_confidence.hg38.vcf.gz
+\f0\b\fs24 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+\
+\
+\
+\
+\
+BaseRecalibrator
+\fs20 \
+BaseRecalibrator:
+\f2\b0 \
+	-R reference_genome 		fasta\
+	--known-sites snp-db		vcf file & vcf.idx file \
+								(idx file can be generated w/:  $ \cf5 \cb6 \CocoaLigature0 gatk IndexFeatureFile -F *.vcf)\cf0 \cb1 \CocoaLigature1 	-I input_bam				.bam file & respective .bai\
+	-O output					a recalibration table used by ApplyBQSR\
+\
+you can provide multiple known-sites\
+recommended known-sites:\
+	\cf3 \cb4 \expnd0\expndtw0\kerning0
+Mills_and_1000G_gold_standard.indels.hg38.vcf\
+	1000G_phase1.snps.high_confidence.hg38.vcf.gz\
+	dbsnp_144.hg38.vcf\
+\pard\pardeftab720\sl340\partightenfactor0
+\cf0 \cb1 \kerning1\expnd0\expndtw0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+
+\f0\b\fs18 ApplyBQSR
+\f2\b0\fs20 \
+-R reference_genome 		fasta
+\fs26 \
+\
+\
+
+\f0\b\fs24 Mutect2\
+
+\f2\b0\fs20 a tool to detect somatic variants using a panel of normals to account for systemic errors\
+\
+
+\f0\b calling variants:
+\f2\b0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx5913\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 $ gatk --java-options "Xmx2g" Mutect2		activate gatk Mutect2 and infuse java option 2GB of RAM
+\fs26 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs20 \cf0 	-R <hg19.fasta>					RefGen (with fasta, .fai and .dict)\
+	-I <tumor.bam>					input1\
+	-tumor <tumor @RG SM field value)		provide the read group for the tumor sample\
+	-I <normal.bam>					input2 (if added after the \
+	-normal <normal @RG SM field value)		provide the read group for the normal sample\
+	-pon <pon.vcg.gz>					provide the prefiltered variant sites in a PanelOfNormals\
+								pon.vcf has to be generated in previous step (see below)\
+		\'97genotype-pon-sites			allow for variants that were detected in pon (default is filter out)								will be flagged as IN_PON in the INFO field\
+	-germline-resource					database of variant alleles in a population\
+								(eb. gnomad) \
+		\'97af-of-alleles-not-in-resource <2e-10)		adjustment for the lower threshold of detectable allele freqs in the 								resource \'97> the more samples in the resource, the lower the value should 								be set ( ~1/(2 *exome_samples) \
+	-L <region_list.txt>					restrict analysis to certain genomic intervals (bed file or region list)\
+	\
+	-bamout 						generate reassembled alignment file\
+\
+special options:\
+ 	- -disable-read-filter MateOnSameContigOrNoMappedMateReadFilter	\
+								MOSCO filter removes reads that are mapped to different contigs\
+								new aligners can well align over different contigs so you lose valid reads\
+\
+
+\f0\b creating the PoN annotation:\
+	1)	
+\f2\b0 run Mutect2 in tumor-only mode on the normal samples in the PoN-list\
+		$ gatk Mutect2 -R <ref> -I <normal.bam> -tumor <@RG SM of normal> -O normal1.vcf.gz\
+		optional but recommended: -germline-resource - -af-of-alleles-not-in-resource <0.0000025>\
+	
+\f0\b 2) 
+\f2\b0 	concat all the normal annotations to a PoN annotation:\
+		$ gatk CreateSomaticPanelOfNormals -vcfs <one of the normals from step 1)> -vcfs \'85\'85. -O <pon.vcf.gz>\
+		
+\f0\b \
+
+\f2\b0 \
+}

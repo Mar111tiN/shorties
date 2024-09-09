@@ -1,0 +1,66 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf500
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\cssrgb\c0\c0\c0;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11960\viewh23640\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf2 BBtools\
+
+\fs24 \
+
+\f1\b0\fs20 java-based tool set for filtering and transforming genomic data\
+uses k-mers and other stuff\
+\
+\
+
+\f0\b\fs24 Installation\
+\
+
+\f1\b0\fs20 create a conda environment with java >6 installed and activate it\
+download from {\field{\*\fldinst{HYPERLINK "https://sourceforge.net/projects/bbmap/"}}{\fldrslt https://sourceforge.net/projects/bbmap/}}
+\f0\b \cf2 \
+	
+\f1\b0 \cf2 $ tar -xzf BBMAP*.tar.gz					extracts the files	\
+	$ cd bbmap\
+	$ .stats.sh in=resources/phix174_ill.ref.fa.gz		runs a test\
+	$ ln -s $(pwd)/<tool>.sh ~/.local/bin/<tool>		create executable symlinks\
+\
+\
+\
+
+\f0\b\fs24 general usage\
+\
+
+\f1\b0\fs20 the scripts are wrappers around a java call \
+all tools use general usage scheme:
+\f0\b \cf2 \
+	
+\f1\b0 \cf2 $ <tool> in=<input> out=<output>				input and output files\
+	$ <tool> in=<input> out=<output> ref=<genome.fasta>	some tools need reference genome\
+if you have paired reads, use in1 and in2 to analyse paired fastq files together\
+	$ <tool> in1=<fR1.fastq> in2=<R2.fastq> out1=<output1> out2=<output2\
+the tools autodetect file extensions (also for compression) for input and output files\
+\
+for piping, the stdin and stdout have to be set with the proper extension (autodetect does not work in piping):\
+	$ cat <R1.fastq.gz> | <tool> in=stdin.fastq.gz out=stdout.fa int=f		\
+		int=f/t tells the program whether files are interleaved paired end files\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf2 resource use:
+\f1\b0 \cf2 \
+ 	flags for resource use:\
+	t=n				number of threads to use (normally autodect use of ~50% of threads)\
+	\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs24 \cf2 BBduke
+\f1\b0\fs20  \
+	tool to filter out contaminants or search for pattern matches in fastq files\
+	-literal=<SEQUENCE>			search for this sequence (all IUPAC symbols are possible)\
+	-hdist=<number_of_mismatches>	hamming distance of matched string from query\
+	-outm <file_containing the \
+}
