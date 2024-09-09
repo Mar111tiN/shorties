@@ -1,0 +1,346 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2513
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fmodern\fcharset0 Courier;
+\f3\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red59\green35\blue34;\red215\green211\blue183;\red0\green0\blue0;
+\red0\green0\blue0;\red6\green33\blue79;\red255\green255\blue255;\red0\green0\blue0;}
+{\*\expandedcolortbl;;\csgenericrgb\c23317\c13541\c13291;\cssrgb\c87500\c85798\c76563;\cssrgb\c0\c0\c0;
+\csgray\c0\c0;\cssrgb\c1176\c18431\c38431;\cssrgb\c100000\c100000\c100000;\csgray\c0;}
+\paperw12240\paperh15840\margl1440\margr1440\vieww32920\viewh21800\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Sequencing\
+\
+\
+Demultiplexing UMI-data\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 \
+Option1:
+\f1\b0  
+\f0\b bcl2fastq\
+
+\f1\b0 install:\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f2 \cf2 \cb3 \CocoaLigature0 conda install -c http://cubi-conda.bihealth.org/cubiconda/ bcl2fastq2
+\f1 \cf0 \cb1 \CocoaLigature1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 use sample sheet from sequencing run and delete the NNNNNNNNNN and index name entries for the UMI reads.\
+!!! convert sample sheet to unix variant using dos2unix sample_sheet\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f2 \cf2 \cb3 \CocoaLigature0 dos2unix < sheet.csv | sed 's/;/,/g' > sheet_converted.csv
+\f1 \cf0 \cb1 \CocoaLigature1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+\
+\
+\
+bcl2fastq\
+	-R		run_folder\
+	-o		output_folder\
+	--sample-sheet <path_to_sample_sheet>		the formatted sample sheet without index2 info\
+	-- \
+	--create-fastq-for-index-reads 1	\
+	--mask-short-adapter-reads 0\
+	--use-bases-mask	Y150I8Y10Y150\
+\
+	-r <N>								number of threads to load data\
+	-p  <N>								number of threads to process data\
+	-w <N>								number of threads to write data\
+\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f2 \cf2 \cb3 \CocoaLigature0 bcl2fastq -R 200228-Twist1/ -o ../NGSData/Twist1/ --sample-sheet 200228-Twist1/testrun3.csv --use-bases-mask Y151,I8,I17,Y160 -r 10 -p 10 -w 10\
+\
+
+\f1 \cf0 \cb1 \CocoaLigature1 \
+trim the 161 base R2 reads using mawk tool\
+
+\f2 \cf2 \cb3 \CocoaLigature0 for i in \{1..8\}; do R1=$\{i\}_S$\{i\}_L001_R1_001.fastq.gz; R2=$\{i\}_S$\{i\}_L001_R2_001.fastq.gz; mv $\{R1\} $\{i\}.R1.fastq.gz; gunzip < $\{R2\} | ../trim.mawk 10 | pigz -p 10 > $\{i\}.R2.fastq.gz; done
+\f1 \cf0 \cb1 \CocoaLigature1 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Option2:picard tools
+\f1\b0\fs24 \
+\
+get metrices for the barcodes and their qualities\
+	$ picard ExtractIlluminaBarcodes\
+		BASECALLS_DIR=<folder>			has to contain:\
+											.bcl files\
+											.stats files\
+											.filter files\
+											.control files\
+											.locs files\
+		LANE=<N>\
+		READ_STRUCTURE=150T8B9N150T 		read structure depends on protocol\
+		BARCODE_FILE=barcodes.txt			optional: tab-delimited barcode\\tname\
+		METRICS_FILE=output.txt			\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs26 \cf0 \
+demultiplex each lane and include UMI data in bam files\
+\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f2\fs24 \cf2 \cb3 \CocoaLigature0 picard ExtractIlluminaBarcodes BASECALLS_DIR=Data/ BARCODE_FILE=barcodes_lane1.csv LANE=1 READ_STRUCTURE=151T8B10M151T MAX_MISMATCHES=2 MIN_MISMATCH_DELTA=2 MAX_NO_CALLS=2 OUTPUT_DIR=barcodes METRICS_FILE=barcodes/barcode_metrics.txt
+\f1\fs26 \cf0 \cb1 \CocoaLigature1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \ul \ulc0 \
+Demultiplex bcl into uBAM\ulnone \
+\
+picard IlluminaBasecallsToSam\
+	
+\fs24 BASECALLS_DIR=<folder>\
+	BARCODES_DIR=<output_from_Extract_step>\
+	LANE=<N>\
+	READ_STRUCTURE=150T8B9N150T \
+	RUN_BARCODE=<from pipeline>\
+	LIBRARY_PARAMS=<list of files and sample barcodes>
+\fs26 \
+	TMP_DIR=<temporary work folder>\
+	\{ MOLECULAR_INDEX_TAG=RX \}		use if you don't want default RX tag\
+	ADAPTER_TO_CHECK=INDEXED\
+	TAG_PER_MOLECULAR_INDEX=ZA		if you have multiple tags you can use tag_per_mol..\
+	TAG_PER_MOLECULAR_INDEX=ZB\
+\
+\
+\ul Convert BAM to FASTQ\ulnone \
+picard SamToFastq\
+	INPUT=--.bam							the unmapped bam from previous step\
+	FASTQ=<output.R1.fastq>\
+	SECOND_END_FASTQ<output.R2.fastq>\
+	INCLUDE_NON_PF_READS=false		include reads that did not pass filters\
+	CLIPPING_ATTRIBUTE=XT\
+	CLIPPING_ACTION=N					change base qualities at XT positions to N (a low number)\
+					=X					clip the bases\
+\
+\ul map the FASTQ and merge with ubam\ulnone  (containing the RX umi-tag)\
+\
+	picard MergeBamAlignment\
+		ALIGNED=\
+\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\fs24 \cf0 PIPELINE to get UMI-information and to call consensus reads\
+\
+
+\f0\b 0. Create clean bam\
+	
+\f1\b0 proper mate pair tags are set using the GATK best practices pipeline:\
+\
+0.A.	\ul convert fastq to uBam\ulnone \
+	$ picard FastqToSam \
+		FASTQ=fastq.R1		files can be compressed\
+		FASTQ2=fastq.R2		files can be compressed\
+		OUTPUT=output.bam\
+		READ_GROUP_NAME=<read_group>\
+		SAMPLE_NAME=<sample_name>\
+		LIBRARY_NAME=<???>\
+		PLATFORM=illumina\
+\
+	or directly use the umi-tag for fgbio FastqToSam\
+	$ fgbio FastqToSam R1.fastq R2.fastq index.fastq\
+		--read-structure +T +T +M		+T all sample +M all UMI\
+		--read-group-id=<RGID>\
+		--sample=<sample>\
+		--platform=illumina\
+		--platform_unit=<flowcell-barcode.lane.sample_barcode>\
+		--library=<library_name>\
+	Tags:\
+		RX:Z:					UMI-Sequence\
+\
+0.B \ul mark adapter sequences\ulnone \
+	$ 
+\f0\b picard MarkIlluminaAdapters
+\f1\b0 \
+		I=ubam.bam\
+		O=adapter.bam\
+		M=name_of_metrix.txt\
+		TMP_DIR=$TMP_DIR\
+\cf4 \cb5 		\CocoaLigature0 use_jdk_deflater=true use_jdk_inflater=true	to prevent SIGSEV fatal error\cf0 \cb1 \CocoaLigature1 \
+	if you have non-standard adapters:\
+		ADAPTERS="null"\
+		FIVE_PRIME_ADAPTER=<seq_of_adapter>\
+		THREE_PRIME_ADAPTER=<seq_of_adapter>\
+	Tags:\
+		XT:i:					3'-base start of illumina adapter\
+\
+\
+0.\ul A+B\ulnone \
+	$ picard FastqToSam \{params\} OUTPUT=/dev/stdout | picard MarkIlluminaAdapters I=/dev/stdin \{params\}\
+\
+\
+\
+\
+\ul 0.C convert back to fastq\ulnone \
+	$ 
+\f0\b picard SamToFastq
+\f1\b0 \
+		I=adapter.bam\
+		FASTQ=output.fastq 		this fastq-file is interleaved \
+		CLIPPING_ATTRIBUTE=XT\
+		CLIPPING_ACTION=2		base-quality of clipped bases is set to 2\
+		INTERLEAVE=TRUE		to produce interleaved fastq (for piping)\
+		NON_PF=true			retain below quality reads marked with 0x200\
+							not really neccessary\
+		TMP_DIR=$TMP_DIR\
+\
+0.D \ul align reads and flag secondary hits\ulnone \
+	$ 
+\f0\b bwa mem
+\f1\b0  \
+		-M	flags shorter hits as secondary\
+		-p	use interleaved fastq\
+		-t	threads\
+		> aligned.sam\
+\
+	Tags:\
+		AS:i					alignment score\
+\
+		NM:i					edit distance\
+		MD:Z					mismatch bases\
+\
+		MC:Z					mate cigar\
+\
+		XA:Z					secondary alignment\
+		XS:i					secondary alignment score\
+\
+0. \ul E merge aligned bam to uBAM and add mate tags\ulnone \
+	$ 
+\f0\b picard MergeBamAlignment
+\f1\b0 \
+		R=<ref_genome>\
+		UNMAPPED_BAM=ubam.bam\
+		ALIGNED_BAM=aligned.bam\
+		O=merged.sam\
+		CREATE_INDEX=True\
+		ADD_MATE_CIGAR=true\
+		CLIP_ADAPTERS=false\
+		CLIP_OVERLAPPING_READS=true			I think it would be better to retain them for UMI-grouping\
+		INCLUDE_SECONDARY_ALIGNMENTS=true\
+		MAX_INSERTION_OR_DELETIONS=-1			allow any number\
+		PRIMARY_ALIGNMENT_STRATEGY=MostDistant	# changed from BestMapq\
+		ATTRIBUTES_TO_RETAIN=XS\
+		TMP_DIR=$TMP_DIR\
+	Tags:\
+		MQ:i					alignment score\
+		UQ:i					phred likelihood of segment\
+\
+		MC:Z	A				mate cigar\
+		MQ:i					mapping quality of mate\
+\
+\
+"""""\
+\pard\pardeftab720\sl280\partightenfactor0
+
+\f3 \cf6 \cb7 \expnd0\expndtw0\kerning0
+Creates single-UMI consensus reads and calls somatic variants.\
+Starts with an unmapped BAM file with the UMI in a tag (`RX` by default).
+\f1 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+
+\f3 \cf6 \cb7 \expnd0\expndtw0\kerning0
+The reads are aligned with bwa-mem, then duplicate marked using the UMI tag, grouped by molecular ID to create a "grouped" BAM file, and consensus called to produce per-molecule consensus reads. The consensus reads are aligned with bwa-mem and subsequently filtered.
+\f1 \cf0 \cb1 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 \
+1. 
+\f0\b Add UMI information to bam file
+\f1\b0 \
+	UMI-tag is added as tag RX:NNNNNNNNN\
+	if UMI needs to be added from fastq to mapped bam not containing RX tag, use\
+$ fgbio AnnotateBamWithUmis -Xms500m -Xmx10g -i input.bam -f index.fastq.gz -o output.bam\
+	!!! Xmx has to be set pretty high as the entire index.fastq is loaded into memory \'97> adjust cores accordingly!\
+\
+
+\f0\b 2. Group reads by UMI
+\f1\b0 \
+	reads are sorted by template, mapping position and then by UMI-sequence\
+	input bams have to contain mate-mapping-quality tag (MQ)\
+[[	- if you find reads without MQ-tag or missing mate:\
+		$ 
+\f0\b picard FixMateInformation
+\f1\b0  I=input.bam O=output.bam\
+			sorts by query and fixes mate information\
+	or\
+		$ sambamba sort -n -t threads -m max_mem -l compression_level -i input.bam -o output1.bam\
+			sorts by query name\
+		$ 
+\f0\b \cf8 \CocoaLigature0 fgbio SetMateInformation
+\f1\b0  -i output1.bam -x -o output2.bam\
+			sets the proper MQ tag that is missing in many reads\
+			options: -x		ignore unmapped reads (should not be there but are!)\
+]]\
+\
+\
+	once your bam file has set the proper tags, you can run the UMI-grouping:\
+	$ 
+\f0\b fgbio GroupReadsByUmi
+\f1\b0  -i input.bam -o output.bam -s adjacency\
+		options: 	-m 20			set the minimum mapping quality\
+				-s			sets the strategy for grouping \'97> adjacency is best\
+				--edits 1		for targeted-sequencing data, this value can be put higher\
+\
+\cf0 \CocoaLigature1 	Tags:\
+		MI:Z					unique UMI-ID for the UMI-group ID\cf8 \CocoaLigature0 \
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b 3. Call consensus reads
+\f1\b0 \
+	reads of the same UMI-group are collapsed into a consensus read\
+	bam has to be processed with GroupReadsByUmi tool\
+\
+	$ 
+\f0\b fgbio -Xmx2g CallMolecularConsensusReads
+\f1\b0  -i input.umi-grouped.bam -o ouput.consensus.bam\
+		--min-reads=1			minimum number of observations\
+	options:\
+		--error-rate-pre-umi=45\
+		--error-rate-post-umi=40		set to 30\
+		--min-input-base-quality=10	\
+		--output-per-base-tags=true	set to false to save data (needs to be included for per-base-filtering)\
+		--rejects=rejects.bam		file to save rejected reads to\
+\
+
+\f0\b 4. Filter consensus reads
+\f1\b0 \
+	$ 
+\f0\b fgbio FilterConsensusReads
+\f1\b0  -i input.consensus.bam -o output.filtered.bam \
+		-M 1 						min reads supporting a consensus\
+		-N 20						min base quality\
+		-r hg38.fa					ref genome\
+		--max-read-error-rate=0.025	-E	max raw-read error rate across consensus read		--max-base-error-rate=0.1		-e	max error rate for single base	\
+	options: 	\
+		-N=40						min base-quality for call\
+		-q						min mean-base-quality across consensus read\
+		--max-no-call-fraction		-n	max fraction of no-calls in the filtered read\
+\
+	(IDT:	-E 0.05 -N 40 -e 0.1 -n 0.1)\
+\
+
+\f0\b 5. remap consensus reads to genome
+\f1\b0 \
+	$ picard SamToFastq\
+		I=output.filtered.bam\
+		F=/dev/stdout\
+		INTERLEAVE=true |\
+	  bwa mem -p -M -t \{threads\} hg38.fa /dev/stdin |\
+	  picard MergeBamAlignment\
+		UNMAPPED=output.filtered.bam\
+		ALIGNED=/dev/stdin\
+		O=output.filter_mapped.bam\
+		R=hg38.fa\
+		SO=coordinate\
+		ALIGNER_PROPER_PAIR_FLAGS=true\
+		MAX_GAPS=-1\
+		ORIENTATIONS=FR\
+		VALIDATION_STRINGENCY=SILENT\
+		CREATE_INDEX=true\
+		ADD_MATE_CIGAR=true\
+		CLIP_OVERLAP= ???}

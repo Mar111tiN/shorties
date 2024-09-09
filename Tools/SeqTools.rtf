@@ -1,0 +1,96 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf500
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11905\paperh16837\margl1440\margr1440\vieww10740\viewh15280\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs20 \cf0 DOWNLOAD\
+\
+wget	
+\f1\b0 			program to download stuff\
+	 -o <log_file>				give path for log file\
+	-O <file_name>				download as file_name\
+	-N						only retrieve newer files than the stored ones\
+	-P path/prefix/				path prefix for target files (will be created on demand)an \
+\
+
+\f0\b join
+\f1\b0 							joins two files based on a common field\
+	-1 #field1 -2 #field2 file1 file2		joins based on #field	\
+	fields must be sorted for join operator to find match - can be done inline: \
+	-1 #field1 -2 #filed2 <(sort -k #field1) <(sort -k #field2) > result.txt	\
+	-t ,						set the field separator to ,\
+	-o 1.2,1.5,2.3,2.4				specify output format (only include comma-separated #file.#field\
+\
+\
+
+\f0\b COMPRESS-EXTRACT
+\f1\b0 \
+\
+
+\f0\b gzip
+\f1\b0  							utitity for zipping and extracting files using gzip\
+	-d						extract\
+	-1						select compression quality\
+	-9						1 worst 9 best\
+	-c > filename				write to file\
+	-k						leave original file intact\
+	-N						use original name for decompressed/ compressed file\
+\
+
+\f0\b zcat
+\f1\b0  < file.fastqz					extracts and outputs gzipped file\
+	or gzcat file.fastqz\
+	gzcat file1 file2 > pasted.fastq		extract and concat files to output file\
+\
+
+\f0\b tar\
+
+\f1\b0 	-x						extract\
+	-j						filter through bzip\
+	-z						filter through gzip\
+	-k						keep org files\
+	-O						to stdout\
+	-cf <archive> files..				create tar archive <archive> from files..\
+	-A <archive> files..				add files to <archive>\
+	--remove-files				remove files after adding to archive\
+	\
+
+\f0\b TEXT-MODIFICATIONS
+\f1\b0 \
+\
+
+\f0\b cut 
+\f1\b0 	\
+	-f5,6,7					output columns 5,6 and 7 of tab-separated list\
+	-d " " 						set delimiter to " "\
+\
+
+\f0\b tr
+\f1\b0 	"string1" "string2"				translate string1 to string2\
+	-s " "						remove repeats of " "+\
+	tr " " "\\012"					change space to new line\
+\
+
+\f0\b wc
+\f1\b0  \
+	-l						counts the lines of file\
+\
+\
+
+\f0\b tree
+\f1\b0  -L n						show folder tree with recursion depth set as -L n\
+\
+
+\f0\b ln 
+\f1\b0 -s target link					set symbolic link ( to ~/.local/bin)\
+\
+\
+
+\f0\b tabix
+\f1\b0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0  }

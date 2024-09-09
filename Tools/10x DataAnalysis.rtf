@@ -1,0 +1,176 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2636
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fnil\fcharset0 Menlo-Regular;
+}
+{\colortbl;\red255\green255\blue255;\red191\green191\blue191;\red0\green0\blue0;\red255\green255\blue255;
+\red0\green0\blue0;\red255\green255\blue255;\red38\green38\blue38;\red0\green0\blue0;\red234\green235\blue236;
+}
+{\*\expandedcolortbl;;\csgray\c79525;\cssrgb\c0\c1\c1;\cssrgb\c100000\c100000\c99985\c0;
+\csgray\c0;\cssrgb\c100000\c100000\c100000\c0;\cssrgb\c20000\c20000\c20000;\csgray\c0\c0;\cssrgb\c93333\c93725\c94118;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww20460\viewh22120\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf0 Sequence Data\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\b0\fs22 \cf0 	on Miseq, run sequencing locally and provide a mock sample sheet in order to give read and index cycle numbers\
+	that means, in the [Data] section you only have to provide one sample with the length of the Index corresponding to the Index length (8bp)\
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clmgf \clvertalc \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadl100 \clpadr100 \gaph\cellx2880
+\clmrg \clvertalc \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadl100 \clpadr100 \gaph\cellx5760
+\clmrg \clvertalc \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+
+\fs20 \cf0 Sample_ID,Sample_Name,I7_Index_ID,index\cell 
+\pard\intbl\itap1\cell 
+\pard\intbl\itap1\cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clmgf \clvertalc \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadl100 \clpadr100 \gaph\cellx2880
+\clmrg \clvertalc \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadl100 \clpadr100 \gaph\cellx5760
+\clmrg \clvertalc \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadl100 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab720\partightenfactor0
+\cf0 1,UPN292-GEX,SI-GA-F1,NNNNNNNN
+\fs24 \cell 
+\pard\intbl\itap1\cell 
+\pard\intbl\itap1\cell \lastrow\row
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs22 \cf0 \
+	after run completion, move the RUN-Folder (in MiseqTemp/ ) to your comp environment\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs26 \cf0 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 Setup Cellranger
+\f1\b0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 -	download latest CellRanger (current 6.1.2) and accompanying ref-data from{\field{\*\fldinst{HYPERLINK "https://support.10xgenomics.com/single-cell-gene-expression/software/downloads/latest"}}{\fldrslt  here}}\cf3 \cb4 \expnd0\expndtw0\kerning0
+\
+-	unpack and move to tools location:\
+		tar -xzvf 
+\f2\fs22 \cf5 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 cellranger-6.1.2.tar.gz
+\f1\fs24 \cf3 \cb4 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \cb6 \kerning1\expnd0\expndtw0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \cb1 -	for running mkfastq, bcl2fastq1 or 2 is required:\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf7 \cb8 \expnd0\expndtw0\kerning0
+\
+\'97> \cf3 \cb4 	create conda environment with all that:\
+	$ conda create -n 10x-env -c \cf7 \cb9 bih-cubi bcl2fastq  (or -c dranew bcl2fastq)\cb8 \
+
+\fs22 - 	add cellranger exec to conda path (from cellranger folder run):\
+	$ 
+\f2 \cf5 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 ln -s $(pwd)/bin/cellranger $CONDA_PREFIX/bin/cellranger\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\fs24 \cf0 \CocoaLigature1 -	download reference data set:\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf3 \cb4 		\cf3 \cb4 \expnd0\expndtw0\kerning0
+wget\'a0http://cf.10xgenomics.com/supp/cell-exp/refdata-cellranger-GRCh38-3.0.0.tar.gz\
+-	extract to STATIC location\
+	$ 
+\f2\fs22 \cf5 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0  tar -xzvf refdata-gex-GRCh38-2020-A.tar.gz -C $STATIC/hg38/10x/\
+-	
+\f1 \cf7 \cb8 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs26 \cf7 Demultiplex BCL raw data	\
+	
+\f1\b0\fs22 setup the data:\
+		Lane bcl files (L001, L002,...) have to be in Data/Intensities/BaseCalls\
+		in MiSeq, they are in Processed/ and have to be copied to the BaseCalls folder
+\f0\b\fs26 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\b0\fs22 \cf7 	
+\f0\b run mkfastq:
+\f1\b0 \
+	this is run using cellranger mkfastq with the following options:\
+		--run				path to the Illumina BCL run folder\
+		--id				name of the created Info folder (contains per default outs/fastq_path)\
+		--samplesheet		path to IlluminaSampleSheet (if actual samples were provided) --> better use --csv\
+		--csv				better option: provide simple sample sheet with 10x index names\
+			
+\f2 \cf5 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 Lane,Sample,Index				3 comma separated columns\
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+			1,SXG0001,SI-TT-A3
+\f1 \cf7 \cb8 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf7 		--output-dir	 		path to fastq output (instead of default id/outs/fastq_path\
+		--project			folder in fastq_path with fitting fastqs\
+		--jobmode			defaults to local\
+		--localcores		max cores to use\
+		--localmem			max local memory\
+		--qc				write qc summary into outs/qc_summary.json\
+	\
+	this creates the following important folder/files:\
+		<OUTPUT-DIR>\
+			Undetermined...fastq.gz\
+			<PROJECT>					contains the individual samples from the sample sheet\
+				<SAMPLE1>\
+					...I1.fastq_001.fastq.gz\
+					...R1.fastq_001.fastq.gz\
+					...R2_001.fastq.gz\
+				<SAMPLE2>\
+					...\
+		<ID>\
+			outs\
+				symlink to fastq or fastq\
+				qc_summary.json			important file for QC (contains all info about read quality and CB quality : check 
+\f2 \cf5 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0  "sample_qc": \{....\} 
+\f1 \cf7 \cb8 \expnd0\expndtw0\kerning0
+\CocoaLigature1 )\
+\
+\
+	inspect the Undetermined.._I1 files for missing indices and stuff\
+			\
+	
+\f0\b or use bcl2fastq:
+\f1\b0 \
+		\cf5 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 bcl2fastq\
+			-R UPN292-Raw					\cf7 \cb8 \expnd0\expndtw0\kerning0
+\CocoaLigature1 path to the Illumina BCL run folder\cf5 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \
+			--use-bases-mask=Y76,I8,Y76 		set the cycles for read and index\
+			--create-fastq-for-index-reads		flag\
+			--output-dir=<fastq_folder>			\cf7 \cb8 \expnd0\expndtw0\kerning0
+\CocoaLigature1 path to fastq output (instead of default id/outs/fastq_path\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf5 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 			--interop-dir=<interop_folder>		\cf7 \cb8 \expnd0\expndtw0\kerning0
+\CocoaLigature1 name of the created Info folder\cf5 \cb1 \kerning1\expnd0\expndtw0 \CocoaLigature0 \
+			--sample-sheet=bcl_sample.csv		path to sample sheet (has to be generated on 10x-page because of multiple indices)\
+			--minimum-trimmed-read-length=8		\
+			--mask-short-adapter-reads=8\
+			--ignore-missing-positions\
+			--ignore-missing-controls\
+			--ignore-missing-filter\
+			--ignore-missing-bcls\
+			-r 6 -w 6 \
+			  \cf7 \cb8 \expnd0\expndtw0\kerning0
+\CocoaLigature1 \
+\
+\
+	
+\f0\b run count:\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f1\b0 \cf7 		cellranger count\
+		--id=				name of the created output folder\
+		--fastqs=			folder to the fastq output folder\
+		--sample=			sample name if multiple libraries where sequenced (have to correspond to names in sample sheet for mkfastq or bcl2fastq\
+		--transcriptome=		path to 10x-reference\
+		--chemistry=		type of chemistry used (helps if autodetect fails)\
+			SC5P-PE		5' paired-end\
+			SC5P-R2		5' paired-end but only Read2 for alignment\
+		--r1-length			hardcode the r1-length, if autodetect trims the read to CB+UMI\
+\
+	}

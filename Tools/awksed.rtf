@@ -1,0 +1,283 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671\cocoasubrtf500
+{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;\red38\green38\blue38;}
+{\*\expandedcolortbl;;\cssrgb\c20000\c20000\c20000;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11700\viewh9600\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs36 \cf0 \ul \ulc0 sed
+\f1\b0\fs20 \ulnone 							stream editor\
+	sed '[option] [adress]instruction'flag file1 file2	\'85	performs instruction (as script or command) on each line of the flle or list of files								instructions begin with a single letter\
+	best practice is to enclose sed commands in single quotes\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b \cf0 options:
+\f1\b0 \
+	-n						only print stuff after p command\
+	-r  / -E						use extended regex\
+	-e command -e command		apply several commands to a line:\
+	-e 's/regex/replace/' -e 's/regex/repl/\
+	-f script					apply sed script\
+	\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b \cf0 address
+\f1\b0 : 	\
+	n				act only on line number n\
+	n,k				from line n to line k\
+	n,$				from line n to end\
+	n~k				starting with n and then every k lines\
+	adress,+n			line defined by address and n following lines\
+	$				last line\
+	/regexp/			lines matching a regexp\
+	\\.regexp.			after backslash  you can define a delimiter\
+	/^$/				empty lines\
+	/regexp/,/regexp/		starting at match1 and ending at match2\
+	sed '-n /regex/p'			acts like grep\
+		adress!			every line except this address\
+\
+
+\f0\b commands:\
+	!				
+\f1\b0 reverses the command (effectively activating command on everything but the address\
+	p				print the result (either again or only (if -n option)\
+	q				exit sed\
+	n				empty pattern space and read in new line (in same sed cycle of commands)\
+	w file_name			write to file\
+	r file_name			read from file \'97> include that file\
+eg.	sed '/INCLUDE/ \{\
+		r file			add file at a line with INCLUDE\
+		d			remove the INCLUDE line\
+	\}'				\
+	d 				delete that line (in pattern space)\
+	a 'line text'			add line after address\
+	i 'line text'			insert line before address\
+	c 'line text'			insert line at address and remove previous line text\
+	s	s/regexp/replacement/	substitutes regex with replacement - / is an arbitrary delimiter\
+	or	s_regexp_repl_		after s any delimiter can be set\
+	or	s:regexp:repl		..in order to use / as literal search string\
+		& in the command means the actual match:\
+		's/^[a-z]+/(&)'		enclose any starting letter groups with parens\
+		's/(regex)/\\1		\\1 means the first pattern marked by parens\
+	!!!	's/\\(regex\\)/\\1		parens have to be escaped unless used with -r option\
+		y/set1/set2		transliteration from set1 to set2\
+\
+
+\f0\b flags:
+\f1\b0 	\
+	/g				find all matches/ normally just the first match\
+	/n				find and act on the n-th match\
+	/4g				find and act on the 4th and all following matches on that line\
+	/I				ignore case\
+	\
+
+\f0\b sed as script:
+\f1\b0 				you can execute that script directly from CL by its name\
+	#!/bin/sed -f\
+	sed-command1\
+	sed-command2\
+	\
+	#!/bin/sh			you can pass CL arguments into script using $1 etc\
+	sed -n 's/'"$1"'/&/p'		make sure to turn quoting off when calling $n and then back on\
+\
+
+\f0\b multiline commands:\
+	
+\f1\b0 N				adds the next line to the pattern space separated with a \\n\
+	following commands apply to the concatenated pattern space\
+these commands have to be used properly with nested curly braces as a script:\
+	#!/bin/sh\
+	sed '\
+	/pattern/ \{			if pattern is in address\
+		N			add next line to pattern space with \\n\
+		/pattern\\n.*pattern/ \{	now look in concatenated pattern space for that pattern\
+			s/pattern\\n.*pattern/pattern pattern/	delete everything between patterns to white space\
+			\}\
+		\}' $1			CL argument passed as file\
+	!!!	's/\\n/\\			in sed scripts new lines in patters are \\n \'97 in replacements they are \\ literals\
+		'\
+	D				deletes first part of pattern space (up to \\n) and starts new cycle\
+					ignores any subsequent commands in group\
+	P				prints the first part of pattern space (up to \\n) without changing the pattern space\
+\
+
+\f0\b using the hold space:\
+	
+\f1\b0 beside the pattern space, sed also carries the hold space allowing the storage of previous lines	initially, the hold space contains an empty line ^$
+\f0\b \
+	
+\f1\b0 command:\
+		h			copies pattern buffer into hold space\
+		H			appends pattern buffer into hold space\
+		g			copies hold buffer into pattern space (deletes pattern space)\
+		G			appends hold buffer into pattern space\
+		x			switch hold and pattern space		\
+\
+
+\f0\b flow control
+\f1\b0 \
+	:name 				mark a target point for the script to jump to (usually at the end)\
+	b name				jumps to the target point marked with :name\
+	b				jump to the end of the script\
+	t name				jump to the target point if pattern space has been modified by last s command\
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \expnd0\expndtw0\kerning0
+	#!/bin/sh\
+	sed -n '\
+	# if an empty line, check the paragraph\
+	/^$/ b para\
+	# else add it to the hold buffer\
+	H\
+	# at end of file, check paragraph\
+	$ b para\
+	# now branch to end of script\
+	b\
+	# this is where a paragraph is checked for the pattern\
+	:para\
+	# return the entire paragraph\
+	# into the pattern space\
+	x\
+	# look for the pattern, if there - print\
+	/'$1'/ p\
+	'\
+\
+
+\f0\b\fs36 \ul awk
+\fs24 \ulnone \
+
+\f1\b0\fs20 line-oriented processor for rows and columns\
+
+\f0\b awk one-liner
+\f1\b0 \
+	awk 'pattern \{action\}' file1 file2	run awk on file1 and file2 and output to stdout -> can be piped\
+\
+
+\f0\b awk script
+\f1\b0 \
+	#!/bin/sh			ln -s to your bin and chmod +x and run by its name\
+	var=$1				inject command options into awk commands\
+	awk '\
+	pattern \{\'a0action; expression(var) \}\
+	pattern \{\'a0action \}\
+	pattern \{\'a0action \}\
+	'\
+	in file write:			\
+	pattern \{\'a0action \}\
+	pattern \{\'a0action \}\
+	pattern \{\'a0action \}		is called as $ awk -f script_name\
+\
+as awk executable:			use directly with its name\
+	#!/bin/awk -f			full path to awk executable to use it as an interpretor\
+	pattern \{\'a0action \}\
+	pattern \{\'a0action \}\
+	pattern \{\'a0action \}\
+	pattern \{action\}			general pattern for an awk command\
+\
+
+\f0\b action syntax:\
+	
+\f1\b0 \\t				tab (works in AWK)\
+	$n				the nth field in the input line\
+	$0				the whole line\
+	"$n"				variables in quotes will not be evaluated\
+\
+
+\f0\b patterns, ranges:\
+	
+\f1\b0 3				line 3 in file
+\f0\b \
+
+\f1\b0 	/regex/				shorthand for:
+\f0\b \
+	
+\f1\b0 $0 ~ /regex/ \{action\}		full line matches /regex/\
+	$n ~ /regex/ \{action\}		n-th column matches regex --> action\
+	$n !~ /regex/ \{action\}		nth column does not match regex --> action\
+	cond1 && cond2		different conditions can be logically combined with && and ||\
+	cond1 || cond2\
+		eg: $n ~\'a0 /regex/ || $m ~ /regex2/ \{action\}	\
+		nth column matches regex and mth column matches regex2 --> action\
+	\
+ \
+	\
+
+\f0\b special patterns:
+\f1\b0 \
+	BEGIN \{ action	\}		things to happen before the first line\
+	END \{action \}			after the last line\
+	\{action\}				Null pattern (will be executed always)\
+\
+\pard\pardeftab720\partightenfactor0
+
+\f0\b \cf0 \kerning1\expnd0\expndtw0 special operations:
+\f1\b0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 	a b				space between values just concatenates them \
+		eg 3*5 3 \'97> 153	\
+	+= | *= | /= -= | %|		assignment operators\
+	a ~ /regex/			match operator\
+	a !~ /regex/			does not match\
+\
+	&& || 				and / or\
+\
+
+\f0\b flow
+\f1\b0 	\
+	if (conditional) statement \
+	else statement\
+	while (conditional) statement\
+	\
+	for (i=1; i <=10; i++) statement\
+	for (var in array) statement\
+	break\
+	continue\
+	next 				skip remaining patterns on input line\
+	exit [expression]		exit immediately (with expression result as exit status)\
+	return expression \
+	in most cases, an if statement can be replaced by using the pattern syntax\
+	if statement might be more verbose\
+\
+
+\f0\b special variables:
+\f1\b0 \
+	$0				the entire line\
+	$1 \'97 $n			field n in line (<99)\
+	FS				input field separator, can be more than one char\
+		FS=":"			changes field separator from " " to :\
+	OFS				output field separator\
+	NF				number of fields in current line\
+	NR				number of lines in file\
+	RS				record separator (sets the separator between lines (records = \\n)\
+	ORS				output record separator\
+	FILENAME			the current file name being read\
+	\
+
+\f0\b associative arrays\
+\
+functions:
+\f1\b0 \
+	print string, string;		prints strings separated by OFS and appended by \\n\
+	printf(format, placeholders)	prints a string substituting %_ in format by placeholders (does not append \\n)\
+		 \
+	rand()				random number 0<n<1\
+	length(string)			obvious\
+	index(string, substr)		search for substr in string: returns position number or -1\
+	substr(string, pos, [length])	extracts substring from string starting at pos until the end [length]\
+	split(string, array, separator)	splits string at separator and stores elements in array\
+		eg('G:H:TR:50', result, ':')	--> result is array containing ['G','H','TR',50]  , array[3] == 'TR'\
+	sub(/old/,'new', string)		replaces pattern /old/ with string 'new' in place in given string and returns \
+					non-zero if match is found (can be used as condition)\
+					default for string is $0\
+	gsub()				like sub but substitutes all occurrences on line\
+	match(string, /pattern/)		returns non-zero if match is found in string and sets two variables\
+		RSTART		start position of /pattern/ on string\
+		RLENGTH		length of match\
+		before = substr(string,1 RSTART-1)\
+		match = substr(string, RSTART, RLENGTH)\
+		after = substr(string, RSTART+RLENGTH)\
+	function <name> ( param ) \{	custom function can be called with <name>(var)\
+		action;\
+	\}\
+	\
+	}
